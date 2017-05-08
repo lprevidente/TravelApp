@@ -1,4 +1,4 @@
-package com.example.luigi.travelapp;
+package com.example.luigi.travelapp.datamodel;
 
 import java.util.ArrayList;
 
@@ -24,4 +24,8 @@ public class Day {
     public int getDayNumber() {
         return dayNumber;
     }
+
+   public ArrayList<Event> getEventList(){
+       return Eventsoftheday;
+   }
 }

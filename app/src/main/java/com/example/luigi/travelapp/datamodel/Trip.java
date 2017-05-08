@@ -1,4 +1,4 @@
-package com.example.luigi.travelapp;
+package com.example.luigi.travelapp.datamodel;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,7 +24,8 @@ public class Trip {
         this.endDate = endDate;
         days = new ArrayList<>();
         // Create a List of the day
-        for( int i=0; i<(endDate.getTime() - startDate.getTime() / (1000 * 60 * 60 * 24)); i++){
+
+        for( int i=0; i<getDaysNumber(); i++){
             mday= new Day(i);
             days.add(mday);
         }
@@ -57,5 +58,15 @@ public class Trip {
         this.endDate = endDate;
     }
 
+    public ArrayList<Day> getDayList(){
+        return days;
+    }
 
+    public int getDaysNumber() {
+        return (int)((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+    }
+
+    public void addDay(Day day){
+        days.add(day);
+    }
 }
