@@ -20,18 +20,38 @@ public class DataStore {
     private String path;
     private static ArrayList<Trip> trips;
 
+    /**
+     * aggiunge un nuovo viaggio all'array contenente la lista dei viaggi
+     * @param trip oggetto di tipo Trip da aggiungere da aggiungere
+     */
     public void addTrip(Trip trip) {
         trips.add(trip);
     }
 
+    /**
+     * aggiunge un nuovo giorno al viaggio desiderato
+     * @param tripIndex indice del viaggio
+     * @param day oggetto di tipo Day da aggiungere
+     */
     public void addDay(int tripIndex, Day day) {
         getDayList(tripIndex).add(day);
     }
 
+    /**
+     * aggiunge un evento al giorno desiderato del viaggio desiderato
+     * @param tripIndex indice del viaggio
+     * @param dayIndex indice del giorno
+     * @param event oggetto di tipo Event da aggiungere
+     */
     public void addEvent(int tripIndex, int dayIndex, Event event) {
         getEventList(tripIndex, dayIndex).add(event);
     }
 
+    /**
+     * aggiorna un viaggio nelll'arrayList dei viaggi
+     * @param tripIndex indice del viaggio da modificare
+     * @param trip Trip da aggiungere
+     */
     public void updateTrip(int tripIndex, Trip trip) {
         Trip tmp = trips.get(tripIndex);
         int oldDayNumber = tmp.getDaysNumber();
@@ -51,43 +71,68 @@ public class DataStore {
         trips.set(tripIndex, tmp);
     }
 
+    /**
+     * aggiorna un evento di un giorno di un viaggio
+     * @param tripIndex indice del viaggio da modificare
+     * @param dayIndex indice del giorno da modificare
+     * @param eventIndex indice dell'evento da modificare
+     * @param event evento da aggiornare
+     */
     public void updateEvent(int tripIndex, int dayIndex, int eventIndex, Event event) {
         getEventList(tripIndex, dayIndex).set(eventIndex, event);
     }
 
-    public void deleteTrip(Trip trip) {
-        for (int i = trips.size(); i > 0; i--) {
-            if (trips.get(i)
-                    .getTitleTrip()
-                    .equals(trip.getTitleTrip())) {
-                trips.remove(i);
-            }
-        }
+    /**
+     * cancella viaggio dall'arrayList dei viaggi
+     * @param i indice del viaggio da eliminare
+     */
+    public void deleteTrip(int i) {
+        trips.remove(i);
     }
 
-    public void deleteEvent(int tripIndex, int dayIndex, Event event) {
-        for (int i = getEventList(tripIndex, dayIndex).size(); i > 0; i--) {
-            if (getEventList(tripIndex, dayIndex)
-                    .get(i)
-                    .getTitle()
-                    .equals(event.getTitle())) {
-                getEventList(tripIndex, dayIndex).remove(i);
-            }
-        }
+    /**
+     * cancella un evento dal giorno del viaggio desiderato
+     * @param tripIndex indice del viaggio
+     * @param dayIndex indice del giorno
+     * @param eventIndex indice dell'evento
+     */
+    public void deleteEvent(int tripIndex, int dayIndex, int eventIndex) {
+        getEventList(tripIndex, dayIndex).remove(eventIndex);
     }
 
+    /**
+     * restituisce la lista dei giorni
+     * @param tripIndex indice del viaggio dal quale restituire i giorni
+     * @return ArrayList dei giorni
+     */
     public ArrayList<Day> getDayList(int tripIndex) {
         return trips.get(tripIndex).getDayList();
     }
 
+    /**
+     * restituisce un giorno dalla lista dei giorni
+     * @param tripIndex indice del viaggio
+     * @param dayIndex indice del giorno
+     * @return giorno corrispondente all'indice
+     */
     public Day getDay(int tripIndex, int dayIndex) {
         return getDayList(tripIndex).get(dayIndex);
     }
 
+    /**
+     * restituisce la lista degli eventi
+     * @param tripIndex indice del viaggio
+     * @param dayIndex indice del giorno
+     * @return lista degli eventi relativi al giorno
+     */
     public ArrayList<Event> getEventList(int tripIndex, int dayIndex) {
         return getDay(tripIndex, dayIndex).getEventList();
     }
 
+    /**
+     * costruttore del datastore
+     * @param context context
+     */
     public DataStore(Context context) {
         path = "yourtrips.dat";
         this.context = context;

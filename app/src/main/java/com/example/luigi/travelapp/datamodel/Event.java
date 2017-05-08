@@ -10,7 +10,6 @@ import java.util.Date;
 
 public class Event {
 
-    //Time Of Event
     private Date date;
     private String title;
     private String note;
@@ -29,8 +28,8 @@ public class Event {
         this.note = note;
         this.notify = notify;
     }
-// getter methods
 
+    // Get methods
     public Date getDate() {
         return date;
     }
@@ -47,9 +46,7 @@ public class Event {
         return notify;
     }
 
-    //Setter methods
-
-
+    //Set methods
     public void setDate(Date date) {
         this.date = date;
     }
@@ -65,9 +62,4 @@ public class Event {
     public void setNotify(CheckBox notify) {
         this.notify = notify;
     }
-
-    /**
-     * set event's date from its date
-     */
-
 }

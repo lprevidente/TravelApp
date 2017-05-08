@@ -9,8 +9,7 @@ import java.util.ArrayList;
 public class Day {
 
     private int dayNumber;
-
-    private ArrayList<Event> Eventsoftheday;
+    private ArrayList<Event> events;
 
     /**
      * Day object constructor
@@ -18,14 +17,19 @@ public class Day {
      */
     public Day(int dayNumber) {
         this.dayNumber = dayNumber;
-        Eventsoftheday = new ArrayList<>();
+        events = new ArrayList<>();
     }
- // Get the day's number
+
+    // Get the day's number
     public int getDayNumber() {
         return dayNumber;
     }
 
-   public ArrayList<Event> getEventList(){
-       return Eventsoftheday;
-   }
+    /**
+     * restituisce la lista eventi dell'oggetto
+     * @return ArrayList di oggetti di tipo evento
+     */
+    public ArrayList<Event> getEventList(){
+       return events;
+    }
 }

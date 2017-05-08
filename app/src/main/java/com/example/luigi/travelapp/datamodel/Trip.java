@@ -11,23 +11,20 @@ import java.util.Date;
 public class Trip {
 
     private String titleTrip;
-
     private Date startDate;
     private Date endDate;
     private ArrayList<Day> days;
-    private Day mday;
 
     // Constructor
     public Trip(String titleTrip, Date startDate, Date endDate) {
         this.titleTrip = titleTrip;
         this.startDate = startDate;
         this.endDate = endDate;
-        days = new ArrayList<>();
-        // Create a List of the day
 
-        for( int i=0; i<getDaysNumber(); i++){
-            mday= new Day(i);
-            days.add(mday);
+        // Crea un'arrayList per i giorni
+        days = new ArrayList<>();
+        for (int i = 0; i < getDaysNumber(); i++){
+            days.add(new Day(i));
         }
     }
 
@@ -45,7 +42,6 @@ public class Trip {
     }
 
     // Set Methods
-
     public void setTitleTrip(String titleTrip) {
         this.titleTrip = titleTrip;
     }
