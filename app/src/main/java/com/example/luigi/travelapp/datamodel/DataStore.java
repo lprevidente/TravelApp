@@ -40,7 +40,7 @@ public class DataStore {
         // day check
         if (newDayNumber < oldDayNumber) {
             for (int i = oldDayNumber; i > newDayNumber; i--) {
-                tmp.getDayList(tripIndex).remove(i);
+                tmp.getDayList().remove(i);
             }
         } else if (newDayNumber > oldDayNumber) {
             for (int i = oldDayNumber; i < newDayNumber; i++) {
@@ -66,12 +66,12 @@ public class DataStore {
     }
 
     public void deleteEvent(int tripIndex, int dayIndex, Event event) {
-        for (int i = trips.getEventList(tripIndex, dayIndex).size(); i > 0; i--) {
-            if (trips.getEventList(tripIndex, dayIndex)
+        for (int i = getEventList(tripIndex, dayIndex).size(); i > 0; i--) {
+            if (getEventList(tripIndex, dayIndex)
                     .get(i)
                     .getTitle()
                     .equals(event.getTitle())) {
-                trips.getEventList(tripIndex, dayIndex).remove(i);
+                getEventList(tripIndex, dayIndex).remove(i);
             }
         }
     }
@@ -81,7 +81,7 @@ public class DataStore {
     }
 
     public Day getDay(int tripIndex, int dayIndex) {
-        return trips.getDayList(tripIndex).get(dayIndex);
+        return getDayList(tripIndex).get(dayIndex);
     }
 
     public ArrayList<Event> getEventList(int tripIndex, int dayIndex) {
@@ -91,7 +91,7 @@ public class DataStore {
     public DataStore(Context context) {
         path = "yourtrips.dat";
         this.context = context;
-        if (fileExists(path)) {
+        if (fileExists()) {
             // the app loads existing data from disk
             deserialize();
         }
