@@ -1,4 +1,4 @@
-package com.example.luigi.travelapp;
+package com.example.luigi.travelapp.datamodel;
 
 import android.widget.CheckBox;
 
