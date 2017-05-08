@@ -133,6 +133,10 @@ public class DataStore {
      * costruttore del datastore
      * @param context context
      */
+    public ArrayList<Trip> getListTrip(){
+        return trips;
+    }
+
     public DataStore(Context context) {
         path = "yourtrips.dat";
         this.context = context;
