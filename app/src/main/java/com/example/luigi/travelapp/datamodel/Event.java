@@ -2,13 +2,14 @@ package com.example.luigi.travelapp.datamodel;
 
 import android.widget.CheckBox;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Luigi on 08/05/2017.
  */
 
-public class Event {
+public class Event implements Serializable {
 
     private Date date;
     private String title;

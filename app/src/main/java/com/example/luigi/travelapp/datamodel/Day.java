@@ -1,12 +1,13 @@
 package com.example.luigi.travelapp.datamodel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Luigi on 08/05/2017.
  */
 
-public class Day {
+public class Day implements Serializable{
 
     private int dayNumber;
     private ArrayList<Event> events;

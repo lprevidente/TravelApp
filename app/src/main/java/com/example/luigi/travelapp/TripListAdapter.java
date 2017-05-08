@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.luigi.travelapp.datamodel.Trip;
 
@@ -25,6 +24,7 @@ public class TripListAdapter extends BaseAdapter {
     private List<Trip> trips = Collections.emptyList();
     private PopupMenu popupMenu ;
     private Intent intent;
+    static  String TRIP_INDEX="";
 
     //definisco il costruttore
     public TripListAdapter(Context context ) {
@@ -49,8 +49,9 @@ public class TripListAdapter extends BaseAdapter {
         txtTitle.setOnClickListener((new View.OnClickListener() {
 
             public void onClick(View v) {
-                Toast.makeText(context, "You Clicked at " +trip.getTitleTrip(), Toast.LENGTH_SHORT).show();
-
+                intent= new Intent(context, DayListActivity.class);
+                intent.putExtra(TRIP_INDEX, Integer.toString(position));
+                context.startActivity(intent);
             }
         }));
         return view;

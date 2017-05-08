@@ -138,9 +138,9 @@ public class DataStore {
     }
 
     public DataStore(Context context) {
-        path = "yourtrips.dat";
+        this.path = "yourtrips.dat";
         this.context = context;
-        if (fileExists()) {
+        if (fileExists(path)) {
             // the app loads existing data from disk
             deserialize();
         }
@@ -180,7 +180,7 @@ public class DataStore {
         }
     }
 
-    public boolean fileExists() {
+    public boolean fileExists(String path) {
         File file = context.getFileStreamPath(path);
         if (file == null || !file.exists()) {
             return false;
