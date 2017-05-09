@@ -88,11 +88,15 @@ public class CityActivity extends Activity {
             @Override
             public void onClick(View v) {
                 String titleTrip = newtripEdit.getText().toString();
-                trip = new Trip(titleTrip, String2Date(partenzaTextView.getText().toString()), String2Date(ritornoTextView.getText().toString()));
-                //Log.i(TAG, "Il numero dei giorni del viaggio sono "+trip.getDaysNumber());
-                Intent intent = getIntent();
-                intent.putExtra(mTrip, trip);
-                setResult(Activity.RESULT_OK, intent);
+
+                if (!titleTrip.equals("") && checkValidDateRange()) {
+                    trip = new Trip(titleTrip, String2Date(partenzaTextView.getText().toString()), String2Date(ritornoTextView.getText().toString()));
+                    //Log.i(TAG, "Il numero dei giorni del viaggio sono "+trip.getDaysNumber());
+                    Intent intent = getIntent();
+                    intent.putExtra(mTrip, trip);
+                    setResult(Activity.RESULT_OK, intent);
+                }
+
                 // In this way i close the current activity
                 finish();
             }
@@ -144,5 +148,11 @@ public class CityActivity extends Activity {
         return date;
     }
 
-
+    /**
+     * controlla se il range di date sia corretto
+     * @return vero se la data di ritorno è successiva alla data di partenza
+     */
+    public boolean checkValidDateRange() {
+        return (String2Date(ritornoTextView.getText().toString()).getTime() - String2Date(partenzaTextView.getText().toString()).getTime()) / (1000 * 60 * 60 * 24) + 1 > 0;
+    }
 }
