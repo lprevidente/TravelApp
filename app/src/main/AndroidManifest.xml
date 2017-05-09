@@ -20,7 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".CityActivity" />
-        <activity android:name=".DayListActivity"></activity>
+        <activity android:name=".DayListActivity" />
+        <activity android:name=".datamodel.EventActivity"></activity>
     </application>
 
 </manifest>
