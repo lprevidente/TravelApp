@@ -43,7 +43,7 @@ public class EventListAdapter extends BaseAdapter {
         final Event event = events.get(position);
         txtTitle.setText(event.getTitle());
 
-        /*txtTitle.setOnClickListener((new View.OnClickListener() {
+       /* txtTitle.setOnClickListener((new View.OnClickListener() {
             public void onClick(View v) {
                 intent = new Intent(context, EventListActivity.class);
                 intent.putExtra(EVENT_INDEX, Integer.toString(position));

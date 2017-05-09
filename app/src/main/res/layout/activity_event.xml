@@ -7,7 +7,7 @@
     tools:context="com.example.luigi.travelapp.EventActivity">
 
     <EditText
-        android:id="@+id/titleText"
+        android:id="@+id/titleEventEdit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -15,9 +15,9 @@
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:contentDescription="@string/titleEvent"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/titleEvent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -27,62 +27,57 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
         android:text="@string/beginEvent"
+        android:textSize="18sp"
+        android:layout_marginLeft="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleText" />
-
-    <TextView
-        android:id="@+id/hourText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="128dp"
-        android:layout_marginTop="8dp"
-        android:text="ora"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
-        app:layout_constraintLeft_toRightOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="@+id/textView"
-        app:layout_constraintVertical_bias="1.0"
-        android:layout_marginStart="128dp" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/oraTextView" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
         android:text="@string/notifyEvent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/checkBoxNotifica"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/checkBoxNotifica"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@+id/textView4"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView4"
-        app:layout_constraintVertical_bias="1.0"
-        app:layout_constraintLeft_toLeftOf="@+id/hourText"
-        android:layout_marginLeft="-11dp" />
+        android:layout_marginRight="32dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/oraTextView" />
 
     <EditText
         android:id="@+id/notesText"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="47dp"
+        android:contentDescription="@string/notesOnEvent"
         android:ems="10"
         android:inputType="textMultiLine"
-        android:text="@string/notesOnEvent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <TextView
+        android:id="@+id/oraTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:text="Ora"
+        app:layout_constraintLeft_toLeftOf="@+id/checkBoxNotifica"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/titleEventEdit" />
 
 </android.support.constraint.ConstraintLayout>

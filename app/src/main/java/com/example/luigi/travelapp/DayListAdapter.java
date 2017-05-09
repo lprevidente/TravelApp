@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.example.luigi.travelapp.TripListActivity.getDataStore;
-import static com.example.luigi.travelapp.TripListAdapter.TRIP_INDEX;
 
 /**
  * Created by Luigi on 08/05/2017.
@@ -24,10 +23,13 @@ public class DayListAdapter extends BaseAdapter {
     private Context context;
     private List<Day> days = Collections.emptyList();
     private Intent intent;
-    public static final String DAY_INDEX = "dayindex";
+    private int tripIndex;
+    public static String DAY_INDEX = "";
+    public static String TRIP_INDEX = "";
 
     public DayListAdapter(int tripIndex, Context context){
         this.context = context;
+        this.tripIndex=tripIndex;
         days = getDataStore().getDayList(tripIndex);
     }
 
@@ -43,7 +45,7 @@ public class DayListAdapter extends BaseAdapter {
         numDaytxt.setOnClickListener((new View.OnClickListener() {
             public void onClick(View v) {
                 intent = new Intent(context, EventListActivity.class);
-                //intent.putExtra(TRIP_INDEX, getTripIndex());
+                intent.putExtra(TRIP_INDEX, tripIndex);
                 intent.putExtra(DAY_INDEX, position);
                 context.startActivity(intent);
             }

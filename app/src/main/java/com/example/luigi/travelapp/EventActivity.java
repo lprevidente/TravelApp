@@ -1,14 +1,15 @@
 package com.example.luigi.travelapp;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 
-import com.example.luigi.travelapp.R;
+/**
+ * Created by Luigi on 09/05/2017.
+ */
 
-public class EventActivity extends AppCompatActivity {
+public class EventActivity extends Activity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
     }

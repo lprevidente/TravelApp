@@ -101,7 +101,7 @@ public class CityActivity extends Activity {
             }
         });
     }
-    public class DateDialogFragment extends DialogFragment {
+    private class DateDialogFragment extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             String str = (id == DATE_PICKER_TO) ? ritornoTextView.getText().toString() : partenzaTextView.getText().toString();
