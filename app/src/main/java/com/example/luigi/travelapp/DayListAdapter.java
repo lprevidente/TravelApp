@@ -29,7 +29,7 @@ public class DayListAdapter extends BaseAdapter {
 
     public DayListAdapter(int tripIndex, Context context){
         this.context = context;
-        this.tripIndex=tripIndex;
+        this.tripIndex = tripIndex;
         days = getDataStore().getDayList(tripIndex);
     }
 
