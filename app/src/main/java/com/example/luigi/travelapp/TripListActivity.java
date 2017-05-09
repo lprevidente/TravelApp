@@ -13,25 +13,17 @@ import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Trip;
 
 public class TripListActivity extends AppCompatActivity {
-    // context to be used by this activity. this is vital for the serialization functions and the creation of our DataStore object
-    private static Context mContext;
-
-    // our DataStore object. This is static to be persistent when reloading the activity
-    private static DataStore dataStore;
+    private static DataStore dataStore = new DataStore();
 
     private ListView list;
     private FloatingActionButton addcity;
-    private static TripListAdapter adapter;
+    private TripListAdapter adapter;
 
     private final int code = 1;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_list);
-
-        // get the application context and then initialize our dataStore
-        mContext = getApplicationContext();
-        dataStore = new DataStore(getContext());
 
         adapter = new TripListAdapter(this);
         adapter.update(dataStore.getListTrip());
@@ -41,7 +33,6 @@ public class TripListActivity extends AppCompatActivity {
         list = (ListView)findViewById(R.id.dayListView);
         list.setAdapter(adapter);
 
-        // metodo per verificare il click del bottone
         addcity.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,15 +47,10 @@ public class TripListActivity extends AppCompatActivity {
         if (requestCode == code) {
             if (resultCode == Activity.RESULT_OK) {
                 Trip trip = (Trip) data.getSerializableExtra(CityActivity.mTrip);
-                // add the new trip in the data store
                 dataStore.addTrip(trip);
                 adapter.notifyDataSetChanged();
             }
         }
-    }
-
-    public static Context getContext() {
-        return mContext;
     }
 
     public static DataStore getDataStore() {
