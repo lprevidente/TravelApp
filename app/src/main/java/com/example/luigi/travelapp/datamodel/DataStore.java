@@ -130,28 +130,37 @@ public class DataStore {
     }
 
     /**
-     * costruttore del datastore
-     * @param context context
+     * restituisce la lista dei viaggi
+     * @return ArrayList<Trip> contenente i viaggi
      */
     public ArrayList<Trip> getListTrip(){
         return trips;
     }
 
+    /**
+     * costruttore del datastore
+     * @param context context
+     */
     public DataStore(Context context) {
-        this.path = "yourtrips.dat";
+        path = "yourtrips.dat";
         this.context = context;
-        if (fileExists(path)) {
+        trips = new ArrayList<>();
+
+        /*if (fileExists(path)) {
             // the app loads existing data from disk
             deserialize();
         }
         else {
             // the app cannot find the file where trips are stored
             // so it initializes a new one and saves it to disk
-            this.trips = new ArrayList<>();
+
             serialize();
-        }
+        }*/
     }
 
+    /**
+     * metodo per serializzare l'arraylist dei viaggi
+     */
     public void serialize() {
         FileOutputStream fos;
         try {
@@ -166,6 +175,9 @@ public class DataStore {
         }
     }
 
+    /**
+     * metodo per deserializzare l'arraylist dei viaggi
+     */
     public void deserialize() {
         try {
             FileInputStream fis = context.openFileInput(path);
@@ -180,6 +192,12 @@ public class DataStore {
         }
     }
 
+    /**
+     * metodo per controllare se un file esiste o meno su disco (necessario per controllare se il file locale
+     * che mantiene la lista dei viaggi è già presente o meno su disco)
+     * @param path percorso del file
+     * @return booleano true o false a seconda se il file ci sia o meno
+     */
     public boolean fileExists(String path) {
         File file = context.getFileStreamPath(path);
         if (file == null || !file.exists()) {

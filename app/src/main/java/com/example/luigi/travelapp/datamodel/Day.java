@@ -7,8 +7,7 @@ import java.util.ArrayList;
  * Created by Luigi on 08/05/2017.
  */
 
-public class Day implements Serializable{
-
+public class Day implements Serializable {
     private int dayNumber;
     private ArrayList<Event> events;
 

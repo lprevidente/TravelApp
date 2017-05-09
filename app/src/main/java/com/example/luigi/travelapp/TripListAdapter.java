@@ -24,7 +24,7 @@ public class TripListAdapter extends BaseAdapter {
     private List<Trip> trips = Collections.emptyList();
     private PopupMenu popupMenu ;
     private Intent intent;
-    static  String TRIP_INDEX="";
+    public static final String TRIP_INDEX = "";
 
     //definisco il costruttore
     public TripListAdapter(Context context ) {
@@ -35,7 +35,6 @@ public class TripListAdapter extends BaseAdapter {
 
     // metodo per il ritorno della view
     public View getView(final int position, View view, ViewGroup parent) {
-
         if (view == null)
             view = LayoutInflater.from(context).inflate(R.layout.trip_list_adapter, parent, false);
 
@@ -43,13 +42,12 @@ public class TripListAdapter extends BaseAdapter {
         TextView txtTitle = (TextView)view.findViewById(R.id.Text);
 
         // Imposto i valori da visualizzare
-        final Trip trip =  trips.get(position);
+        final Trip trip = trips.get(position);
         txtTitle.setText(trip.getTitleTrip());
 
         txtTitle.setOnClickListener((new View.OnClickListener() {
-
             public void onClick(View v) {
-                intent= new Intent(context, DayListActivity.class);
+                intent = new Intent(context, DayListActivity.class);
                 intent.putExtra(TRIP_INDEX, Integer.toString(position));
                 context.startActivity(intent);
             }

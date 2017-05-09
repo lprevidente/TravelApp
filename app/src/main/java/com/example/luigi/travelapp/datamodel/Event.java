@@ -10,20 +10,20 @@ import java.util.Date;
  */
 
 public class Event implements Serializable {
-
     private Date date;
     private String title;
     private String note;
-    private CheckBox notify;
+    private boolean notify;
 
     /**
-     * constructor for the Event object
-     * @param date Date object to be passed (useful only as container for the event's time information
-     * @param title String to represent the name of the event
-     * @param note String to represent the extra information
-     * @param notify Checkbox to represent the possibility to notify the event
+     * costruttore dell'oggetto di tipo Event
+     * @param date oggetto Date che manterrà l'informazione sull'orario dell'evento
+     *             TODO: usare Time per sprecare meno informazioni?
+     * @param title titolo dell'evento
+     * @param note descrizione aggiuntiva per l'evento (che verrà eventualmente mostrata in notifica)
+     * @param notify notificare o meno l'evento
      */
-    public Event(Date date, String title, String note, CheckBox notify) {
+    public Event(Date date, String title, String note, boolean notify) {
         this.date = date;
         this.title = title;
         this.note = note;
@@ -43,7 +43,7 @@ public class Event implements Serializable {
         return note;
     }
 
-    public CheckBox getNotify() {
+    public boolean getNotify() {
         return notify;
     }
 
@@ -60,7 +60,7 @@ public class Event implements Serializable {
         this.note = note;
     }
 
-    public void setNotify(CheckBox notify) {
+    public void setNotify(boolean notify) {
         this.notify = notify;
     }
 }

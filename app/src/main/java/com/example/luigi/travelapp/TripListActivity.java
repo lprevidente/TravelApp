@@ -17,16 +17,13 @@ public class TripListActivity extends AppCompatActivity {
     private static Context mContext;
 
     // our DataStore object. This is static to be persistent when reloading the activity
-    public static DataStore dataStore;
+    private static DataStore dataStore;
 
     private ListView list;
     private FloatingActionButton addcity;
     private static TripListAdapter adapter;
 
     private final int code = 1;
-
-    // local vars
-    private String nameCity;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +45,8 @@ public class TripListActivity extends AppCompatActivity {
         addcity.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // i need to initialize the var modTrip so when I add a new travel,after i modified some items,
-                // the autoCompleteTextView is empty
-                // CityActivity.setTitletrip("");
                 Intent intent = new Intent(TripListActivity.this, CityActivity.class);
-                startActivityForResult(intent,code);
+                startActivityForResult(intent, code);
 
             }
         }));
@@ -66,7 +60,6 @@ public class TripListActivity extends AppCompatActivity {
                 dataStore.addTrip(trip);
                 adapter.notifyDataSetChanged();
             }
-
         }
     }
 
@@ -74,5 +67,7 @@ public class TripListActivity extends AppCompatActivity {
         return mContext;
     }
 
-    public static TripListAdapter getAdapter(){return adapter;}
+    public static DataStore getDataStore() {
+        return dataStore;
+    }
 }

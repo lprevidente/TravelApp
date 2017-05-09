@@ -13,38 +13,36 @@ import com.example.luigi.travelapp.datamodel.Day;
 import java.util.Collections;
 import java.util.List;
 
+import static com.example.luigi.travelapp.TripListActivity.getDataStore;
+
 /**
  * Created by Luigi on 08/05/2017.
  */
 
 public class DayListAdapter extends BaseAdapter {
-
     private Context context;
     private List<Day> days = Collections.emptyList();
-    private Day day;
 
-    public static final String TAG = "DayListAdapater";
+    public static final String TAG = "DayListAdapter";
 
     public DayListAdapter(int tripIndex, Context context){
-        this.context=context;
-        days=TripListActivity.dataStore.getDayList(tripIndex);
+        this.context = context;
+        days = getDataStore().getDayList(tripIndex);
     }
 
     public View getView(final int position, View view, ViewGroup parent) {
-
         if (view == null)
             view = LayoutInflater.from(context).inflate(R.layout.day_list_adapter, parent, false);
 
         TextView numDaytxt = (TextView)view.findViewById(R.id.dayTextView);
 
         // I obtain the Day object from the dataStore and put the text into the TextView
-        day =  days.get(position);
-        numDaytxt.setText("Giorno "+day.getDayNumber());
+        numDaytxt.setText("Giorno " + days.get(position).getDayNumber());
 
         numDaytxt.setOnClickListener((new View.OnClickListener() {
 
             public void onClick(View v) {
-                Toast.makeText(context, "You Clicked the Day " +day.getDayNumber(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Hai cliccato il giorno " + days.get(position).getDayNumber(), Toast.LENGTH_SHORT).show();
             }
         })) ;
         return view;

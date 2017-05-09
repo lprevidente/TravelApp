@@ -26,9 +26,8 @@ import java.util.Date;
  */
 
 public class CityActivity extends Activity {
-
     private EditText newtripEdit;
-    private Button addTripbnt;
+    private Button addTripbtn;
     private Trip trip;
     public static String mTrip;
     private TextView partenzaTextView;
@@ -36,7 +35,6 @@ public class CityActivity extends Activity {
     private int id;
 
     public static final String TAG = "CityActivity";
-
 
     final int DATE_PICKER_TO = 0;
     final int DATE_PICKER_FROM = 1;
@@ -47,20 +45,20 @@ public class CityActivity extends Activity {
         super.onCreate(savedInstanceStat);
         setContentView(R.layout.activity_city);
 
-        newtripEdit=(EditText) findViewById(R.id.autocompleteEditText);
-        addTripbnt= (Button) findViewById(R.id.btnAddCity);
+        newtripEdit = (EditText)findViewById(R.id.autocompleteEditText);
+        addTripbtn = (Button)findViewById(R.id.btnAddCity);
 
         from_dateListener = new DatePickerDialog.OnDateSetListener(){
-            public void onDateSet(DatePicker arg0, int year, int month, int day) {
+            public void onDateSet(DatePicker dp, int year, int month, int day) {
                 Calendar cal = new GregorianCalendar(year, month, day);
-                setCurrentDate(cal);
+                setDate2TextView(cal, partenzaTextView);
             }
         };
 
         to_dateListener = new DatePickerDialog.OnDateSetListener(){
-            public void onDateSet(DatePicker arg0, int year, int month, int day) {
+            public void onDateSet(DatePicker dp, int year, int month, int day) {
                 Calendar cal = new GregorianCalendar(year, month, day);
-                setEndingDate(cal);
+                setDate2TextView(cal, ritornoTextView);
             }
         };
 
@@ -86,17 +84,17 @@ public class CityActivity extends Activity {
             }
         });
 
-        addTripbnt.setOnClickListener(new View.OnClickListener() {
+        addTripbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    String titleTrip= newtripEdit.getText().toString();
-                    trip = new Trip( titleTrip, String2Date(partenzaTextView.getText().toString()), String2Date(ritornoTextView.getText().toString()));
-                Log.i(TAG, "Il numero dei giorni del viaggio sono "+trip.getDaysNumber());
-                    Intent intent= getIntent();
-                    intent.putExtra(mTrip, trip);
-                    setResult(Activity.RESULT_OK, intent);
-                    // In this way i close the current activity
-                    finish();
+                String titleTrip = newtripEdit.getText().toString();
+                trip = new Trip(titleTrip, String2Date(partenzaTextView.getText().toString()), String2Date(ritornoTextView.getText().toString()));
+                //Log.i(TAG, "Il numero dei giorni del viaggio sono "+trip.getDaysNumber());
+                Intent intent = getIntent();
+                intent.putExtra(mTrip, trip);
+                setResult(Activity.RESULT_OK, intent);
+                // In this way i close the current activity
+                finish();
             }
         });
     }
@@ -121,22 +119,13 @@ public class CityActivity extends Activity {
     }
 
     /**
-     * sets FROM date to textview object
-     * @param calendar FROM calendar
+     * setta il contenuto di una textView alla data corrispondente
+     * @param calendar informazione sulla data da inserire
+     * @param textView textView alla quale cambiare il testo
      */
-
-    private void setCurrentDate(Calendar calendar) {
+    public void setDate2TextView(Calendar calendar, TextView textView) {
         DateFormat dateFormat = DateFormat.getDateInstance();
-        partenzaTextView.setText(dateFormat.format(calendar.getTime()));
-    }
-
-    /**
-     * sets TO date to textview object
-     * @param calendar TO calendar
-     */
-    private void setEndingDate(Calendar calendar) {
-        DateFormat dateFormat = DateFormat.getDateInstance();
-        ritornoTextView.setText(dateFormat.format(calendar.getTime()));
+        textView.setText(dateFormat.format(calendar.getTime()));
     }
 
     /**
