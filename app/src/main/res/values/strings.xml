@@ -5,7 +5,8 @@
     <string name="descr_overflow_button">Popup Menu</string>
     <string name="Item1">Modifica</string>
     <string name="Item2">Cancella</string>
-    <string name="titleCities">I Tuoi Fantastici Viaggi</string>
+    <string name="titleCities">I Tuoi Viaggi</string>
+    <string name="titleEvents">I Tuoi Eventi</string>
     <string name="AddNewCity">Aggiungi un nuovo viaggio</string>
     <string name="autocomplete_hint">Inserisci una località</string>
     <string name="AddedaNewTrip">È stato aggiunto un nuovo viaggio</string>

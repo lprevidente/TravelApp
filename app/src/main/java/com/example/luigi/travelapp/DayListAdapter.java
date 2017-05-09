@@ -1,12 +1,12 @@
 package com.example.luigi.travelapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.luigi.travelapp.datamodel.Day;
 
@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.example.luigi.travelapp.TripListActivity.getDataStore;
+import static com.example.luigi.travelapp.TripListAdapter.TRIP_INDEX;
 
 /**
  * Created by Luigi on 08/05/2017.
@@ -22,8 +23,8 @@ import static com.example.luigi.travelapp.TripListActivity.getDataStore;
 public class DayListAdapter extends BaseAdapter {
     private Context context;
     private List<Day> days = Collections.emptyList();
-
-    public static final String TAG = "DayListAdapter";
+    private Intent intent;
+    public static final String DAY_INDEX = "dayindex";
 
     public DayListAdapter(int tripIndex, Context context){
         this.context = context;
@@ -40,11 +41,13 @@ public class DayListAdapter extends BaseAdapter {
         numDaytxt.setText("Giorno " + days.get(position).getDayNumber());
 
         numDaytxt.setOnClickListener((new View.OnClickListener() {
-
             public void onClick(View v) {
-                Toast.makeText(context, "Hai cliccato il giorno " + days.get(position).getDayNumber(), Toast.LENGTH_SHORT).show();
+                intent = new Intent(context, EventListActivity.class);
+                //intent.putExtra(TRIP_INDEX, getTripIndex());
+                intent.putExtra(DAY_INDEX, position);
+                context.startActivity(intent);
             }
-        })) ;
+        }));
         return view;
     }
 

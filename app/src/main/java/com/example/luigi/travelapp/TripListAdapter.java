@@ -22,9 +22,8 @@ public class TripListAdapter extends BaseAdapter {
 
     private Context context;
     private List<Trip> trips = Collections.emptyList();
-    private PopupMenu popupMenu ;
     private Intent intent;
-    public static final String TRIP_INDEX = "";
+    public static final String TRIP_INDEX = "tripindex";
 
     //definisco il costruttore
     public TripListAdapter(Context context ) {
@@ -48,7 +47,7 @@ public class TripListAdapter extends BaseAdapter {
         txtTitle.setOnClickListener((new View.OnClickListener() {
             public void onClick(View v) {
                 intent = new Intent(context, DayListActivity.class);
-                intent.putExtra(TRIP_INDEX, Integer.toString(position));
+                intent.putExtra(TRIP_INDEX, position);
                 context.startActivity(intent);
             }
         }));

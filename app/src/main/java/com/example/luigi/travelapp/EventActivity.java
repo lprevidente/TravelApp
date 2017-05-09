@@ -1,4 +1,4 @@
-package com.example.luigi.travelapp.datamodel;
+package com.example.luigi.travelapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
