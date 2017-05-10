@@ -17,11 +17,11 @@ public class TripListActivity extends AppCompatActivity {
     private static Context mContext;
 
     // our DataStore object. This is static to be persistent when reloading the activity
-    private static DataStore dataStore;
+    public static DataStore dataStore;
 
     private ListView list;
     private FloatingActionButton addcity;
-    private static TripListAdapter adapter;
+    public static TripListAdapter adapter;
 
     private final int code = 1;
 

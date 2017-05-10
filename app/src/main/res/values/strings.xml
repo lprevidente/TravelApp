@@ -11,6 +11,8 @@
     <string name="autocomplete_hint">Inserisci una località</string>
     <string name="AddedaNewTrip">È stato aggiunto un nuovo viaggio</string>
     <string name="DeleteTrip">Il viaggio è stato cancellato</string>
+    <string name="NewEvent">Creazione Nuovo Evento</string>
+
 
     <string name="titleEvent">Titolo</string>
     <string name="beginEvent">Ora di inizio</string>
@@ -21,5 +23,6 @@
     <string name="ToolbarListDays">Ecco il tuo Fantastico Progamma</string>
     <string name="google_api_key">AIzaSyCKAfK7SUohc1UUZJtV42AdOnN2ayqNGZ4</string>
     <string name="title_activity_maps">Map</string>
-    <string name="title_activity_maps2">Map</string>
+    <string name="TitleEvent">Cosa Vuoi fare?</string>
+
 </resources>

@@ -1,11 +1,13 @@
 package com.example.luigi.travelapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
+
+import com.example.luigi.travelapp.datamodel.Event;
 
 import static com.example.luigi.travelapp.DayListAdapter.DAY_INDEX;
 import static com.example.luigi.travelapp.TripListActivity.getDataStore;
@@ -15,14 +17,14 @@ import static com.example.luigi.travelapp.TripListAdapter.TRIP_INDEX;
  * Created by Bernardo on 09/05/2017.
  */
 
-public class EventListActivity extends AppCompatActivity{
+public class EventListActivity extends Activity{
     private ListView list;
     private FloatingActionButton addEvent;
     private EventListAdapter eventListAdapter;
     private int tripIndex;
     private int dayIndex;
 
-    private final int code = 1;
+    private final int CODE = 2;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +47,19 @@ public class EventListActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EventListActivity.this, EventActivity.class);
-                startActivityForResult(intent, code);
+                startActivityForResult(intent, CODE);
             }
         }));
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Event event = (Event) data.getSerializableExtra(EventActivity.EVENT);
+                // add the new trip in the data store
+                TripListActivity.dataStore.addEvent(tripIndex, dayIndex,event);
+                TripListActivity.adapter.notifyDataSetChanged();
+            }
+        }
     }
 }
