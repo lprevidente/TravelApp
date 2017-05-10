@@ -20,6 +20,11 @@ import com.example.luigi.travelapp.datamodel.Trip;
 import java.text.ParseException;
 import java.util.Date;
 
+import static com.example.luigi.travelapp.costanti.Constants.DATE_PICKER_FROM;
+import static com.example.luigi.travelapp.costanti.Constants.DATE_PICKER_TO;
+import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
+import static com.example.luigi.travelapp.costanti.Constants.SEND_TRIP;
+
 /**
  * Created by Luigi on 08/05/2017.
  */
@@ -27,16 +32,9 @@ import java.util.Date;
 public class CityActivity extends Activity {
     private EditText newtripEdit;
     private Button addTripbtn;
-    private Trip trip;
-    public static String mTrip;
     private TextView partenzaTextView;
     private TextView ritornoTextView;
     private int id;
-
-    public static final String TAG = "CityActivity";
-
-    final int DATE_PICKER_TO = 0;
-    final int DATE_PICKER_FROM = 1;
 
     DatePickerDialog.OnDateSetListener from_dateListener, to_dateListener;
 
@@ -88,15 +86,13 @@ public class CityActivity extends Activity {
             public void onClick(View v) {
                 String titleTrip = newtripEdit.getText().toString();
 
-                if (!titleTrip.equals("") && checkValidDateRange()) {
-                    trip = new Trip(titleTrip, String2Date(partenzaTextView.getText().toString()), String2Date(ritornoTextView.getText().toString()));
-                    //Log.i(TAG, "Il numero dei giorni del viaggio sono "+trip.getDaysNumber());
+                if (!titleTrip.equals(NULLTITLE) && checkValidDateRange()) {
+                    Trip trip = new Trip(titleTrip, String2Date(partenzaTextView.getText().toString()), String2Date(ritornoTextView.getText().toString()));
                     Intent intent = getIntent();
-                    intent.putExtra(mTrip, trip);
+                    intent.putExtra(SEND_TRIP, trip);
                     setResult(Activity.RESULT_OK, intent);
                 }
 
-                // In this way i close the current activity
                 finish();
             }
         });

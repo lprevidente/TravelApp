@@ -4,14 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.luigi.travelapp.datamodel.Event;
 
 import static com.example.luigi.travelapp.DayListAdapter.DAY_INDEX;
 import static com.example.luigi.travelapp.TripListActivity.getDataStore;
-import static com.example.luigi.travelapp.TripListAdapter.TRIP_INDEX;
+import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
+import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
 /**
  * Created by Bernardo on 09/05/2017.
@@ -41,8 +44,14 @@ public class EventListActivity extends Activity{
 
         list = (ListView)findViewById(R.id.eventListView);
         list.setAdapter(eventListAdapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(view.getContext(), EventActivity.class);
+                //intent.putExtra( , );
+                startActivity(intent);
+            }
+        });
 
-        // metodo per verificare il click del bottone
         addEvent.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,5 +1,6 @@
 package com.example.luigi.travelapp.datamodel;
 
+import android.app.Application;
 import android.content.Context;
 
 import java.io.File;
@@ -15,10 +16,10 @@ import java.util.ArrayList;
  * Created by Bernardo on 08/05/2017.
  */
 
-public class DataStore {
+public class DataStore extends Application {
     private Context context;
     private String path;
-    private static ArrayList<Trip> trips;
+    private ArrayList<Trip> trips;
 
     /**
      * aggiunge un nuovo viaggio all'array contenente la lista dei viaggi
@@ -139,11 +140,10 @@ public class DataStore {
 
     /**
      * costruttore del datastore
-     * @param context context
      */
-    public DataStore(Context context) {
+    public DataStore() {
         path = "yourtrips.dat";
-        this.context = context;
+        //context = getApplicationContext();
         trips = new ArrayList<>();
 
         /*if (fileExists(path)) {

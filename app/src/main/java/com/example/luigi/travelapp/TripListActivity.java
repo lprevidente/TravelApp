@@ -1,27 +1,26 @@
 package com.example.luigi.travelapp;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Trip;
 
-public class TripListActivity extends AppCompatActivity {
-    // context to be used by this activity. this is vital for the serialization functions and the creation of our DataStore object
-    private static Context mContext;
+import static com.example.luigi.travelapp.costanti.Constants.SEND_TRIP;
+import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
-    // our DataStore object. This is static to be persistent when reloading the activity
-    public static DataStore dataStore;
+public class TripListActivity extends AppCompatActivity {
+    private static DataStore dataStore = new DataStore();
 
     private ListView list;
     private FloatingActionButton addcity;
-    public static TripListAdapter adapter;
+    private TripListAdapter adapter;
 
     private final int code = 1;
 
@@ -40,14 +39,19 @@ public class TripListActivity extends AppCompatActivity {
 
         list = (ListView)findViewById(R.id.dayListView);
         list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(view.getContext(), DayListActivity.class);
+                intent.putExtra(TRIP_INDEX, position);
+                startActivity(intent);
+            }
+        });
 
-        // metodo per verificare il click del bottone
         addcity.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TripListActivity.this, CityActivity.class);
                 startActivityForResult(intent, code);
-
             }
         }));
     }
@@ -55,8 +59,7 @@ public class TripListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == code) {
             if (resultCode == Activity.RESULT_OK) {
-                Trip trip = (Trip) data.getSerializableExtra(CityActivity.mTrip);
-                // add the new trip in the data store
+                Trip trip = (Trip) data.getSerializableExtra(SEND_TRIP);
                 dataStore.addTrip(trip);
                 adapter.notifyDataSetChanged();
             }
