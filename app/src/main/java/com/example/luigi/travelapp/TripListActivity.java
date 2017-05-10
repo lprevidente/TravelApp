@@ -1,16 +1,18 @@
 package com.example.luigi.travelapp;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Trip;
+
+import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
 public class TripListActivity extends AppCompatActivity {
     private static DataStore dataStore = new DataStore();
@@ -32,6 +34,13 @@ public class TripListActivity extends AppCompatActivity {
 
         list = (ListView)findViewById(R.id.dayListView);
         list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(view.getContext(), DayListActivity.class);
+                intent.putExtra(TRIP_INDEX, position);
+                startActivity(intent);
+            }
+        });
 
         addcity.setOnClickListener((new View.OnClickListener() {
             @Override

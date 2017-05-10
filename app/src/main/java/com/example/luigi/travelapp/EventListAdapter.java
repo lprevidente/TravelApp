@@ -1,7 +1,6 @@
 package com.example.luigi.travelapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,38 +17,23 @@ import java.util.List;
  */
 
 public class EventListAdapter extends BaseAdapter {
-
     private Context context;
     private List<Event> events = Collections.emptyList();
-    private Intent intent;
-    public static final String EVENT_INDEX = "eventindex";
 
-    //definisco il costruttore
     public EventListAdapter(Context context ) {
-        this.context=context;
+        this.context = context;
     }
 
     public void update(List<Event> newList) { events = newList; }
 
-    // metodo per il ritorno della view
     public View getView(final int position, View view, ViewGroup parent) {
         if (view == null)
             view = LayoutInflater.from(context).inflate(R.layout.event_list_adapter, parent, false);
 
-        //Ottengo gli ID
-        TextView txtTitle = (TextView)view.findViewById(R.id.eventTextView);
-
-        // Imposto i valori da visualizzare
         final Event event = events.get(position);
+        TextView txtTitle = (TextView)view.findViewById(R.id.eventTextView);
         txtTitle.setText(event.getTitle());
 
-       /* txtTitle.setOnClickListener((new View.OnClickListener() {
-            public void onClick(View v) {
-                intent = new Intent(context, EventListActivity.class);
-                intent.putExtra(EVENT_INDEX, Integer.toString(position));
-                context.startActivity(intent);
-            }
-        }));*/
         return view;
     }
 
