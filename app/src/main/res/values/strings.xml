@@ -5,8 +5,8 @@
     <string name="descr_overflow_button">Popup Menu</string>
     <string name="Item1">Modifica</string>
     <string name="Item2">Cancella</string>
-    <string name="titleCities">I Tuoi Viaggi</string>
-    <string name="titleEvents">I Tuoi Eventi</string>
+    <string name="titleCities">I tuoi viaggi</string>
+    <string name="titleEvents">I tuoi eventi</string>
     <string name="AddNewCity">Aggiungi un nuovo viaggio</string>
     <string name="autocomplete_hint">Inserisci una località</string>
     <string name="AddedaNewTrip">È stato aggiunto un nuovo viaggio</string>
@@ -18,7 +18,7 @@
     <string name="notesOnEvent">Note</string>
     <string name="title_activity_list_days">ListDaysActivity</string>
 
-    <string name="ToolbarListDays">Ecco il tuo Fantastico Progamma</string>
+    <string name="ToolbarListDays">Ecco il tuo fantastico programma</string>
     <string name="google_api_key">AIzaSyCKAfK7SUohc1UUZJtV42AdOnN2ayqNGZ4</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_maps2">Map</string>

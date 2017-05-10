@@ -12,6 +12,7 @@ import android.widget.ListView;
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Trip;
 
+import static com.example.luigi.travelapp.costanti.Constants.SEND_TRIP;
 import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
 public class TripListActivity extends AppCompatActivity {
@@ -47,7 +48,6 @@ public class TripListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(TripListActivity.this, CityActivity.class);
                 startActivityForResult(intent, code);
-
             }
         }));
     }
@@ -55,7 +55,7 @@ public class TripListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == code) {
             if (resultCode == Activity.RESULT_OK) {
-                Trip trip = (Trip) data.getSerializableExtra(CityActivity.mTrip);
+                Trip trip = (Trip) data.getSerializableExtra(SEND_TRIP);
                 dataStore.addTrip(trip);
                 adapter.notifyDataSetChanged();
             }
