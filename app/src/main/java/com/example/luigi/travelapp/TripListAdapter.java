@@ -1,12 +1,10 @@
 package com.example.luigi.travelapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.example.luigi.travelapp.datamodel.Trip;
@@ -20,37 +18,24 @@ import java.util.List;
 
 public class TripListAdapter extends BaseAdapter {
 
-    private Context context;
     private List<Trip> trips = Collections.emptyList();
-    private Intent intent;
-    public static final String TRIP_INDEX = "tripindex";
+    private Context context;
 
-    //definisco il costruttore
     public TripListAdapter(Context context ) {
-        this.context=context;
+        this.context = context;
     }
 
     public void update(List<Trip> newList) { trips = newList; }
 
-    // metodo per il ritorno della view
-    public View getView(final int position, View view, ViewGroup parent) {
+    public View getView(int position, View view, ViewGroup parent) {
         if (view == null)
             view = LayoutInflater.from(context).inflate(R.layout.trip_list_adapter, parent, false);
 
-        //Ottengo gli ID
         TextView txtTitle = (TextView)view.findViewById(R.id.Text);
 
-        // Imposto i valori da visualizzare
         final Trip trip = trips.get(position);
         txtTitle.setText(trip.getTitleTrip());
 
-        txtTitle.setOnClickListener((new View.OnClickListener() {
-            public void onClick(View v) {
-                intent = new Intent(context, DayListActivity.class);
-                intent.putExtra(TRIP_INDEX, position);
-                context.startActivity(intent);
-            }
-        }));
         return view;
     }
 
