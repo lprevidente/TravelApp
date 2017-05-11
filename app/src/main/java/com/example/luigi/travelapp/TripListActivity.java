@@ -16,7 +16,7 @@ import static com.example.luigi.travelapp.costanti.Constants.SEND_TRIP;
 import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
 public class TripListActivity extends AppCompatActivity {
-
+    private static DataStore dataStore= new DataStore();
     private ListView list;
     private FloatingActionButton addcity;
     private TripListAdapter adapter;
