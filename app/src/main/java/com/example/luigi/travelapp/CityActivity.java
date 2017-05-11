@@ -36,7 +36,7 @@ public class CityActivity extends Activity {
     private TextView ritornoTextView;
     private int id;
 
-    DatePickerDialog.OnDateSetListener from_dateListener, to_dateListener;
+    private DatePickerDialog.OnDateSetListener from_dateListener, to_dateListener;
 
     public void onCreate(Bundle savedInstanceStat){
         super.onCreate(savedInstanceStat);
@@ -101,7 +101,7 @@ public class CityActivity extends Activity {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             String str = (id == DATE_PICKER_TO) ? ritornoTextView.getText().toString() : partenzaTextView.getText().toString();
-            final Calendar c = Calendar.getInstance();
+            Calendar c = Calendar.getInstance();
             c.setTime(String2Date(str));
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);

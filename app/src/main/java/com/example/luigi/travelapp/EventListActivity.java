@@ -4,16 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.luigi.travelapp.datamodel.Event;
 
-import static com.example.luigi.travelapp.DayListAdapter.DAY_INDEX;
 import static com.example.luigi.travelapp.TripListActivity.getDataStore;
 import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
+import static com.example.luigi.travelapp.costanti.Constants.EVENT_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
 /**
@@ -64,10 +63,10 @@ public class EventListActivity extends Activity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                Event event = (Event) data.getSerializableExtra(EventActivity.EVENT);
+                Event event = (Event) data.getSerializableExtra(EVENT_INDEX);
                 // add the new trip in the data store
-                TripListActivity.dataStore.addEvent(tripIndex, dayIndex,event);
-                TripListActivity.adapter.notifyDataSetChanged();
+                getDataStore().addEvent(tripIndex, dayIndex,event);
+                eventListAdapter.notifyDataSetChanged();
             }
         }
     }

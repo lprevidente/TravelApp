@@ -28,10 +28,6 @@ public class TripListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_list);
 
-        // get the application context and then initialize our dataStore
-        mContext = getApplicationContext();
-        dataStore = new DataStore(getContext());
-
         adapter = new TripListAdapter(this);
         adapter.update(dataStore.getListTrip());
 
@@ -64,10 +60,6 @@ public class TripListActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         }
-    }
-
-    public static Context getContext() {
-        return mContext;
     }
 
     public static DataStore getDataStore() {

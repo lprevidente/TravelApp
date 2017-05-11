@@ -12,6 +12,8 @@ import com.example.luigi.travelapp.datamodel.Event;
 import java.util.Collections;
 import java.util.List;
 
+import static com.example.luigi.travelapp.TripListActivity.getDataStore;
+
 /**
  * Created by Bernardo on 09/05/2017.
  */

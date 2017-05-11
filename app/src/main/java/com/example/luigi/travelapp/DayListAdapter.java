@@ -22,7 +22,7 @@ public class DayListAdapter extends BaseAdapter {
     private Context context;
     private List<Day> days = Collections.emptyList();
 
-    public DayListAdapter(int tripIndex, Context context){
+    public DayListAdapter(int tripIndex, Context context) {
         this.context = context;
         days = getDataStore().getDayList(tripIndex);
     }
