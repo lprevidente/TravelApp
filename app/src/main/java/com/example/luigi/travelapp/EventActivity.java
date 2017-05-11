@@ -30,6 +30,7 @@ import java.util.Date;
 
 import static android.os.Build.VERSION_CODES.M;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_INDEX;
+import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
 
 
 /**
@@ -41,21 +42,16 @@ public class EventActivity extends Activity {
     private EditText titleEventTextView;
     private EditText noteEditview;
     private CheckBox notifyCheckBox;
-    private TextView TimePickerTextView;private ImageButton imageBtnDone;
-   // private Button button;
+    private TextView TimePickerTextView;
+
     private ImageView imageView;
-/*
+
+   /* todo: bisogna aggiustare i radio button e allinearli con le immagini
     private RadioButton radioFlight;
     private RadioButton radioResturant;
     private RadioButton radioPlaces;
     */
-
-    private RadioGroup radioGroup;
-
     private int resImage;
-    private TextView TimePickerTextView;
-    private ImageButton imageBtnDone;
-
     private boolean notify = false;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -100,7 +96,7 @@ public class EventActivity extends Activity {
                     case R.id.item_done:
                         if (!titleEventTextView.getText().toString().equals(NULLTITLE)) {
                             Event event = new Event(String2Date((String)TimePickerTextView.getText()),
-                                    titleEventTextView.getText().toString(), noteEditview.getText().toString(), notify);
+                                    titleEventTextView.getText().toString(), noteEditview.getText().toString(), notify, resImage);
                             Intent intent = getIntent();
                             intent.putExtra(EVENT_INDEX, event);
                             setResult(Activity.RESULT_OK, intent);
@@ -114,10 +110,9 @@ public class EventActivity extends Activity {
 
     }
     public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
+
         boolean checked = ((RadioButton) view).isChecked();
 
-        // Check which radio button was clicked
         switch(view.getId()) {
             case R.id.radioFlight:
                 if (checked)

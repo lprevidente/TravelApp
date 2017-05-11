@@ -33,7 +33,7 @@ public class EventListActivity extends Activity{
     private int tripIndex;
     private int dayIndex;
     private Toolbar toolbar;
-private Menu menu;
+    private Menu menu;
     private int positione;
     private final int CODE = 2;
 
