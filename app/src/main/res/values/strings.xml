@@ -11,6 +11,8 @@
     <string name="autocomplete_hint">Inserisci una località</string>
     <string name="AddedaNewTrip">È stato aggiunto un nuovo viaggio</string>
     <string name="DeleteTrip">Il viaggio è stato cancellato</string>
+    <string name="NewEvent">Creazione Nuovo Evento</string>
+    <string name="ItemDone">Click when you have done</string>
     <string name="NewEvent">Creazione nuovo evento</string>
 
 

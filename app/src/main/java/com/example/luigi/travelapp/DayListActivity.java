@@ -28,7 +28,7 @@ public class DayListActivity extends AppCompatActivity {
 
         listView = (ListView)findViewById(R.id.dayListView);
         listView.setAdapter(dayListAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener( new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(view.getContext(), EventListActivity.class);
                 intent.putExtra(TRIP_INDEX, tripIndex);

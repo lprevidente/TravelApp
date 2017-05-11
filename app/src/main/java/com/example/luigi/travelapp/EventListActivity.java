@@ -20,6 +20,7 @@ import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
  */
 
 public class EventListActivity extends Activity{
+
     private ListView list;
     private FloatingActionButton addEvent;
     private EventListAdapter eventListAdapter;
