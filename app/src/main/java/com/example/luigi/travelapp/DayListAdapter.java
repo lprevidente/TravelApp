@@ -7,24 +7,27 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Day;
 
 import java.util.Collections;
 import java.util.List;
 
-import static com.example.luigi.travelapp.TripListActivity.getDataStore;
+
 
 /**
  * Created by Luigi on 08/05/2017.
  */
 
 public class DayListAdapter extends BaseAdapter {
+    private DataStore dataStore= DataStore.getInstance();
+
     private Context context;
     private List<Day> days = Collections.emptyList();
 
     public DayListAdapter(int tripIndex, Context context) {
         this.context = context;
-        days = getDataStore().getDayList(tripIndex);
+        days = dataStore.getDayList(tripIndex);
     }
 
     public View getView(int position, View view, ViewGroup parent) {

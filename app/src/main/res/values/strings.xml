@@ -6,13 +6,13 @@
     <string name="Item1">Modifica</string>
     <string name="Item2">Cancella</string>
     <string name="titleCities">I tuoi viaggi</string>
-    <string name="titleEvents">I tuoi eventi</string>
+    <string name="titleEvents">I Tuoi Eventi</string>
     <string name="AddNewCity">Aggiungi un nuovo viaggio</string>
     <string name="autocomplete_hint">Inserisci una località</string>
     <string name="AddedaNewTrip">È stato aggiunto un nuovo viaggio</string>
     <string name="DeleteTrip">Il viaggio è stato cancellato</string>
     <string name="ItemDone">Click when you have done</string>
-    <string name="NewEvent">Creazione nuovo evento</string>
+    <string name="NewEvent">Nuovo Evento</string>
 
 
     <string name="titleEvent">Titolo</string>

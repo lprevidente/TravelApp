@@ -16,7 +16,7 @@ import static com.example.luigi.travelapp.costanti.Constants.SEND_TRIP;
 import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
 public class TripListActivity extends AppCompatActivity {
-    private static DataStore dataStore= new DataStore();
+    private DataStore dataStore;
     private ListView list;
     private FloatingActionButton addcity;
     private TripListAdapter adapter;
@@ -26,6 +26,8 @@ public class TripListActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_list);
+
+        dataStore=DataStore.getInstance(this.getApplicationContext());
 
         adapter = new TripListAdapter(this);
         adapter.update(dataStore.getListTrip());
@@ -59,10 +61,5 @@ public class TripListActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         }
-    }
-
-
-    public static DataStore getDataStore() {
-        return dataStore;
     }
 }

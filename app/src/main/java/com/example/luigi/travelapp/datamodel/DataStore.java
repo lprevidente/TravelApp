@@ -1,6 +1,5 @@
 package com.example.luigi.travelapp.datamodel;
 
-import android.app.Application;
 import android.content.Context;
 
 import java.io.File;
@@ -16,10 +15,12 @@ import java.util.ArrayList;
  * Created by Bernardo on 08/05/2017.
  */
 
-public class DataStore extends Application {
-    private Context context;
+public class DataStore {
+    private static Context context;
     private String path;
     private ArrayList<Trip> trips;
+
+    private static DataStore dataStore=null;
 
     /**
      * aggiunge un nuovo viaggio all'array contenente la lista dei viaggi
@@ -27,6 +28,7 @@ public class DataStore extends Application {
      */
     public void addTrip(Trip trip) {
         trips.add(trip);
+        serialize();
     }
 
     /**
@@ -36,6 +38,7 @@ public class DataStore extends Application {
      */
     public void addDay(int tripIndex, Day day) {
         getDayList(tripIndex).add(day);
+        serialize();
     }
 
     /**
@@ -46,6 +49,7 @@ public class DataStore extends Application {
      */
     public void addEvent(int tripIndex, int dayIndex, Event event) {
         getEventList(tripIndex, dayIndex).add(event);
+        serialize();
     }
 
     /**
@@ -141,21 +145,21 @@ public class DataStore extends Application {
     /**
      * costruttore del datastore
      */
-    public DataStore() {
+    private DataStore() {
         path = "yourtrips.dat";
         //context = getApplicationContext();
-        trips = new ArrayList<>();
+        //trips = new ArrayList<>();
 
-        /*if (fileExists(path)) {
+        if (fileExists(path)) {
             // the app loads existing data from disk
             deserialize();
         }
         else {
             // the app cannot find the file where trips are stored
             // so it initializes a new one and saves it to disk
-
+            trips = new ArrayList<>();
             serialize();
-        }*/
+        }
     }
 
     /**
@@ -204,5 +208,24 @@ public class DataStore extends Application {
             return false;
         }
         return true;
+    }
+
+    public static DataStore getInstance(){
+        if(dataStore==null){
+            dataStore= new DataStore();
+        }
+        return dataStore;
+    }
+
+    public static void setContext(Context a) {
+        context = a;
+    }
+
+    public static DataStore getInstance(Context context){
+        setContext(context);
+        if(dataStore==null){
+            dataStore= new DataStore();
+        }
+        return dataStore;
     }
 }
