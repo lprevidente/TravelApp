@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.luigi.travelapp.datamodel.Event;
@@ -35,6 +36,8 @@ public class EventListAdapter extends BaseAdapter {
         final Event event = events.get(position);
         TextView txtTitle = (TextView)view.findViewById(R.id.eventTextView);
         txtTitle.setText(event.getTitle());
+        ImageView imageView=(ImageView) view.findViewById(R.id.imageEvent);
+        imageView.setImageResource(event.getImage());
 
         return view;
     }

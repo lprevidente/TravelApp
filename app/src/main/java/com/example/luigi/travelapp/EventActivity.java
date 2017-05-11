@@ -7,15 +7,17 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.luigi.travelapp.datamodel.Event;
 
@@ -24,7 +26,6 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
-import static android.os.Build.VERSION_CODES.M;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_INDEX;
 
 
@@ -37,9 +38,18 @@ public class EventActivity extends Activity {
     private EditText titleEventTextView;
     private EditText noteEditview;
     private CheckBox notifyCheckBox;
-    private TextView TimePickerTextView;
-    private ImageButton imageBtnDone;
+    private TextView TimePickerTextView;private ImageButton imageBtnDone;
    // private Button button;
+    private ImageView imageView;
+/*
+    private RadioButton radioFlight;
+    private RadioButton radioResturant;
+    private RadioButton radioPlaces;
+    */
+
+    private RadioGroup radioGroup;
+
+    private int resImage;
 
     private boolean notify = false;
 
@@ -47,46 +57,44 @@ public class EventActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
 
-        Toolbar toolbarEvent = (Toolbar)findViewById(R.id.toolbarEvent);
+        Toolbar toolbarEvent = (Toolbar) findViewById(R.id.toolbarEvent);
 
         toolbarEvent.setTitle(R.string.NewEvent);
         toolbarEvent.inflateMenu(R.menu.menu_event);
 
-        titleEventTextView = (EditText)findViewById(R.id.titleEventEdit);
-        noteEditview = (EditText)findViewById(R.id.notesText);
-        notifyCheckBox = (CheckBox)findViewById(R.id.checkBoxNotifica);
+        titleEventTextView = (EditText) findViewById(R.id.titleEventEdit);
+        noteEditview = (EditText) findViewById(R.id.notesText);
+        notifyCheckBox = (CheckBox) findViewById(R.id.checkBoxNotifica);
 
-        TimePickerTextView = (TextView)findViewById(R.id.oraTextView);
+        // devo settarli in questo modo altrimenti non si vedono per via delle varie dimensioni
+        imageView = (ImageView) findViewById(R.id.imageVisit);
+        imageView.setImageResource(R.drawable.ic_action_name_place);
+
+        imageView = (ImageView) findViewById(R.id.imageRestaurant);
+        imageView.setImageResource(R.drawable.ic_action_name_rest7aurant);
+
+        imageView = (ImageView) findViewById(R.id.imageFlight);
+        imageView.setImageResource(R.drawable.ic_action_name_flight);
+
+
+        TimePickerTextView = (TextView) findViewById(R.id.oraTextView);
         setCurrentTime();
         TimePickerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment newFragment = new TimePickerFragment();
-                newFragment.show(getFragmentManager(),"TimePicker");
+                newFragment.show(getFragmentManager(), "TimePicker");
             }
 
         });
 
-        /*button = (Button)findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Event event = new Event(String2Date((String)TimePickerTextView.getText()),
-                        titleEventTextView.getText().toString(), noteEditview.getText().toString(), notify);
-                Intent intent = getIntent();
-                intent.putExtra(EVENT_INDEX, event);
-                setResult(Activity.RESULT_OK, intent);
-                finish();
-            }
-        });
-*/
         toolbarEvent.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_done:
-                        Event event = new Event(String2Date((String)TimePickerTextView.getText()),
-                                titleEventTextView.getText().toString(), noteEditview.getText().toString(), notify);
+                        Event event = new Event(String2Date((String) TimePickerTextView.getText()),
+                                titleEventTextView.getText().toString(), noteEditview.getText().toString(), notify, resImage);
                         Intent intent = getIntent();
                         intent.putExtra(EVENT_INDEX, event);
                         setResult(Activity.RESULT_OK, intent);
@@ -97,14 +105,28 @@ public class EventActivity extends Activity {
                 return false;
             }
         });
+
     }
-/*
-    public boolean onCreateOptionsMenu(Menu menu){
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_event, menu);
-        return true;
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radioFlight:
+                if (checked)
+                    resImage= R.drawable.ic_action_name_flight;
+                    break;
+            case R.id.radioPlaces:
+                if (checked)
+                    resImage= R.drawable.ic_action_name_place;
+                    break;
+            case R.id.radioRestaurant:
+                if(checked)
+                    resImage=R.drawable.ic_action_name_rest7aurant;
+                    break;
+        }
     }
-*/
 
     private class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
 

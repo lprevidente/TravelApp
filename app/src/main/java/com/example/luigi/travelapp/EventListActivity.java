@@ -100,6 +100,10 @@ private Menu menu;
                     case R.id.item_delete:
                         dataStore.deleteEvent(tripIndex, dayIndex, positione );
                         eventListAdapter.notifyDataSetChanged();
+                        menu.findItem(R.id.item_edit).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                        menu.findItem(R.id.item_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                        menu.findItem(R.id.item_edit).setVisible(false);
+                        menu.findItem(R.id.item_delete).setVisible(false);
                         return true;
 
                 }

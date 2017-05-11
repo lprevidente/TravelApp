@@ -1,7 +1,5 @@
 package com.example.luigi.travelapp.datamodel;
 
-import android.widget.CheckBox;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -14,6 +12,7 @@ public class Event implements Serializable {
     private String title;
     private String note;
     private boolean notify;
+    private int Image;
 
     /**
      * costruttore dell'oggetto di tipo Event
@@ -23,11 +22,12 @@ public class Event implements Serializable {
      * @param note descrizione aggiuntiva per l'evento (che verrà eventualmente mostrata in notifica)
      * @param notify notificare o meno l'evento
      */
-    public Event(Date date, String title, String note, boolean notify) {
+    public Event(Date date, String title, String note, boolean notify, int Image) {
         this.date = date;
         this.title = title;
         this.note = note;
         this.notify = notify;
+        this.Image=Image;
     }
 
     // Get methods
@@ -47,6 +47,10 @@ public class Event implements Serializable {
         return notify;
     }
 
+    public int getImage() {
+        return Image;
+    }
+
     //Set methods
     public void setDate(Date date) {
         this.date = date;
@@ -62,5 +66,9 @@ public class Event implements Serializable {
 
     public void setNotify(boolean notify) {
         this.notify = notify;
+    }
+
+    public void setImage(int image) {
+        Image = image;
     }
 }
