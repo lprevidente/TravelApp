@@ -16,11 +16,11 @@ import static com.example.luigi.travelapp.costanti.Constants.SEND_TRIP;
 import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
 public class TripListActivity extends AppCompatActivity {
-    private static DataStore dataStore = new DataStore();
 
+    public static DataStore dataStore = new DataStore();
     private ListView list;
     private FloatingActionButton addcity;
-    private TripListAdapter adapter;
+    public static TripListAdapter adapter;
 
     private final int code = 1;
 
@@ -28,9 +28,8 @@ public class TripListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_list);
 
-        // get the application context and then initialize our dataStore
-        mContext = getApplicationContext();
-        dataStore = new DataStore(getContext());
+        //Initialize our dataStore
+        dataStore = new DataStore();
 
         adapter = new TripListAdapter(this);
         adapter.update(dataStore.getListTrip());
@@ -66,9 +65,6 @@ public class TripListActivity extends AppCompatActivity {
         }
     }
 
-    public static Context getContext() {
-        return mContext;
-    }
 
     public static DataStore getDataStore() {
         return dataStore;

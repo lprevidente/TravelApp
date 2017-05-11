@@ -7,8 +7,9 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.icu.text.DateFormat;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -46,8 +47,8 @@ public class EventActivity extends Activity {
         Toolbar toolbarEvent= (Toolbar) findViewById(R.id.toolbarEvent);
 
         toolbarEvent.setTitle(R.string.NewEvent);
-        toolbarEvent.setNavigationIcon(R.drawable.ic_action_name_done);
-
+        toolbarEvent.setNavigationIcon(R.drawable.ic_action_name_back);
+        // setHasOptionsMenu(true);
         toolbarEvent.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,12 +78,12 @@ public class EventActivity extends Activity {
 
     }
 
-/*
     public boolean onCreateOptionsMenu(Menu menu){
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_event, menu);
         return true;
-    } */
+    }
+
     private class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
 
         @Override

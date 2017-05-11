@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.luigi.travelapp.datamodel.Event;
 
-import static com.example.luigi.travelapp.DayListAdapter.DAY_INDEX;
 import static com.example.luigi.travelapp.TripListActivity.getDataStore;
 import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
@@ -21,6 +19,7 @@ import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
  */
 
 public class EventListActivity extends Activity{
+
     private ListView list;
     private FloatingActionButton addEvent;
     private EventListAdapter eventListAdapter;
