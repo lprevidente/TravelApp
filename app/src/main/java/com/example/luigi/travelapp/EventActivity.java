@@ -7,10 +7,8 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -24,8 +22,8 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
-import static android.os.Build.VERSION_CODES.M;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_INDEX;
+import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
 
 
 /**
@@ -39,7 +37,6 @@ public class EventActivity extends Activity {
     private CheckBox notifyCheckBox;
     private TextView TimePickerTextView;
     private ImageButton imageBtnDone;
-   // private Button button;
 
     private boolean notify = false;
 
@@ -67,44 +64,25 @@ public class EventActivity extends Activity {
 
         });
 
-        /*button = (Button)findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Event event = new Event(String2Date((String)TimePickerTextView.getText()),
-                        titleEventTextView.getText().toString(), noteEditview.getText().toString(), notify);
-                Intent intent = getIntent();
-                intent.putExtra(EVENT_INDEX, event);
-                setResult(Activity.RESULT_OK, intent);
-                finish();
-            }
-        });
-*/
         toolbarEvent.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_done:
-                        Event event = new Event(String2Date((String)TimePickerTextView.getText()),
-                                titleEventTextView.getText().toString(), noteEditview.getText().toString(), notify);
-                        Intent intent = getIntent();
-                        intent.putExtra(EVENT_INDEX, event);
-                        setResult(Activity.RESULT_OK, intent);
-                        finish();
-                        return true;
-
+                        if (!titleEventTextView.getText().toString().equals(NULLTITLE)) {
+                            Event event = new Event(String2Date((String)TimePickerTextView.getText()),
+                                    titleEventTextView.getText().toString(), noteEditview.getText().toString(), notify);
+                            Intent intent = getIntent();
+                            intent.putExtra(EVENT_INDEX, event);
+                            setResult(Activity.RESULT_OK, intent);
+                            finish();
+                            return true;
+                        }
                 }
                 return false;
             }
         });
     }
-/*
-    public boolean onCreateOptionsMenu(Menu menu){
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_event, menu);
-        return true;
-    }
-*/
 
     private class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
 
@@ -118,7 +96,6 @@ public class EventActivity extends Activity {
             //Create and return a new instance of TimePickerDialog
             return new TimePickerDialog(getActivity(),this, hour, minute, android.text.format.DateFormat.is24HourFormat(getActivity()));
         }
-
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute){
             TimePickerTextView.setText(String.valueOf(hourOfDay)+":" + String.valueOf(minute));
