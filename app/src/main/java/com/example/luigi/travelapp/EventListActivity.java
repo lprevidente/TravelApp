@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,9 +31,8 @@ public class EventListActivity extends Activity{
     private int tripIndex;
     private int dayIndex;
     private Toolbar toolbar;
-
-    private MenuItem menuEvents;
-
+private Menu menu;
+    private int positione;
     private final int CODE = 2;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -49,30 +49,64 @@ public class EventListActivity extends Activity{
         addEvent = (FloatingActionButton)findViewById(R.id.AddEvent);
 
         toolbar= (Toolbar) findViewById(R.id.toolbar_event_list);
-
+        toolbar.inflateMenu(R.menu.menu_list_events);
+        menu= toolbar.getMenu();
 
         list = (ListView)findViewById(R.id.eventListView);
         list.setAdapter(eventListAdapter);
-        menuEvents= (MenuItem) findViewById(R.id.menu_list_events);
 
 
-       /* list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(view.getContext(), EventActivity.class);
-                //intent.putExtra( , );
-                startActivity(intent);
-            }
-        });*/
-
+        /**
+         * se c'è un click lungo fa compare sulla toolbar due icone una serve per modificare e l'altra
+         * per cancellare l'evento
+         */
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                toolbar.inflateMenu(R.menu.menu_list_events);
-                // menuEvents.
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                menu.findItem(R.id.item_edit).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                menu.findItem(R.id.item_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                menu.findItem(R.id.item_edit).setVisible(true);
+                menu.findItem(R.id.item_delete).setVisible(true);
+                positione=position;
+
             return true;
             }
 
         });
+    /**
+     * Nel caso volessi tornare indietro dopo il tocco prolungato clicco semplicemente su uno dei tanti eventi presenti
+     */
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                menu.findItem(R.id.item_edit).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                menu.findItem(R.id.item_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                menu.findItem(R.id.item_edit).setVisible(false);
+                menu.findItem(R.id.item_delete).setVisible(false);
+            }
+        });
+
+        /**
+         * Mi serve per gesitre gli hendler dei due Item posti nella Toolbar
+         * Delete: cancello il dato dal datastore
+         * Edit: Ho la possibilità di modificare il mio evento
+         */
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.item_delete:
+                        dataStore.deleteEvent(tripIndex, dayIndex, positione );
+                        eventListAdapter.notifyDataSetChanged();
+                        return true;
+
+                }
+                return false;
+            }
+        });
+
 
         addEvent.setOnClickListener((new View.OnClickListener() {
             @Override
