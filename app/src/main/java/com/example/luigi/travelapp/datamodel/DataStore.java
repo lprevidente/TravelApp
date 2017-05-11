@@ -211,21 +211,21 @@ public class DataStore {
     }
 
     public static DataStore getInstance(){
-        if(dataStore==null){
-            dataStore= new DataStore();
+        if (dataStore == null){
+            dataStore = new DataStore();
+        }
+        return dataStore;
+    }
+
+    public static DataStore getInstance(Context context){
+        setContext(context);
+        if (dataStore == null){
+            dataStore = new DataStore();
         }
         return dataStore;
     }
 
     public static void setContext(Context a) {
         context = a;
-    }
-
-    public static DataStore getInstance(Context context){
-        setContext(context);
-        if(dataStore==null){
-            dataStore= new DataStore();
-        }
-        return dataStore;
     }
 }
