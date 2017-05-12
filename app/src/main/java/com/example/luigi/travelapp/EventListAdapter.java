@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.example.luigi.travelapp.datamodel.Event;
 
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,15 +36,14 @@ public class EventListAdapter extends BaseAdapter {
             view = LayoutInflater.from(context).inflate(R.layout.event_list_adapter, parent, false);
 
         final Event event = events.get(position);
-
         TextView txtTitle = (TextView)view.findViewById(R.id.eventTextView);
         txtTitle.setText(event.getTitle());
 
-        TextView txtTime = (TextView)view.findViewById(R.id.timeTextView);
-        txtTime.setText(event.getTimeString());
-
         ImageView imageView=(ImageView) view.findViewById(R.id.imageEvent);
         imageView.setImageResource(event.getImage());
+
+        TextView txtTime = (TextView) view.findViewById(R.id.txtTime);
+        txtTime.setText(event.getDate());
 
         return view;
     }

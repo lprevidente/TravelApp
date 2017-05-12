@@ -10,14 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Event;
 
 import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_INDEX;
-import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
 import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
 /**
@@ -81,9 +79,6 @@ public class EventListActivity extends Activity{
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-
-                menu.findItem(R.id.item_edit).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-                menu.findItem(R.id.item_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
                 menu.findItem(R.id.item_edit).setVisible(false);
                 menu.findItem(R.id.item_delete).setVisible(false);
             }
@@ -101,8 +96,6 @@ public class EventListActivity extends Activity{
                     case R.id.item_delete:
                         dataStore.deleteEvent(tripIndex, dayIndex, positione);
                         eventListAdapter.notifyDataSetChanged();
-                        menu.findItem(R.id.item_edit).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-                        menu.findItem(R.id.item_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
                         menu.findItem(R.id.item_edit).setVisible(false);
                         menu.findItem(R.id.item_delete).setVisible(false);
                         return true;
@@ -116,8 +109,6 @@ public class EventListActivity extends Activity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EventListActivity.this, EventActivity.class);
-                intent.putExtra("TRIP_INDEX", tripIndex);
-                intent.putExtra("DAY_INDEX", dayIndex);
                 startActivityForResult(intent, CODE);
             }
         }));
