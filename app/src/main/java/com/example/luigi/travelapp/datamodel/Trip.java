@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static com.example.luigi.travelapp.util.DateUtil.incrementDay;
+
 /**
  * Created by Luigi on 08/05/2017.
  */
@@ -22,7 +24,7 @@ public class Trip implements Serializable {
 
         days = new ArrayList<>();
         for (int i = 1; i <= getDaysNumber(); i++) {
-            days.add(new Day(i));
+            days.add(new Day(incrementDay(startDate, i - 1), i));
         }
     }
 

@@ -34,8 +34,13 @@ public class EventListAdapter extends BaseAdapter {
             view = LayoutInflater.from(context).inflate(R.layout.event_list_adapter, parent, false);
 
         final Event event = events.get(position);
+
         TextView txtTitle = (TextView)view.findViewById(R.id.eventTextView);
         txtTitle.setText(event.getTitle());
+
+        TextView txtTime = (TextView)view.findViewById(R.id.timeTextView);
+        txtTime.setText(event.getTimeString());
+
         ImageView imageView=(ImageView) view.findViewById(R.id.imageEvent);
         imageView.setImageResource(event.getImage());
 

@@ -1,6 +1,7 @@
 package com.example.luigi.travelapp.datamodel;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -17,7 +18,6 @@ public class Event implements Serializable {
     /**
      * costruttore dell'oggetto di tipo Event
      * @param date oggetto Date che manterrà l'informazione sull'orario dell'evento
-     *             TODO: usare Time per sprecare meno informazioni?
      * @param title titolo dell'evento
      * @param note descrizione aggiuntiva per l'evento (che verrà eventualmente mostrata in notifica)
      * @param notify notificare o meno l'evento
@@ -70,5 +70,11 @@ public class Event implements Serializable {
 
     public void setImage(int image) {
         Image = image;
+    }
+
+    public String getTimeString() {
+        SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm");
+        String time = localDateFormat.format(date);
+        return time;
     }
 }

@@ -25,7 +25,7 @@ import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
  */
 
 public class EventListActivity extends Activity{
-    private DataStore dataStore= DataStore.getInstance();
+    private DataStore dataStore = DataStore.getInstance();
 
     private ListView list;
     private FloatingActionButton addEvent;
@@ -50,9 +50,9 @@ public class EventListActivity extends Activity{
 
         addEvent = (FloatingActionButton)findViewById(R.id.AddEvent);
 
-        toolbar= (Toolbar) findViewById(R.id.toolbar_event_list);
+        toolbar = (Toolbar)findViewById(R.id.toolbar_event_list);
         toolbar.inflateMenu(R.menu.menu_list_events);
-        menu= toolbar.getMenu();
+        menu = toolbar.getMenu();
 
         list = (ListView)findViewById(R.id.eventListView);
         list.setAdapter(eventListAdapter);
@@ -65,14 +65,13 @@ public class EventListActivity extends Activity{
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-
                 menu.findItem(R.id.item_edit).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                 menu.findItem(R.id.item_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                 menu.findItem(R.id.item_edit).setVisible(true);
                 menu.findItem(R.id.item_delete).setVisible(true);
-                positione=position;
+                positione = position;
 
-            return true;
+                return true;
             }
 
         });
@@ -100,14 +99,13 @@ public class EventListActivity extends Activity{
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_delete:
-                        dataStore.deleteEvent(tripIndex, dayIndex, positione );
+                        dataStore.deleteEvent(tripIndex, dayIndex, positione);
                         eventListAdapter.notifyDataSetChanged();
                         menu.findItem(R.id.item_edit).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
                         menu.findItem(R.id.item_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
                         menu.findItem(R.id.item_edit).setVisible(false);
                         menu.findItem(R.id.item_delete).setVisible(false);
                         return true;
-
                 }
                 return false;
             }
@@ -118,6 +116,8 @@ public class EventListActivity extends Activity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EventListActivity.this, EventActivity.class);
+                intent.putExtra("TRIP_INDEX", tripIndex);
+                intent.putExtra("DAY_INDEX", dayIndex);
                 startActivityForResult(intent, CODE);
             }
         }));
@@ -126,9 +126,9 @@ public class EventListActivity extends Activity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                Event event = (Event) data.getSerializableExtra(EVENT_INDEX);
+                Event event = (Event)data.getSerializableExtra(EVENT_INDEX);
                 // add the new trip in the data store
-                dataStore.addEvent(tripIndex, dayIndex,event);
+                dataStore.addEvent(tripIndex, dayIndex, event);
                 eventListAdapter.notifyDataSetChanged();
             }
         }

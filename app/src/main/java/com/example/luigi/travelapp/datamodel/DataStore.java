@@ -11,6 +11,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import static com.example.luigi.travelapp.util.DateUtil.incrementDay;
+
 /**
  * Created by Bernardo on 08/05/2017.
  */
@@ -68,8 +70,8 @@ public class DataStore {
                 tmp.getDayList().remove(i);
             }
         } else if (newDayNumber > oldDayNumber) {
-            for (int i = oldDayNumber; i < newDayNumber; i++) {
-                tmp.addDay(new Day(i));
+            for (int i = oldDayNumber + 1; i <= newDayNumber; i++) {
+                tmp.addDay(new Day(incrementDay(tmp.getStartDate(), i), i));
             }
         }
 

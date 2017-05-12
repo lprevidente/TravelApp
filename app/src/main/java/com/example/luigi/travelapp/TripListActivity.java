@@ -27,7 +27,7 @@ public class TripListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_list);
 
-        dataStore=DataStore.getInstance(this.getApplicationContext());
+        dataStore = DataStore.getInstance(this.getApplicationContext());
 
         adapter = new TripListAdapter(this);
         adapter.update(dataStore.getListTrip());
