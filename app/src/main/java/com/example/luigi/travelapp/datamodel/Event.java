@@ -1,5 +1,7 @@
 package com.example.luigi.travelapp.datamodel;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,7 +10,7 @@ import java.util.Date;
  * Created by Luigi on 08/05/2017.
  */
 
-public class Event implements Serializable {
+public class Event implements Serializable, Comparable<Event>{
     private Date date;
     private String title;
     private String note;
@@ -77,5 +79,10 @@ public class Event implements Serializable {
         SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm");
         String time = localDateFormat.format(date);
         return time;
+    }
+
+    @Override
+    public int compareTo(@NonNull Event o) {
+        return getDate().compareTo(o.getDate());
     }
 }

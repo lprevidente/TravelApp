@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static com.example.luigi.travelapp.util.DateUtil.incrementDay;
 
@@ -51,6 +52,7 @@ public class DataStore {
      */
     public void addEvent(int tripIndex, int dayIndex, Event event) {
         getEventList(tripIndex, dayIndex).add(event);
+        Collections.sort(getEventList(tripIndex, dayIndex));
         serialize();
     }
 
