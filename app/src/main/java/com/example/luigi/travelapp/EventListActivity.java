@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +15,9 @@ import android.widget.ListView;
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Event;
 
+import static android.content.ContentValues.TAG;
 import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
+import static com.example.luigi.travelapp.costanti.Constants.EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
@@ -34,6 +37,10 @@ public class EventListActivity extends Activity{
     private Menu menu;
     private int positione;
     private final int CODE = 2;
+    private final int CODE3 = 3;
+
+    private Intent intent;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +62,6 @@ public class EventListActivity extends Activity{
         list = (ListView)findViewById(R.id.eventListView);
         list.setAdapter(eventListAdapter);
 
-
         /**
          * se c'è un click lungo fa compare sulla toolbar due icone una serve per modificare e l'altra
          * per cancellare l'evento
@@ -63,12 +69,9 @@ public class EventListActivity extends Activity{
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                menu.findItem(R.id.item_edit).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-                menu.findItem(R.id.item_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                 menu.findItem(R.id.item_edit).setVisible(true);
                 menu.findItem(R.id.item_delete).setVisible(true);
                 positione = position;
-
                 return true;
             }
 
@@ -99,18 +102,24 @@ public class EventListActivity extends Activity{
                         menu.findItem(R.id.item_edit).setVisible(false);
                         menu.findItem(R.id.item_delete).setVisible(false);
                         return true;
+                    case R.id.item_edit:
+                        intent= new Intent(EventListActivity.this, EventActivity.class);
+                        Log.i(TAG,"Il valore di EVENT è:" +EVENT);
+                        intent.putExtra(EVENT, dataStore.getEventList(tripIndex, dayIndex).get(positione));
+                        Log.i(TAG,"Il valore di EVENT è:" +EVENT);
+                        startActivityForResult(intent, CODE3);
                 }
                 return false;
             }
         });
 
-
         addEvent.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EventListActivity.this, EventActivity.class);
+                intent = new Intent(EventListActivity.this, EventActivity.class);
                 intent.putExtra("TRIP_INDEX", tripIndex);
                 intent.putExtra("DAY_INDEX", dayIndex);
+                intent.putExtra(EVENT, "new");
                 startActivityForResult(intent, CODE);
             }
         }));
@@ -122,6 +131,13 @@ public class EventListActivity extends Activity{
                 Event event = (Event)data.getSerializableExtra(EVENT_INDEX);
                 // add the new trip in the data store
                 dataStore.addEvent(tripIndex, dayIndex, event);
+                eventListAdapter.notifyDataSetChanged();
+            }
+        }
+        if(requestCode==CODE3){
+            if(resultCode==Activity.RESULT_OK){
+                Event event = (Event)data.getSerializableExtra(EVENT_INDEX);
+                dataStore.updateEvent(tripIndex, dayIndex,positione, event);
                 eventListAdapter.notifyDataSetChanged();
             }
         }

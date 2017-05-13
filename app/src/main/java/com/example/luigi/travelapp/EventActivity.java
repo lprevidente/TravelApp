@@ -7,6 +7,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -19,13 +20,14 @@ import android.widget.TimePicker;
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Event;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
+import static com.example.luigi.travelapp.costanti.Constants.EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
 import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
@@ -46,6 +48,8 @@ public class EventActivity extends Activity {
     private TextView TimePickerTextView;
 
     private ImageView imageView;
+    private static final String TAG="EVENT ACTIVITY";
+    private Intent intent;
 
    /* todo: bisogna aggiustare i radio button e allinearli con le immagini
     private RadioButton radioFlight;
@@ -56,9 +60,11 @@ public class EventActivity extends Activity {
     private boolean notify = false;
 
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
 
+        intent= getIntent();
         Bundle extras = getIntent().getExtras();
         tripIndex = extras.getInt(TRIP_INDEX);
         dayIndex = extras.getInt(DAY_INDEX);
@@ -72,6 +78,7 @@ public class EventActivity extends Activity {
         noteEditview = (EditText) findViewById(R.id.notesText);
         notifyCheckBox = (CheckBox) findViewById(R.id.checkBoxNotifica);
 
+
         // devo settarli in questo modo altrimenti non si vedono per via delle varie dimensioni
         imageView = (ImageView) findViewById(R.id.imageVisit);
         imageView.setImageResource(R.drawable.ic_action_name_place);
@@ -84,7 +91,22 @@ public class EventActivity extends Activity {
 
 
         TimePickerTextView = (TextView) findViewById(R.id.oraTextView);
-        setCurrentTime();
+
+
+        if(extras.getString(EVENT)!="new"){
+            Event event=(Event) extras.getSerializable(EVENT);
+            titleEventTextView.setText(event.getTitle());
+            noteEditview.setText(event.getNote());
+            notifyCheckBox.setChecked(event.getNotify());
+
+            Calendar calendar= GregorianCalendar.getInstance();
+            calendar.setTime(event.getDate());
+            TimePickerTextView.setText(calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
+        }
+        else{
+        setCurrentTime();}
+
+
         TimePickerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +130,7 @@ public class EventActivity extends Activity {
 
                             Event event = new Event(newcal.getTime(),
                                     titleEventTextView.getText().toString(), noteEditview.getText().toString(), notify, resImage);
-                            Intent intent = getIntent();
+
                             intent.putExtra(EVENT_INDEX, event);
                             setResult(Activity.RESULT_OK, intent);
                             finish();
