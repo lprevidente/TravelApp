@@ -14,7 +14,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -25,11 +24,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
-import static com.example.luigi.travelapp.R.id.radioGroup;
 import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT;
+import static com.example.luigi.travelapp.costanti.Constants.EVENTNEW;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
 import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
@@ -98,30 +96,27 @@ public class EventActivity extends Activity {
 
         TimePickerTextView = (TextView) findViewById(R.id.oraTextView);
 
-        if(extras.getString(EVENT)!=("new")){
 
-            Event event=(Event) extras.getSerializable(EVENT);
+        if(extras.getString(EVENTNEW).equals("yes")) {
+            setCurrentTime();
+        }
+        else{
+            Event event=(Event) intent.getSerializableExtra(EVENT);
             titleEventTextView.setText(event.getTitle());
             noteEditview.setText(event.getNote());
             notifyCheckBox.setChecked(event.getNotify());
             TimePickerTextView.setText(event.getTimeString());
             int resImageOld=event.getImage();
+            resImage = resImageOld;
 
-            if(resImageOld==R.drawable.ic_action_name_place) {
+            if(resImageOld==R.drawable.ic_action_name_place)
                 radioPlaces.setChecked(true);
-                resImage = R.drawable.ic_action_name_place;
-            }
-            else if (resImageOld==R.drawable.ic_action_name_flight) {
+
+            else if (resImageOld==R.drawable.ic_action_name_flight)
                 radioFlight.setChecked(true);
-                resImage = R.drawable.ic_action_name_flight;
-            }
-            else if (resImageOld==R.drawable.ic_action_name_rest7aurant) {
-                radioResturant.setChecked(true);
-                resImage = R.drawable.ic_action_name_rest7aurant;
-            }
-        }
-        else{
-        setCurrentTime();}
+
+            else if (resImageOld==R.drawable.ic_action_name_rest7aurant)
+                radioResturant.setChecked(true);}
 
 
         TimePickerTextView.setOnClickListener(new View.OnClickListener() {

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.example.luigi.travelapp.datamodel.Event;
 
 import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT;
+import static com.example.luigi.travelapp.costanti.Constants.EVENTNEW;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
@@ -104,6 +106,8 @@ public class EventListActivity extends Activity{
                     case R.id.item_edit:
                         intent= new Intent(EventListActivity.this, EventActivity.class);
                         intent.putExtra(EVENT, dataStore.getEventList(tripIndex, dayIndex).get(positione));
+                        intent.putExtra(EVENTNEW, "NO");
+                        Log.i("EventListActivity: ", "VALORE EVENT:" +EVENT);
                         startActivityForResult(intent, CODE3);
                 }
                 return false;
@@ -116,7 +120,7 @@ public class EventListActivity extends Activity{
                 intent = new Intent(EventListActivity.this, EventActivity.class);
                 intent.putExtra("TRIP_INDEX", tripIndex);
                 intent.putExtra("DAY_INDEX", dayIndex);
-                intent.putExtra(EVENT, "new");
+                intent.putExtra(EVENTNEW, "yes");
                 startActivityForResult(intent, CODE);
             }
         }));

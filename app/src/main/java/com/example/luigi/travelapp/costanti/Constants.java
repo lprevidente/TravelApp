@@ -10,7 +10,8 @@ public class Constants {
     public static final String DAY_INDEX = "dayindex";
     public static final String EVENT_INDEX = "eventindex";
     public static final String SEND_TRIP = "sendtrip";
-    public static final String EVENT="event";
+    public static String EVENT="event";
+    public static String EVENTNEW="";
 
     // costanti per i check dei nomi
     public static final String NULLTITLE = "";
