@@ -43,7 +43,7 @@ public class EventListAdapter extends BaseAdapter {
         imageView.setImageResource(event.getImage());
 
         TextView txtTime = (TextView) view.findViewById(R.id.txtTime);
-        txtTime.setText(event.getDate());
+        txtTime.setText(event.getTimeString());
 
         return view;
     }

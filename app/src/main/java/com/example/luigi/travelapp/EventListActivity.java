@@ -109,6 +109,8 @@ public class EventListActivity extends Activity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EventListActivity.this, EventActivity.class);
+                intent.putExtra("TRIP_INDEX", tripIndex);
+                intent.putExtra("DAY_INDEX", dayIndex);
                 startActivityForResult(intent, CODE);
             }
         }));

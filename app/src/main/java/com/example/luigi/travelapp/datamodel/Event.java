@@ -1,13 +1,15 @@
 package com.example.luigi.travelapp.datamodel;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Luigi on 08/05/2017.
  */
 
 public class Event implements Serializable {
-    private String date;
+    private Date date;
     private String title;
     private String note;
     private boolean notify;
@@ -21,7 +23,7 @@ public class Event implements Serializable {
      * @param note descrizione aggiuntiva per l'evento (che verrà eventualmente mostrata in notifica)
      * @param notify notificare o meno l'evento
      */
-    public Event(String date, String title, String note, boolean notify, int Image) {
+    public Event(Date date, String title, String note, boolean notify, int Image) {
         this.date = date;
         this.title = title;
         this.note = note;
@@ -30,7 +32,7 @@ public class Event implements Serializable {
     }
 
     // Get methods
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
@@ -51,7 +53,7 @@ public class Event implements Serializable {
     }
 
     //Set methods
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -69,5 +71,11 @@ public class Event implements Serializable {
 
     public void setImage(int image) {
         Image = image;
+    }
+
+    public String getTimeString() {
+        SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm");
+        String time = localDateFormat.format(date);
+        return time;
     }
 }

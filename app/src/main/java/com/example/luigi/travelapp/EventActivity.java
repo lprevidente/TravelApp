@@ -16,15 +16,19 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Event;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
+import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
 
 /**
@@ -33,6 +37,9 @@ import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
 
 public class EventActivity extends Activity {
 
+    private DataStore dataStore = DataStore.getInstance();
+    private int tripIndex;
+    private int dayIndex;
     private EditText titleEventTextView;
     private EditText noteEditview;
     private CheckBox notifyCheckBox;
@@ -51,6 +58,10 @@ public class EventActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
+
+        Bundle extras = getIntent().getExtras();
+        tripIndex = extras.getInt(TRIP_INDEX);
+        dayIndex = extras.getInt(DAY_INDEX);
 
         Toolbar toolbarEvent = (Toolbar) findViewById(R.id.toolbarEvent);
 
@@ -89,7 +100,13 @@ public class EventActivity extends Activity {
                 switch (item.getItemId()) {
                     case R.id.item_done:
                         if (!titleEventTextView.getText().toString().equals(NULLTITLE)) {
-                            Event event = new Event((String)TimePickerTextView.getText(),
+                            // get the event's day date and set the new hour and minute
+                            Calendar oldcal = Calendar.getInstance();
+                            Calendar newcal = Calendar.getInstance();
+                            oldcal.setTime(dataStore.getDay(tripIndex, dayIndex).getDate());
+                            newcal.setTime(setString2DateTime(oldcal.getTime(), TimePickerTextView.getText().toString()));
+
+                            Event event = new Event(newcal.getTime(),
                                     titleEventTextView.getText().toString(), noteEditview.getText().toString(), notify, resImage);
                             Intent intent = getIntent();
                             intent.putExtra(EVENT_INDEX, event);
@@ -138,13 +155,12 @@ public class EventActivity extends Activity {
 
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute){
-            TimePickerTextView.setText(String.valueOf(hourOfDay)+":" + String.valueOf(minute));
+            TimePickerTextView.setText(String.format("%02d", Integer.parseInt(String.valueOf(hourOfDay))) + ":" + String.format("%02d", Integer.parseInt(String.valueOf(minute))));
         }
     }
 
-    public Date String2Date(String str) {
-        Date date = null;
-        DateFormat sdf = DateFormat.getInstance();
+    public Date setString2DateTime(Date date, String str) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         try {
             date = sdf.parse(str);
         } catch (ParseException e) {
