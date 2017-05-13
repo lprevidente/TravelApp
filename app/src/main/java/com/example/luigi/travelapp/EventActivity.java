@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -26,6 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import static com.example.luigi.travelapp.R.id.radioGroup;
 import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_INDEX;
@@ -48,16 +50,16 @@ public class EventActivity extends Activity {
     private TextView TimePickerTextView;
 
     private ImageView imageView;
-    private static final String TAG="EVENT ACTIVITY";
+
     private Intent intent;
 
-   /* todo: bisogna aggiustare i radio button e allinearli con le immagini
+    // todo: bisogna aggiustare i radio button e allinearli con le immagini
     private RadioButton radioFlight;
     private RadioButton radioResturant;
     private RadioButton radioPlaces;
-    */
+
     private int resImage;
-    private boolean notify = false;
+    private boolean notify=false;
 
     public void onCreate(Bundle savedInstanceState) {
 
@@ -78,6 +80,10 @@ public class EventActivity extends Activity {
         noteEditview = (EditText) findViewById(R.id.notesText);
         notifyCheckBox = (CheckBox) findViewById(R.id.checkBoxNotifica);
 
+        radioFlight= (RadioButton) findViewById(R.id.radioFlight);
+        radioPlaces= (RadioButton) findViewById(R.id.radioPlaces);
+        radioResturant= (RadioButton) findViewById(R.id.radioRestaurant);
+
 
         // devo settarli in questo modo altrimenti non si vedono per via delle varie dimensioni
         imageView = (ImageView) findViewById(R.id.imageVisit);
@@ -92,16 +98,27 @@ public class EventActivity extends Activity {
 
         TimePickerTextView = (TextView) findViewById(R.id.oraTextView);
 
+        if(extras.getString(EVENT)!=("new")){
 
-        if(extras.getString(EVENT)!="new"){
             Event event=(Event) extras.getSerializable(EVENT);
             titleEventTextView.setText(event.getTitle());
             noteEditview.setText(event.getNote());
             notifyCheckBox.setChecked(event.getNotify());
+            TimePickerTextView.setText(event.getTimeString());
+            int resImageOld=event.getImage();
 
-            Calendar calendar= GregorianCalendar.getInstance();
-            calendar.setTime(event.getDate());
-            TimePickerTextView.setText(calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
+            if(resImageOld==R.drawable.ic_action_name_place) {
+                radioPlaces.setChecked(true);
+                resImage = R.drawable.ic_action_name_place;
+            }
+            else if (resImageOld==R.drawable.ic_action_name_flight) {
+                radioFlight.setChecked(true);
+                resImage = R.drawable.ic_action_name_flight;
+            }
+            else if (resImageOld==R.drawable.ic_action_name_rest7aurant) {
+                radioResturant.setChecked(true);
+                resImage = R.drawable.ic_action_name_rest7aurant;
+            }
         }
         else{
         setCurrentTime();}
@@ -138,6 +155,15 @@ public class EventActivity extends Activity {
                         }
                 }
                 return false;
+            }
+        });
+
+        notifyCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (notifyCheckBox.isChecked())
+                    notify=true;
+                else notify=false;
             }
         });
 

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.widget.ListView;
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Event;
 
-import static android.content.ContentValues.TAG;
 import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_INDEX;
@@ -102,11 +100,10 @@ public class EventListActivity extends Activity{
                         menu.findItem(R.id.item_edit).setVisible(false);
                         menu.findItem(R.id.item_delete).setVisible(false);
                         return true;
+
                     case R.id.item_edit:
                         intent= new Intent(EventListActivity.this, EventActivity.class);
-                        Log.i(TAG,"Il valore di EVENT è:" +EVENT);
                         intent.putExtra(EVENT, dataStore.getEventList(tripIndex, dayIndex).get(positione));
-                        Log.i(TAG,"Il valore di EVENT è:" +EVENT);
                         startActivityForResult(intent, CODE3);
                 }
                 return false;

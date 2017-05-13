@@ -87,6 +87,7 @@ public class DataStore {
      */
     public void updateEvent(int tripIndex, int dayIndex, int eventIndex, Event event) {
         getEventList(tripIndex, dayIndex).set(eventIndex, event);
+        serialize();
     }
 
     /**
