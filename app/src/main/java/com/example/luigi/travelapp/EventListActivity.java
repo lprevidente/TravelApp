@@ -102,7 +102,7 @@ public class EventListActivity extends Activity{
                         return true;
 
                     case R.id.item_edit:
-                        intent= new Intent(EventListActivity.this, EventActivity.class);
+                        intent = new Intent(EventListActivity.this, EventActivity.class);
                         intent.putExtra(EVENT, dataStore.getEventList(tripIndex, dayIndex).get(positione));
                         startActivityForResult(intent, CODE3);
                 }
@@ -116,7 +116,7 @@ public class EventListActivity extends Activity{
                 intent = new Intent(EventListActivity.this, EventActivity.class);
                 intent.putExtra("TRIP_INDEX", tripIndex);
                 intent.putExtra("DAY_INDEX", dayIndex);
-                intent.putExtra(EVENT, "new");
+                intent.putExtra(EVENT, new String("new"));
                 startActivityForResult(intent, CODE);
             }
         }));

@@ -98,9 +98,8 @@ public class EventActivity extends Activity {
 
         TimePickerTextView = (TextView) findViewById(R.id.oraTextView);
 
-        if(extras.getString(EVENT)!=("new")){
-
-            Event event=(Event) extras.getSerializable(EVENT);
+        if (!extras.getString(EVENT).equals("new")) {
+            Event event = (Event) extras.getSerializable(EVENT);
             titleEventTextView.setText(event.getTitle());
             noteEditview.setText(event.getNote());
             notifyCheckBox.setChecked(event.getNotify());
@@ -120,9 +119,9 @@ public class EventActivity extends Activity {
                 resImage = R.drawable.ic_action_name_rest7aurant;
             }
         }
-        else{
-        setCurrentTime();}
-
+        else {
+            setCurrentTime();
+        }
 
         TimePickerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,8 +161,9 @@ public class EventActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (notifyCheckBox.isChecked())
-                    notify=true;
-                else notify=false;
+                    notify = true;
+                else
+                    notify = false;
             }
         });
 
@@ -200,7 +200,6 @@ public class EventActivity extends Activity {
             //Create and return a new instance of TimePickerDialog
             return new TimePickerDialog(getActivity(),this, hour, minute, android.text.format.DateFormat.is24HourFormat(getActivity()));
         }
-
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute){
             TimePickerTextView.setText(String.format("%02d", Integer.parseInt(String.valueOf(hourOfDay))) + ":" + String.format("%02d", Integer.parseInt(String.valueOf(minute))));
