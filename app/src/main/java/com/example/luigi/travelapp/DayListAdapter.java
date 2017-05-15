@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.List;
 
 
-
 /**
  * Created by Luigi on 08/05/2017.
  */
@@ -24,10 +23,13 @@ public class DayListAdapter extends BaseAdapter {
 
     private Context context;
     private List<Day> days = Collections.emptyList();
+    private int tripIndex;
+
 
     public DayListAdapter(int tripIndex, Context context) {
         this.context = context;
         days = dataStore.getDayList(tripIndex);
+        this.tripIndex = tripIndex;
     }
 
     public View getView(int position, View view, ViewGroup parent) {
@@ -35,8 +37,22 @@ public class DayListAdapter extends BaseAdapter {
             view = LayoutInflater.from(context).inflate(R.layout.day_list_adapter, parent, false);
 
         TextView numDaytxt = (TextView)view.findViewById(R.id.dayTextView);
-        numDaytxt.setText("Giorno " + days.get(position).getDayNumber());
 
+        TextView Event1txt = (TextView)view.findViewById(R.id.textViewEvent1);
+        TextView Event2txt = (TextView)view.findViewById(R.id.textViewEvent2);
+        TextView Event3txt = (TextView)view.findViewById(R.id.textViewEvent3);
+
+        numDaytxt.setText("Giorno " + days.get(position).getDayNumber());
+        if(!dataStore.getEventList(tripIndex, position).isEmpty()) {
+            int sizeEventList =dataStore.getEventList(tripIndex, position).size();
+                if (1<=sizeEventList)
+                    Event1txt.setText(dataStore.getEventList(tripIndex, position).get(0).getTitle());
+                if (2<=sizeEventList)
+                    Event2txt.setText(dataStore.getEventList(tripIndex, position).get(1).getTitle());
+                if (3<=sizeEventList)
+                    Event3txt.setText(dataStore.getEventList(tripIndex, position).get(2).getTitle());
+
+        }
         return view;
     }
 

@@ -69,7 +69,6 @@ public class EventActivity extends Activity {
         dayIndex = extras.getInt(DAY_INDEX);
 
         Toolbar toolbarEvent = (Toolbar) findViewById(R.id.toolbarEvent);
-
         toolbarEvent.setTitle(R.string.NewEvent);
         toolbarEvent.inflateMenu(R.menu.menu_event);
 
@@ -80,6 +79,8 @@ public class EventActivity extends Activity {
         radioFlight= (RadioButton) findViewById(R.id.radioFlight);
         radioPlaces= (RadioButton) findViewById(R.id.radioPlaces);
         radioPlaces.setChecked(true);
+        resImage= R.drawable.ic_action_name_place;
+
         radioResturant= (RadioButton) findViewById(R.id.radioRestaurant);
 
 

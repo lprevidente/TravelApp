@@ -1,11 +1,9 @@
 <resources>
     <string name="app_name">Travel App</string>
-    <string name="addItemHint">New To Do Item</string>
-    <string name="addItemContentDescription">New To Do Item</string>
     <string name="descr_overflow_button">Popup Menu</string>
     <string name="Item1">Modifica</string>
     <string name="Item2">Cancella</string>
-    <string name="titleCities">I tuoi viaggi</string>
+    <string name="titleCities">I tuoi Viaggi</string>
     <string name="titleEvents">I Tuoi Eventi</string>
     <string name="AddNewCity">Aggiungi un nuovo viaggio</string>
     <string name="autocomplete_hint">Inserisci una località</string>

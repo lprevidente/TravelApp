@@ -2,6 +2,7 @@ package com.example.luigi.travelapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
@@ -59,8 +60,6 @@ public class EventListActivity extends Activity{
         toolbar.inflateMenu(R.menu.menu_list_events);
         menu = toolbar.getMenu();
 
-        menu.findItem(R.id.item_edit).setVisible(false);
-        menu.findItem(R.id.item_delete).setVisible(false);
 
         list = (ListView)findViewById(R.id.eventListView);
         list.setAdapter(eventListAdapter);
@@ -72,8 +71,7 @@ public class EventListActivity extends Activity{
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                menu.findItem(R.id.item_edit).setVisible(true);
-                menu.findItem(R.id.item_delete).setVisible(true);
+                EditToolbar();
                 positione = position;
                 return true;
             }
@@ -85,8 +83,7 @@ public class EventListActivity extends Activity{
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                menu.findItem(R.id.item_edit).setVisible(false);
-                menu.findItem(R.id.item_delete).setVisible(false);
+                DefaulToolbar();
             }
         });
 
@@ -102,11 +99,11 @@ public class EventListActivity extends Activity{
                     case R.id.item_delete:
                         dataStore.deleteEvent(tripIndex, dayIndex, positione);
                         eventListAdapter.notifyDataSetChanged();
-                        menu.findItem(R.id.item_edit).setVisible(false);
-                        menu.findItem(R.id.item_delete).setVisible(false);
+                        DefaulToolbar();
                         return true;
 
                     case R.id.item_edit:
+                        DefaulToolbar();
                         intent= new Intent(EventListActivity.this, EventActivity.class);
                         intent.putExtra(EVENT, dataStore.getEventList(tripIndex, dayIndex).get(positione));
                         intent.putExtra(EVENTNEW, "NO");
@@ -120,6 +117,7 @@ public class EventListActivity extends Activity{
         addEvent.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DefaulToolbar();
                 intent = new Intent(EventListActivity.this, EventActivity.class);
                 intent.putExtra("TRIP_INDEX", tripIndex);
                 intent.putExtra("DAY_INDEX", dayIndex);
@@ -127,6 +125,13 @@ public class EventListActivity extends Activity{
                 startActivityForResult(intent, CODE2);
             }
         }));
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               DefaulToolbar();
+            }
+        });
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -143,7 +148,26 @@ public class EventListActivity extends Activity{
                 Event event = (Event)data.getSerializableExtra(EVENT_INDEX);
                 dataStore.updateEvent(tripIndex, dayIndex,positione, event);
                 eventListAdapter.notifyDataSetChanged();
+                DefaulToolbar();
             }
         }
+    }
+
+    private void DefaulToolbar(){
+        toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
+        toolbar.setTitle(R.string.titleEvents);
+        toolbar.setNavigationIcon(null);
+        menu.findItem(R.id.item_edit).setVisible(false);
+        menu.findItem(R.id.item_delete).setVisible(false);
+
+    }
+
+    private void EditToolbar(){
+        toolbar.setBackgroundColor(Color.GRAY);
+        toolbar.setTitle("");
+        toolbar.setNavigationIcon(R.drawable.ic_action_name_back);
+        menu.findItem(R.id.item_edit).setVisible(true);
+        menu.findItem(R.id.item_delete).setVisible(true);
+
     }
 }
