@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import android.os.Bundle;
+import android.support.v7.view.menu.MenuView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -20,8 +21,11 @@ import com.example.luigi.travelapp.datamodel.Trip;
 import java.text.ParseException;
 import java.util.Date;
 
+import static android.R.string.yes;
 import static com.example.luigi.travelapp.costanti.Constants.DATE_PICKER_FROM;
 import static com.example.luigi.travelapp.costanti.Constants.DATE_PICKER_TO;
+import static com.example.luigi.travelapp.costanti.Constants.EVENT;
+import static com.example.luigi.travelapp.costanti.Constants.EVENTNEW;
 import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
 import static com.example.luigi.travelapp.costanti.Constants.SEND_TRIP;
 
@@ -35,12 +39,15 @@ public class CityActivity extends Activity {
     private TextView partenzaTextView;
     private TextView ritornoTextView;
     private int id;
+    private Intent intent;
 
     private DatePickerDialog.OnDateSetListener from_dateListener, to_dateListener;
 
     public void onCreate(Bundle savedInstanceStat){
+
         super.onCreate(savedInstanceStat);
         setContentView(R.layout.activity_city);
+
 
         newtripEdit = (EditText)findViewById(R.id.autocompleteEditText);
         addTripbtn = (Button)findViewById(R.id.btnAddCity);
@@ -60,10 +67,26 @@ public class CityActivity extends Activity {
         };
 
         partenzaTextView = (TextView)findViewById(R.id.partenzaTextView);
-        partenzaTextView.setText(DateFormat.getDateInstance().format(Calendar.getInstance().getTime()));
-
         ritornoTextView = (TextView)findViewById(R.id.ritornoTextView);
-        ritornoTextView.setText(DateFormat.getDateInstance().format(Calendar.getInstance().getTime()));
+
+
+        if(getIntent().getSerializableExtra(EVENTNEW).equals("yes"))
+        {
+            ritornoTextView.setText(DateFormat.getDateInstance().format(Calendar.getInstance().getTime()));
+            partenzaTextView.setText(DateFormat.getDateInstance().format(Calendar.getInstance().getTime()));
+        }
+        else{
+            Trip trip= (Trip) getIntent().getSerializableExtra(EVENT);
+            newtripEdit.setText(trip.getTitleTrip());
+            Calendar tmp = Calendar.getInstance();
+
+            tmp.setTime(trip.getStartDate());
+            setDate2TextView(tmp, partenzaTextView);
+
+            tmp.setTime(trip.getEndDate());
+            setDate2TextView(tmp, ritornoTextView);
+
+        }
 
         partenzaTextView.setOnClickListener(new View.OnClickListener() {
             public void onClick (View v) {

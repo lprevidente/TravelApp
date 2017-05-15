@@ -7,7 +7,6 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -80,6 +79,7 @@ public class EventActivity extends Activity {
 
         radioFlight= (RadioButton) findViewById(R.id.radioFlight);
         radioPlaces= (RadioButton) findViewById(R.id.radioPlaces);
+        radioPlaces.setChecked(true);
         radioResturant= (RadioButton) findViewById(R.id.radioRestaurant);
 
 
@@ -216,6 +216,6 @@ public class EventActivity extends Activity {
         Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
-        TimePickerTextView.setText(String.valueOf(hour)+":" + String.valueOf(minute));
+        TimePickerTextView.setText(String.format("%02d", Integer.parseInt(String.valueOf(hour))) + ":" + String.format("%02d", Integer.parseInt(String.valueOf(minute))));
     }
 }

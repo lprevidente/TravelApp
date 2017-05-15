@@ -65,4 +65,5 @@ public class Trip implements Serializable {
     public void addDay(Day day){
         days.add(day);
     }
+
 }

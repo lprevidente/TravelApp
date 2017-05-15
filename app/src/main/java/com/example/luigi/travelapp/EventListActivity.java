@@ -36,7 +36,7 @@ public class EventListActivity extends Activity{
     private Toolbar toolbar;
     private Menu menu;
     private int positione;
-    private final int CODE = 2;
+    private final int CODE2 = 2;
     private final int CODE3 = 3;
 
     private Intent intent;
@@ -58,6 +58,9 @@ public class EventListActivity extends Activity{
         toolbar = (Toolbar)findViewById(R.id.toolbar_event_list);
         toolbar.inflateMenu(R.menu.menu_list_events);
         menu = toolbar.getMenu();
+
+        menu.findItem(R.id.item_edit).setVisible(false);
+        menu.findItem(R.id.item_delete).setVisible(false);
 
         list = (ListView)findViewById(R.id.eventListView);
         list.setAdapter(eventListAdapter);
@@ -121,13 +124,13 @@ public class EventListActivity extends Activity{
                 intent.putExtra("TRIP_INDEX", tripIndex);
                 intent.putExtra("DAY_INDEX", dayIndex);
                 intent.putExtra(EVENTNEW, "yes");
-                startActivityForResult(intent, CODE);
+                startActivityForResult(intent, CODE2);
             }
         }));
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CODE) {
+        if (requestCode == CODE2) {
             if (resultCode == Activity.RESULT_OK) {
                 Event event = (Event)data.getSerializableExtra(EVENT_INDEX);
                 // add the new trip in the data store
