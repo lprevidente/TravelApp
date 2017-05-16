@@ -23,5 +23,7 @@
     <string name="google_api_key">AIzaSyCKAfK7SUohc1UUZJtV42AdOnN2ayqNGZ4</string>
     <string name="title_activity_maps">Map</string>
     <string name="TitleEvent">Cosa vuoi fare?</string>
+    <string name="TitleEventEmpty">Inserisci il Titolo Evento</string>
+    <string name="TitleTripEmpty">Inserisci il titolo del Viaggio</string>
 
 </resources>

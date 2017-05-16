@@ -114,9 +114,13 @@ public class CityActivity extends Activity {
                     Intent intent = getIntent();
                     intent.putExtra(SEND_TRIP, trip);
                     setResult(Activity.RESULT_OK, intent);
+                    finish();
+                }
+                else{
+                   newtripEdit.setError(getString(R.string.TitleTripEmpty));
                 }
 
-                finish();
+
             }
         });
     }

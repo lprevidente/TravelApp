@@ -81,7 +81,7 @@ public class TripListActivity extends AppCompatActivity {
         addcity.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditToolbar();
+                DefaulToolbar();
                 intent = new Intent(TripListActivity.this, CityActivity.class);
                 intent.putExtra(EVENTNEW,"yes");
                 startActivityForResult(intent, CODE);

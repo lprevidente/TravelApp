@@ -43,6 +43,8 @@ public class DayListAdapter extends BaseAdapter {
         TextView Event3txt = (TextView)view.findViewById(R.id.textViewEvent3);
 
         numDaytxt.setText("Giorno " + days.get(position).getDayNumber());
+        //todo: fare in modo che quando si torni indietro la lista si aggiorni
+        // Mostro soltanto i primi 3 eventi
         if(!dataStore.getEventList(tripIndex, position).isEmpty()) {
             int sizeEventList =dataStore.getEventList(tripIndex, position).size();
                 if (1<=sizeEventList)

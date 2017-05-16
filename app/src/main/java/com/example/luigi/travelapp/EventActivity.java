@@ -149,6 +149,9 @@ public class EventActivity extends Activity {
                             finish();
                             return true;
                         }
+                        else{
+                            titleEventTextView.setError(getString(R.string.TitleEventEmpty));
+                        }
                 }
                 return false;
             }
