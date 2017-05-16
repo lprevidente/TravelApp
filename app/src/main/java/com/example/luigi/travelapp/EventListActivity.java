@@ -64,6 +64,8 @@ public class EventListActivity extends Activity{
         list = (ListView)findViewById(R.id.eventListView);
         list.setAdapter(eventListAdapter);
 
+        addEvent.setImageResource(R.drawable.ic_action_name_add);
+
         /**
          * se c'è un click lungo fa compare sulla toolbar due icone una serve per modificare e l'altra
          * per cancellare l'evento

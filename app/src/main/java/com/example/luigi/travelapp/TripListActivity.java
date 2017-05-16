@@ -54,6 +54,8 @@ public class TripListActivity extends AppCompatActivity {
         list = (ListView)findViewById(R.id.dayListView);
         list.setAdapter(adapter);
 
+        addcity.setImageResource(R.drawable.ic_action_name_add);
+
         /**
          * Make the two icon, DELETE and EDIT, visible on a long Click
          *

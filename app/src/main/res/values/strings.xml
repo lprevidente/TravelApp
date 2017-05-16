@@ -3,7 +3,7 @@
     <string name="descr_overflow_button">Popup Menu</string>
     <string name="Item1">Modifica</string>
     <string name="Item2">Cancella</string>
-    <string name="titleCities">I tuoi Viaggi</string>
+    <string name="titleCities">I Tuoi Viaggi</string>
     <string name="titleEvents">I Tuoi Eventi</string>
     <string name="AddNewCity">Aggiungi un nuovo viaggio</string>
     <string name="autocomplete_hint">Inserisci una località</string>
@@ -11,7 +11,6 @@
     <string name="DeleteTrip">Il viaggio è stato cancellato</string>
     <string name="ItemDone">Click when you have done</string>
     <string name="NewEvent">Nuovo Evento</string>
-
 
     <string name="titleEvent">Titolo</string>
     <string name="beginEvent">Ora di inizio</string>
@@ -25,5 +24,6 @@
     <string name="TitleEvent">Cosa vuoi fare?</string>
     <string name="TitleEventEmpty">Inserisci il Titolo Evento</string>
     <string name="TitleTripEmpty">Inserisci il titolo del Viaggio</string>
+    <string name="DayList">Lista dei Giorni</string>
 
 </resources>

@@ -96,7 +96,7 @@
         android:id="@+id/autocompleteEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/autocomplete_hint"
+
         android:ems="10"
         android:inputType="textPersonName"
         android:layout_marginRight="8dp"

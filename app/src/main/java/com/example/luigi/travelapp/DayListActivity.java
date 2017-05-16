@@ -1,8 +1,8 @@
 package com.example.luigi.travelapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -10,7 +10,7 @@ import android.widget.ListView;
 import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
-public class DayListActivity extends AppCompatActivity {
+public class DayListActivity extends Activity {
 
     private DayListAdapter dayListAdapter;
     private ListView listView;
