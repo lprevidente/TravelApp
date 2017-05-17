@@ -19,8 +19,6 @@ import static com.example.luigi.travelapp.util.DateUtil.incrementDay;
  */
 
 public class DataStore {
-    private static Context context;
-    private String path;
     private ArrayList<Trip> trips;
     private static DataStore dataStore=null;
 
@@ -30,7 +28,6 @@ public class DataStore {
      */
     public void addTrip(Trip trip) {
         trips.add(trip);
-        serialize();
     }
 
     /**
@@ -40,7 +37,6 @@ public class DataStore {
      */
     public void addDay(int tripIndex, Day day) {
         getDayList(tripIndex).add(day);
-        serialize();
     }
 
     /**
@@ -52,7 +48,6 @@ public class DataStore {
     public void addEvent(int tripIndex, int dayIndex, Event event) {
         getEventList(tripIndex, dayIndex).add(event);
         Collections.sort(getEventList(tripIndex, dayIndex));
-        serialize();
     }
 
     /**
@@ -88,7 +83,6 @@ public class DataStore {
      */
     public void updateEvent(int tripIndex, int dayIndex, int eventIndex, Event event) {
         getEventList(tripIndex, dayIndex).set(eventIndex, event);
-        serialize();
     }
 
     /**
@@ -150,68 +144,7 @@ public class DataStore {
      * costruttore del datastore
      */
     private DataStore() {
-        path = "yourtrips.dat";
-        //context = getApplicationContext();
-        //trips = new ArrayList<>();
-
-        if (fileExists(path)) {
-            // the app loads existing data from disk
-            deserialize();
-        }
-        else {
-            // the app cannot find the file where trips are stored
-            // so it initializes a new one and saves it to disk
-            trips = new ArrayList<>();
-            serialize();
-        }
-    }
-
-    /**
-     * metodo per serializzare l'arraylist dei viaggi
-     */
-    public void serialize() {
-        FileOutputStream fos;
-        try {
-            fos = context.openFileOutput(path, Context.MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(trips);
-            oos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * metodo per deserializzare l'arraylist dei viaggi
-     */
-    public void deserialize() {
-        try {
-            FileInputStream fis = context.openFileInput(path);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            this.trips = (ArrayList<Trip>) ois.readObject();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * metodo per controllare se un file esiste o meno su disco (necessario per controllare se il file locale
-     * che mantiene la lista dei viaggi è già presente o meno su disco)
-     * @param path percorso del file
-     * @return booleano true o false a seconda se il file ci sia o meno
-     */
-    public boolean fileExists(String path) {
-        File file = context.getFileStreamPath(path);
-        if (file == null || !file.exists()) {
-            return false;
-        }
-        return true;
+        trips = new ArrayList<>();
     }
 
     public static DataStore getInstance(){
@@ -219,17 +152,5 @@ public class DataStore {
             dataStore = new DataStore();
         }
         return dataStore;
-    }
-
-    public static DataStore getInstance(Context context){
-        setContext(context);
-        if (dataStore == null){
-            dataStore = new DataStore();
-        }
-        return dataStore;
-    }
-
-    public static void setContext(Context a) {
-        context = a;
     }
 }

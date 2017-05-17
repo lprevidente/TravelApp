@@ -12,9 +12,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Trip;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import static com.example.luigi.travelapp.costanti.Constants.EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.EVENTNEW;
@@ -39,7 +42,17 @@ public class TripListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_list);
 
-        dataStore = DataStore.getInstance(this.getApplicationContext());
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            // devo fare il login
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        } else {
+            // sono già loggato
+            Toast.makeText(getApplicationContext(), "Loggato come: "+  user.getEmail(), Toast.LENGTH_SHORT).show();
+        }
+
+        dataStore = DataStore.getInstance();
 
         adapter = new TripListAdapter(this);
         adapter.update(dataStore.getListTrip());

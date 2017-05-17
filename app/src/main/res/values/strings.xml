@@ -19,11 +19,12 @@
     <string name="title_activity_list_days">ListDaysActivity</string>
 
     <string name="ToolbarListDays">Ecco il tuo fantastico programma</string>
-    <string name="google_api_key">AIzaSyCKAfK7SUohc1UUZJtV42AdOnN2ayqNGZ4</string>
     <string name="title_activity_maps">Map</string>
     <string name="TitleEvent">Cosa vuoi fare?</string>
     <string name="TitleEventEmpty">Inserisci il Titolo Evento</string>
     <string name="TitleTripEmpty">Inserisci il titolo del Viaggio</string>
     <string name="DayList">Lista dei Giorni</string>
+    <string name="textEmail">email</string>
+    <string name="textPassword">Password</string>
 
 </resources>
