@@ -22,7 +22,6 @@ public class DataStore {
     private static Context context;
     private String path;
     private ArrayList<Trip> trips;
-
     private static DataStore dataStore=null;
 
     /**
