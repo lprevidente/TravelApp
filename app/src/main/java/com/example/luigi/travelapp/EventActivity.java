@@ -18,6 +18,7 @@ import android.widget.TimePicker;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Event;
+import com.example.luigi.travelapp.datamodel.Trip;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -138,7 +139,10 @@ public class EventActivity extends Activity {
                             // get the event's day date and set the new hour and minute
                             Calendar oldcal = Calendar.getInstance();
                             Calendar newcal = Calendar.getInstance();
-                            oldcal.setTime(dataStore.getDay(tripIndex, dayIndex).getDate());
+                            Trip tmpTrip = dataStore.getTrip(tripIndex);
+
+                            oldcal.setTime(tmpTrip.getStartDate());
+                            oldcal.add(Calendar.DATE, dayIndex);
                             newcal.setTime(setString2DateTime(oldcal.getTime(), TimePickerTextView.getText().toString()));
 
                             Event event = new Event(newcal.getTime(),

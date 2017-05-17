@@ -153,7 +153,7 @@ public class TripListActivity extends AppCompatActivity {
     }
 
     private void DefaulToolbar(){
-        toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
+        //toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
         toolbar.setTitle(R.string.titleCities);
         toolbar.setNavigationIcon(null);
         menu.findItem(R.id.item_edit).setVisible(false);

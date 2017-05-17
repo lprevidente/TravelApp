@@ -10,7 +10,7 @@ import java.util.Date;
  * Created by Luigi on 08/05/2017.
  */
 
-public class Event implements Comparable<Event>, Serializable{
+public class Event implements Comparable<Event>, Serializable {
     private Date date;
     private String title;
     private String note;

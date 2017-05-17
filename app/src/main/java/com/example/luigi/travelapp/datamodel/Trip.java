@@ -27,7 +27,7 @@ public class Trip implements Serializable {
 
         days = new ArrayList<>();
         for (int i = 1; i <= getDaysNumber(); i++) {
-            days.add(new Day(incrementDay(startDate, i - 1), i));
+            days.add(new Day(i));
         }
     }
 

@@ -21,8 +21,6 @@ import static com.example.luigi.travelapp.util.DateUtil.incrementDay;
  */
 
 public class DataStore {
-    private static Context context;
-    private String path;
     private ArrayList<Trip> trips;
     private static DataStore dataStore=null;
     FirebaseDatabase database;
@@ -99,7 +97,7 @@ public class DataStore {
             }
         } else if (newDayNumber > oldDayNumber) {
             for (int i = oldDayNumber + 1; i <= newDayNumber; i++) {
-                tmp.addDay(new Day(incrementDay(tmp.getStartDate(), i), i));
+                tmp.addDay(new Day(i));
             }
         }
 
@@ -203,4 +201,14 @@ public class DataStore {
      * costruttore del datastore
      */
 
+    public static DataStore getInstance(){
+        if (dataStore == null){
+            dataStore = new DataStore();
+        }
+        return dataStore;
+    }
+
+    public Trip getTrip(int tripIndex) {
+        return trips.get(tripIndex);
+    }
 }
