@@ -1,6 +1,5 @@
 package com.example.luigi.travelapp.datamodel;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -13,8 +12,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
-import static com.example.luigi.travelapp.util.DateUtil.incrementDay;
 
 /**
  * Created by Bernardo on 08/05/2017.
@@ -195,17 +192,6 @@ public class DataStore {
         });
 
         return trips;
-    }
-
-    /**
-     * costruttore del datastore
-     */
-
-    public static DataStore getInstance(){
-        if (dataStore == null){
-            dataStore = new DataStore();
-        }
-        return dataStore;
     }
 
     public Trip getTrip(int tripIndex) {
