@@ -1,14 +1,16 @@
 package com.example.luigi.travelapp.datamodel;
 
 import android.content.Context;
+import android.util.Log;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -19,8 +21,28 @@ import static com.example.luigi.travelapp.util.DateUtil.incrementDay;
  */
 
 public class DataStore {
+    private static Context context;
+    private String path;
     private ArrayList<Trip> trips;
     private static DataStore dataStore=null;
+    FirebaseDatabase database;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+
+
+    private DataStore() {
+        // i create my database
+        database = FirebaseDatabase.getInstance();
+        trips = new ArrayList<> ();
+
+    }
+
+    public static DataStore getInstance(){
+        if (dataStore == null){
+            dataStore = new DataStore();
+        }
+        return dataStore;
+    }
 
     /**
      * aggiunge un nuovo viaggio all'array contenente la lista dei viaggi
@@ -28,6 +50,8 @@ public class DataStore {
      */
     public void addTrip(Trip trip) {
         trips.add(trip);
+        DatabaseReference reference =  database.getReference(user.getUid());
+        reference.setValue(trips);
     }
 
     /**
@@ -37,6 +61,10 @@ public class DataStore {
      */
     public void addDay(int tripIndex, Day day) {
         getDayList(tripIndex).add(day);
+        DatabaseReference reference =  database.getReference(user.getUid())
+                .child(Integer.toString(tripIndex));
+        reference.setValue(day);
+
     }
 
     /**
@@ -48,6 +76,10 @@ public class DataStore {
     public void addEvent(int tripIndex, int dayIndex, Event event) {
         getEventList(tripIndex, dayIndex).add(event);
         Collections.sort(getEventList(tripIndex, dayIndex));
+        DatabaseReference reference =  database.getReference(user.getUid())
+                .child(Integer.toString(tripIndex)).child(Integer.toString(dayIndex));
+        reference.setValue(event);
+
     }
 
     /**
@@ -71,7 +103,11 @@ public class DataStore {
             }
         }
 
-        trips.set(tripIndex, tmp);
+        // trips.set(tripIndex, tmp);
+        DatabaseReference reference =  database.getReference(user.getUid());
+                //.child(Integer.toString(tripIndex));
+        reference.setValue(tmp);
+
     }
 
     /**
@@ -109,7 +145,9 @@ public class DataStore {
      * @return ArrayList dei giorni
      */
     public ArrayList<Day> getDayList(int tripIndex) {
-        return trips.get(tripIndex).getDayList();
+
+
+         return trips.get(tripIndex).getDayList();
     }
 
     /**
@@ -137,20 +175,32 @@ public class DataStore {
      * @return ArrayList<Trip> contenente i viaggi
      */
     public ArrayList<Trip> getListTrip(){
+
+        final DatabaseReference reference =  database.getReference(user.getUid()).child(Integer.toString(1));
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+               // GenericTypeIndicator<ArrayList<Trip>> tmp = new GenericTypeIndicator<ArrayList<Trip>>() {};
+                // ArrayList<Trip> value = dataSnapshot.getValue(tmp);
+
+                Trip value = dataSnapshot.getValue(Trip.class);
+                 Log.i("DataSore", "Value is: " + value);
+                trips.add(value);
+               // String value = dataSnapshot.getValue(String.class);
+              //  Log.d("Va", "Value is: " + value);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Failed to read value
+            }
+        });
+
         return trips;
     }
 
     /**
      * costruttore del datastore
      */
-    private DataStore() {
-        trips = new ArrayList<>();
-    }
 
-    public static DataStore getInstance(){
-        if (dataStore == null){
-            dataStore = new DataStore();
-        }
-        return dataStore;
-    }
 }

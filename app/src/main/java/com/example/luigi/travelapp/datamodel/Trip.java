@@ -16,6 +16,9 @@ public class Trip implements Serializable {
     private Date endDate;
     private ArrayList<Day> days;
 
+    public Trip() {
+    }
+
     // Constructor
     public Trip(String titleTrip, Date startDate, Date endDate) {
         this.titleTrip = titleTrip;

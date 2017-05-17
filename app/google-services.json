@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "449146579819-cvonjpi5upqjh83m2hhbggms6n4b8n3g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.luigi.travelapp",
+            "certificate_hash": "6f0fe5aaf8fec0d35d2e372dfbb029cf6476cb8f"
+          }
+        },
+        {
           "client_id": "449146579819-4sg1mcd7t0t1pk8t619bfj6jh7c29u64.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -30,6 +38,9 @@
       "api_key": [
         {
           "current_key": "AIzaSyBPd8mDijo16li6nURwxZNe7xy4g43c5VU"
+        },
+        {
+          "current_key": "AIzaSyD9EMlMwMKr8w8SzV4-NLasGN0itppCc_U"
         }
       ],
       "services": {
