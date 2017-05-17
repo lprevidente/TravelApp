@@ -67,7 +67,7 @@ public class DataStore {
             }
         } else if (newDayNumber > oldDayNumber) {
             for (int i = oldDayNumber + 1; i <= newDayNumber; i++) {
-                tmp.addDay(new Day(incrementDay(tmp.getStartDate(), i), i));
+                tmp.addDay(new Day(i));
             }
         }
 
@@ -152,5 +152,9 @@ public class DataStore {
             dataStore = new DataStore();
         }
         return dataStore;
+    }
+
+    public Trip getTrip(int tripIndex) {
+        return trips.get(tripIndex);
     }
 }
