@@ -20,6 +20,10 @@ public class Day implements Serializable{
         events = new ArrayList<>();
     }
 
+    public Day() {
+
+    }
+
     public int getNumber() {
         return number;
     }

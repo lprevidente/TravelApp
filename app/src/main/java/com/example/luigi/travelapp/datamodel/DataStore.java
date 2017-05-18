@@ -8,16 +8,21 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 
+import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY_EVENT_LIST;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY_NUMBER;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_IMAGE;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_NOTE;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_NOTIFY;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_TIME;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_TITLE;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP_DAY_LIST;
-import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP_END_DATE;
-import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP_START_DATE;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP_END_TIME;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP_START_TIME;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP_TITLE;
 
 /**
@@ -57,13 +62,31 @@ public class DataStore {
                 for (DataSnapshot item : dataSnapshot.getChildren()) {
                     Trip trip = new Trip();
 
-                    // gli indici dell'arraylist sono le nostre chiavi per identificare i viaggi
-                    trip.setTitle(item.child(Integer.toString(trips.size())).child(KEY_TRIP_TITLE).getValue(String.class));
-                    trip.setStartDate(item.child(Integer.toString(trips.size())).child(KEY_TRIP_START_DATE).getValue(Date.class));
-                    trip.setEndDate(item.child(Integer.toString(trips.size())).child(KEY_TRIP_END_DATE).getValue(Date.class));
+                    trip.setTitle(item.child(KEY_TRIP_TITLE).getValue(String.class));
+                    trip.setStartTime(item.child(KEY_TRIP_START_TIME).getValue(Long.class));
+                    trip.setEndTime(item.child(KEY_TRIP_END_TIME).getValue(Long.class));
 
-                    GenericTypeIndicator<ArrayList<Day>> typeIndicator = new GenericTypeIndicator<ArrayList<Day>>() {};
-                    trip.setDays(item.child(Integer.toString(trips.size())).child(KEY_TRIP_DAY_LIST).getValue(typeIndicator));
+                    ArrayList<Day> dayList = new ArrayList<>();
+                    for (DataSnapshot giorno : item.child(KEY_TRIP_DAY_LIST).getChildren()) {
+                        Day day = new Day();
+                        day.setNumber(giorno.child(KEY_DAY_NUMBER).getValue(Integer.class));
+
+                        ArrayList<Event> eventList = new ArrayList<>();
+                        for (DataSnapshot evento : giorno.child(KEY_DAY_EVENT_LIST).getChildren()) {
+                            Event event = new Event();
+                            event.setTime(evento.child(KEY_EVENT_TIME).getValue(Long.class));
+                            event.setTitle(evento.child(KEY_EVENT_TITLE).getValue(String.class));
+                            event.setNote(evento.child(KEY_EVENT_NOTE).getValue(String.class));
+                            event.setNotify(evento.child(KEY_EVENT_NOTIFY).getValue(Boolean.class));
+                            event.setImage(evento.child(KEY_EVENT_IMAGE).getValue(Integer.class));
+
+                            eventList.add(event);
+                        }
+                        day.setEvents(eventList);
+
+                        dayList.add(day);
+                    }
+                    trip.setDays(dayList);
 
                     trips.add(trip);
                 }
@@ -94,19 +117,6 @@ public class DataStore {
     }
 
     /**
-     * aggiunge un nuovo giorno al viaggio desiderato
-     * @param tripIndex indice del viaggio
-     * @param day oggetto di tipo Day da aggiungere
-     */
-    public void addDay(int tripIndex, Day day) {
-        getDayList(tripIndex).add(day);
-        /*DatabaseReference reference =  database.getReference(user.getUid())
-                .child(Integer.toString(tripIndex));
-        reference.setValue(day);*/
-
-    }
-
-    /**
      * aggiunge un evento al giorno desiderato del viaggio desiderato
      * @param tripIndex indice del viaggio
      * @param dayIndex indice del giorno
@@ -115,9 +125,12 @@ public class DataStore {
     public void addEvent(int tripIndex, int dayIndex, Event event) {
         getEventList(tripIndex, dayIndex).add(event);
         Collections.sort(getEventList(tripIndex, dayIndex));
-        /*DatabaseReference reference =  database.getReference(user.getUid())
-                .child(Integer.toString(tripIndex)).child(Integer.toString(dayIndex));
-        reference.setValue(event);*/
+        DatabaseReference reference = database.getReference(user.getUid())
+                .child(Integer.toString(tripIndex)).child(KEY_TRIP_DAY_LIST)
+                .child(Integer.toString(dayIndex))
+                .child(KEY_DAY_EVENT_LIST)
+                .child(Integer.toString(getEventList(tripIndex, dayIndex).size() - 1));
+        reference.setValue(event);
     }
 
     /**

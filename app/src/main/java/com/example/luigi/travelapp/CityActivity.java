@@ -40,7 +40,6 @@ public class CityActivity extends Activity {
     private TextView partenzaTextView;
     private TextView ritornoTextView;
     private int id;
-    private Intent intent;
 
     private DatePickerDialog.OnDateSetListener from_dateListener, to_dateListener;
 
@@ -71,20 +70,19 @@ public class CityActivity extends Activity {
         ritornoTextView = (TextView)findViewById(R.id.ritornoTextView);
 
 
-        if(getIntent().getSerializableExtra(EVENTNEW).equals("yes"))
-        {
+        if (getIntent().getSerializableExtra(EVENTNEW).equals("yes")) {
             ritornoTextView.setText(DateFormat.getDateInstance().format(Calendar.getInstance().getTime()));
             partenzaTextView.setText(DateFormat.getDateInstance().format(Calendar.getInstance().getTime()));
         }
-        else{
-            Trip trip= (Trip) getIntent().getSerializableExtra(EVENT);
+        else {
+            Trip trip = (Trip) getIntent().getSerializableExtra(EVENT);
             newtripEdit.setText(trip.getTitle());
             Calendar tmp = Calendar.getInstance();
 
-            tmp.setTime(trip.getStartDate());
+            tmp.setTime(new Date(trip.getStartTime()));
             setDate2TextView(tmp, partenzaTextView);
 
-            tmp.setTime(trip.getEndDate());
+            tmp.setTime(new Date(trip.getEndTime()));
             setDate2TextView(tmp, ritornoTextView);
         }
 
@@ -110,19 +108,14 @@ public class CityActivity extends Activity {
                 DataStore dataStore = DataStore.getInstance();
                 String titleTrip = newtripEdit.getText().toString();
 
-                if (!titleTrip.equals(NULLTITLE) && checkValidDateRange()) {
+                if (!titleTrip.isEmpty() && checkValidDateRange()) {
                     Trip trip = new Trip(titleTrip, String2Date(partenzaTextView.getText().toString()), String2Date(ritornoTextView.getText().toString()));
                     dataStore.addTrip(trip);
-                    Intent intent = getIntent();
-                    //intent.putExtra(SEND_TRIP, trip);
-                    setResult(Activity.RESULT_OK, intent);
+                    setResult(Activity.RESULT_OK, getIntent());
                     finish();
-                }
-                else{
+                } else {
                    newtripEdit.setError(getString(R.string.TitleTripEmpty));
                 }
-
-
             }
         });
     }

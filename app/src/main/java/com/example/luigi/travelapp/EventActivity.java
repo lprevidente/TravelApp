@@ -102,8 +102,8 @@ public class EventActivity extends Activity {
         if(extras.getString(EVENTNEW).equals("yes")) {
             setCurrentTime();
         }
-        else{
-            Event event=(Event) intent.getSerializableExtra(EVENT);
+        else {
+            Event event = (Event)intent.getSerializableExtra(EVENT);
             titleEventTextView.setText(event.getTitle());
             noteEditview.setText(event.getNote());
             notifyCheckBox.setChecked(event.getNotify());
@@ -141,7 +141,7 @@ public class EventActivity extends Activity {
                             Calendar newcal = Calendar.getInstance();
                             Trip tmpTrip = dataStore.getTrips().get(tripIndex);
 
-                            oldcal.setTime(tmpTrip.getStartDate());
+                            oldcal.setTime(new Date(tmpTrip.getStartTime()));
                             oldcal.add(Calendar.DATE, dayIndex);
                             newcal.setTime(setString2DateTime(oldcal.getTime(), TimePickerTextView.getText().toString()));
 

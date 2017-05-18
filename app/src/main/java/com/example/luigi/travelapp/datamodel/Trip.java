@@ -12,8 +12,8 @@ import static com.example.luigi.travelapp.util.DateUtil.incrementDay;
 
 public class Trip implements Serializable {
     private String title;
-    private Date startDate;
-    private Date endDate;
+    private long startTime;
+    private long endTime;
 
     private ArrayList<Day> days;
 
@@ -23,8 +23,8 @@ public class Trip implements Serializable {
     // Constructor
     public Trip(String title, Date startDate, Date endDate) {
         this.title = title;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        startTime = startDate.getTime();
+        endTime = endDate.getTime();
 
         days = new ArrayList<>();
         for (int i = 1; i <= getDaysNumber(); i++) {
@@ -32,34 +32,32 @@ public class Trip implements Serializable {
         }
     }
 
-    // Get Methods
     public String getTitle() {
         return title;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public long getStartTime() {
+        return startTime;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
     }
 
-    // Set Methods
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
+    }
+
     public void setTitle(String titleTrip) {
         this.title = titleTrip;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
     public int getDaysNumber() {
-        return (int)((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+        return (int)((endTime - startTime) / (1000 * 60 * 60 * 24)) + 1;
     }
 
     public ArrayList<Day> getDays() {

@@ -22,14 +22,14 @@ public class Constants {
 
     // costanti per le chiavi
     public static final String KEY_TRIP_TITLE = "title";
-    public static final String KEY_TRIP_START_DATE = "startDate";
-    public static final String KEY_TRIP_END_DATE = "endDate";
+    public static final String KEY_TRIP_START_TIME = "startTime";
+    public static final String KEY_TRIP_END_TIME = "endTime";
     public static final String KEY_TRIP_DAY_LIST = "days";
 
     public static final String KEY_DAY_NUMBER = "number";
     public static final String KEY_DAY_EVENT_LIST = "events";
 
-    public static final String KEY_EVENT_DATE = "date";
+    public static final String KEY_EVENT_TIME = "time";
     public static final String KEY_EVENT_TITLE = "title";
     public static final String KEY_EVENT_NOTE = "note";
     public static final String KEY_EVENT_NOTIFY = "notify";

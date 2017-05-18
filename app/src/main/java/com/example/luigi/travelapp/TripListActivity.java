@@ -44,11 +44,9 @@ public class TripListActivity extends AppCompatActivity {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
-            // devo fare il login
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         } else {
-            // sono già loggato
             Toast.makeText(getApplicationContext(), "Loggato come: "+  user.getEmail(), Toast.LENGTH_SHORT).show();
         }
 
@@ -114,8 +112,7 @@ public class TripListActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_delete:
-                        //dataStore.deleteTrip(posizione);
-                        //adapter.notifyDataSetChanged();
+                        dataStore.deleteTrip(posizione);
                         DefaulToolbar();
                         return true;
                     case R.id.item_edit:
@@ -133,17 +130,14 @@ public class TripListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                //Trip trip = (Trip) data.getSerializableExtra(SEND_TRIP);
-                //dataStore.addTrip(trip);
-                //adapter.notifyDataSetChanged();
                 menu.findItem(R.id.item_edit).setVisible(false);
                 menu.findItem(R.id.item_delete).setVisible(false);
             }
         }
         if(requestCode==CODE4){
             if(resultCode==Activity.RESULT_OK){
-                //Trip trip = (Trip) data.getSerializableExtra(EVENT);
-                //dataStore.updateTrip(posizione, trip);
+                Trip trip = (Trip)data.getSerializableExtra(EVENT);
+                dataStore.updateTrip(posizione, trip);
                 //adapter.notifyDataSetChanged();
                 menu.findItem(R.id.item_edit).setVisible(false);
                 menu.findItem(R.id.item_delete).setVisible(false);
@@ -166,5 +160,11 @@ public class TripListActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.ic_action_name_back);
         menu.findItem(R.id.item_edit).setVisible(true);
         menu.findItem(R.id.item_delete).setVisible(true);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dataStore.endTripsObs();
     }
 }
