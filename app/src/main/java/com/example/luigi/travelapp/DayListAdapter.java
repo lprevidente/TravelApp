@@ -51,7 +51,7 @@ public class DayListAdapter extends BaseAdapter {
         //todo: fare in modo che quando si torni indietro la lista si aggiorni
         // Mostro soltanto i primi 3 eventi
         if(!dataStore.getEventList(tripIndex, position).isEmpty()) {
-            int sizeEventList =dataStore.getEventList(tripIndex, position).size();
+            int sizeEventList = dataStore.getEventList(tripIndex, position).size();
                 if (1<=sizeEventList)
                     Event1txt.setText(dataStore.getEventList(tripIndex, position).get(0).getTitle());
                 if (2<=sizeEventList)

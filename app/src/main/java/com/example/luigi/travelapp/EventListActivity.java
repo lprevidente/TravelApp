@@ -104,7 +104,7 @@ public class EventListActivity extends Activity{
                 switch (item.getItemId()) {
                     case R.id.item_delete:
                         dataStore.deleteEvent(tripIndex, dayIndex, positione);
-                        eventListAdapter.notifyDataSetChanged();
+                        //eventListAdapter.notifyDataSetChanged();
                         DefaulToolbar();
                         return true;
 
@@ -146,21 +146,21 @@ public class EventListActivity extends Activity{
                 Event event = (Event)data.getSerializableExtra(EVENT_INDEX);
                 // add the new trip in the data store
                 dataStore.addEvent(tripIndex, dayIndex, event);
-                eventListAdapter.notifyDataSetChanged();
+                //eventListAdapter.notifyDataSetChanged();
             }
         }
         if(requestCode==CODE3){
             if(resultCode==Activity.RESULT_OK){
                 Event event = (Event)data.getSerializableExtra(EVENT_INDEX);
-                dataStore.updateEvent(tripIndex, dayIndex,positione, event);
-                eventListAdapter.notifyDataSetChanged();
+                //dataStore.updateEvent(tripIndex, dayIndex,positione, event);
+                //eventListAdapter.notifyDataSetChanged();
                 DefaulToolbar();
             }
         }
     }
 
     private void DefaulToolbar(){
-        toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
+        //toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
         toolbar.setTitle(R.string.titleEvents);
         toolbar.setNavigationIcon(null);
         menu.findItem(R.id.item_edit).setVisible(false);

@@ -176,8 +176,10 @@ public class DataStore {
      * cancella viaggio dall'arrayList dei viaggi
      * @param i indice del viaggio da eliminare
      */
+    // TODO: usare key generate automaticamente e rimuovere l'integer.parseInt, che può causare problemi di alias
     public void deleteTrip(int i) {
-        trips.remove(i);
+        DatabaseReference reference = database.getReference(user.getUid()).child(Integer.toString(i));
+        reference.removeValue();
     }
 
     /**
@@ -187,7 +189,12 @@ public class DataStore {
      * @param eventIndex indice dell'evento
      */
     public void deleteEvent(int tripIndex, int dayIndex, int eventIndex) {
-        getEventList(tripIndex, dayIndex).remove(eventIndex);
+        DatabaseReference reference = database.getReference(user.getUid())
+                .child(Integer.toString(tripIndex)).child(KEY_TRIP_DAY_LIST)
+                .child(Integer.toString(dayIndex))
+                .child(KEY_DAY_EVENT_LIST)
+                .child(Integer.toString(eventIndex));
+        reference.removeValue();
     }
 
     /**
