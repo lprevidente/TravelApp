@@ -52,14 +52,18 @@ public class EventListActivity extends Activity{
         dayIndex = extras.getInt(DAY_INDEX);
 
         eventListAdapter = new EventListAdapter(this);
-        eventListAdapter.update(dataStore.getEventList(tripIndex, dayIndex));
+        dataStore.beginTripsObs(new DataStore.UpdateListener() {
+            @Override
+            public void tripsUpdated() {
+                eventListAdapter.update(dataStore.getEventList(tripIndex, dayIndex));
+            }
+        });
 
         addEvent = (FloatingActionButton)findViewById(R.id.AddEvent);
 
         toolbar = (Toolbar)findViewById(R.id.toolbar_event_list);
         toolbar.inflateMenu(R.menu.menu_list_events);
         menu = toolbar.getMenu();
-
 
         list = (ListView)findViewById(R.id.eventListView);
         list.setAdapter(eventListAdapter);

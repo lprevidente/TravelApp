@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Day;
+import com.example.luigi.travelapp.datamodel.Trip;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,8 +20,8 @@ import java.util.List;
  */
 
 public class DayListAdapter extends BaseAdapter {
-    private DataStore dataStore= DataStore.getInstance();
 
+    private DataStore dataStore = DataStore.getInstance();
     private Context context;
     private List<Day> days = Collections.emptyList();
     private int tripIndex;
@@ -28,8 +29,12 @@ public class DayListAdapter extends BaseAdapter {
 
     public DayListAdapter(int tripIndex, Context context) {
         this.context = context;
-        days = dataStore.getDayList(tripIndex);
         this.tripIndex = tripIndex;
+    }
+
+    public void update() {
+        days = dataStore.getDayList(tripIndex);
+        notifyDataSetChanged();
     }
 
     public View getView(int position, View view, ViewGroup parent) {
@@ -53,7 +58,6 @@ public class DayListAdapter extends BaseAdapter {
                     Event2txt.setText(dataStore.getEventList(tripIndex, position).get(1).getTitle());
                 if (3<=sizeEventList)
                     Event3txt.setText(dataStore.getEventList(tripIndex, position).get(2).getTitle());
-
         }
         return view;
     }

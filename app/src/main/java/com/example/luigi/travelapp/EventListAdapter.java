@@ -29,7 +29,10 @@ public class EventListAdapter extends BaseAdapter {
         this.context = context;
     }
 
-    public void update(List<Event> newList) { events = newList; }
+    public void update(List<Event> newList) {
+        events = newList;
+        notifyDataSetChanged();
+    }
 
     public View getView(final int position, View view, ViewGroup parent) {
         if (view == null)

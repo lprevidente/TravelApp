@@ -7,11 +7,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.luigi.travelapp.datamodel.DataStore;
+
 import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
 public class DayListActivity extends Activity {
 
+    private DataStore dataStore = DataStore.getInstance();
     private DayListAdapter dayListAdapter;
     private ListView listView;
     private int tripIndex;
@@ -25,6 +28,12 @@ public class DayListActivity extends Activity {
         tripIndex = extras.getInt(TRIP_INDEX);
 
         dayListAdapter = new DayListAdapter(tripIndex, this);
+        dataStore.beginTripsObs(new DataStore.UpdateListener() {
+            @Override
+            public void tripsUpdated() {
+                dayListAdapter.update();
+            }
+        });
 
         listView = (ListView)findViewById(R.id.dayListView);
         listView.setAdapter(dayListAdapter);
@@ -37,5 +46,11 @@ public class DayListActivity extends Activity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dataStore.endTripsObs();
     }
 }
