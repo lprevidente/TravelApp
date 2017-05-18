@@ -20,16 +20,11 @@ import java.util.Collections;
 public class DataStore {
     private ArrayList<Trip> trips;
     private static DataStore dataStore=null;
-    FirebaseDatabase database;
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-
+    //FirebaseDatabase database;
+    //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     private DataStore() {
-        // i create my database
-        database = FirebaseDatabase.getInstance();
         trips = new ArrayList<> ();
-
     }
 
     public static DataStore getInstance(){
@@ -45,8 +40,8 @@ public class DataStore {
      */
     public void addTrip(Trip trip) {
         trips.add(trip);
-        DatabaseReference reference =  database.getReference(user.getUid());
-        reference.setValue(trips);
+        //DatabaseReference reference =  database.getReference(user.getUid());
+        //reference.setValue(trips);
     }
 
     /**
@@ -56,9 +51,9 @@ public class DataStore {
      */
     public void addDay(int tripIndex, Day day) {
         getDayList(tripIndex).add(day);
-        DatabaseReference reference =  database.getReference(user.getUid())
+        /*DatabaseReference reference =  database.getReference(user.getUid())
                 .child(Integer.toString(tripIndex));
-        reference.setValue(day);
+        reference.setValue(day);*/
 
     }
 
@@ -71,9 +66,9 @@ public class DataStore {
     public void addEvent(int tripIndex, int dayIndex, Event event) {
         getEventList(tripIndex, dayIndex).add(event);
         Collections.sort(getEventList(tripIndex, dayIndex));
-        DatabaseReference reference =  database.getReference(user.getUid())
+        /*DatabaseReference reference =  database.getReference(user.getUid())
                 .child(Integer.toString(tripIndex)).child(Integer.toString(dayIndex));
-        reference.setValue(event);
+        reference.setValue(event);*/
 
     }
 
@@ -98,10 +93,10 @@ public class DataStore {
             }
         }
 
-        // trips.set(tripIndex, tmp);
-        DatabaseReference reference =  database.getReference(user.getUid());
+        trips.set(tripIndex, tmp);
+        /*DatabaseReference reference =  database.getReference(user.getUid());
                 //.child(Integer.toString(tripIndex));
-        reference.setValue(tmp);
+        reference.setValue(tmp);*/
 
     }
 
@@ -140,8 +135,6 @@ public class DataStore {
      * @return ArrayList dei giorni
      */
     public ArrayList<Day> getDayList(int tripIndex) {
-
-
          return trips.get(tripIndex).getDayList();
     }
 
@@ -162,7 +155,7 @@ public class DataStore {
      * @return lista degli eventi relativi al giorno
      */
     public ArrayList<Event> getEventList(int tripIndex, int dayIndex) {
-        return getDay(tripIndex, dayIndex).getEventList();
+        return getDay(tripIndex, dayIndex).getEvents();
     }
 
     /**
@@ -170,27 +163,6 @@ public class DataStore {
      * @return ArrayList<Trip> contenente i viaggi
      */
     public ArrayList<Trip> getListTrip(){
-
-        final DatabaseReference reference =  database.getReference(user.getUid()).child(Integer.toString(1));
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-               // GenericTypeIndicator<ArrayList<Trip>> tmp = new GenericTypeIndicator<ArrayList<Trip>>() {};
-                // ArrayList<Trip> value = dataSnapshot.getValue(tmp);
-
-                Trip value = dataSnapshot.getValue(Trip.class);
-                 Log.i("DataSore", "Value is: " + value);
-                trips.add(value);
-               // String value = dataSnapshot.getValue(String.class);
-              //  Log.d("Va", "Value is: " + value);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Failed to read value
-            }
-        });
-
         return trips;
     }
 

@@ -77,7 +77,7 @@ public class CityActivity extends Activity {
         }
         else{
             Trip trip= (Trip) getIntent().getSerializableExtra(EVENT);
-            newtripEdit.setText(trip.getTitleTrip());
+            newtripEdit.setText(trip.getTitle());
             Calendar tmp = Calendar.getInstance();
 
             tmp.setTime(trip.getStartDate());

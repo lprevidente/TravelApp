@@ -11,7 +11,7 @@ import static com.example.luigi.travelapp.util.DateUtil.incrementDay;
  */
 
 public class Trip implements Serializable {
-    private String titleTrip;
+    private String title;
     private Date startDate;
     private Date endDate;
     private ArrayList<Day> days;
@@ -20,8 +20,8 @@ public class Trip implements Serializable {
     }
 
     // Constructor
-    public Trip(String titleTrip, Date startDate, Date endDate) {
-        this.titleTrip = titleTrip;
+    public Trip(String title, Date startDate, Date endDate) {
+        this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
 
@@ -32,8 +32,8 @@ public class Trip implements Serializable {
     }
 
     // Get Methods
-    public String getTitleTrip() {
-        return titleTrip;
+    public String getTitle() {
+        return title;
     }
 
     public Date getStartDate() {
@@ -45,8 +45,8 @@ public class Trip implements Serializable {
     }
 
     // Set Methods
-    public void setTitleTrip(String titleTrip) {
-        this.titleTrip = titleTrip;
+    public void setTitle(String titleTrip) {
+        this.title = titleTrip;
     }
 
     public void setStartDate(Date startDate) {
@@ -68,5 +68,4 @@ public class Trip implements Serializable {
     public void addDay(Day day){
         days.add(day);
     }
-
 }

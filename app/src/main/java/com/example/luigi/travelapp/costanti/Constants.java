@@ -19,4 +19,19 @@ public class Constants {
     // costanti per i datePicker
     public static final int DATE_PICKER_TO = 0;
     public static final int DATE_PICKER_FROM = 1;
+
+    // costanti per le chiavi
+    public static final String KEY_TRIP_TITLE = "title";
+    public static final String KEY_TRIP_START_DATE = "startDate";
+    public static final String KEY_TRIP_END_DATE = "endDate";
+    public static final String KEY_TRIP_DAY_LIST = "days";
+
+    public static final String KEY_DAY_NUMBER = "number";
+    public static final String KEY_DAY_EVENT_LIST = "events";
+
+    public static final String KEY_EVENT_DATE = "date";
+    public static final String KEY_EVENT_TITLE = "title";
+    public static final String KEY_EVENT_NOTE = "note";
+    public static final String KEY_EVENT_NOTIFY = "notify";
+    public static final String KEY_EVENT_IMAGE = "image";
 }

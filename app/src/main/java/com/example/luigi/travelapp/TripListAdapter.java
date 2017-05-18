@@ -41,7 +41,7 @@ public class TripListAdapter extends BaseAdapter {
         txtTitle.setTextColor(getRandomColor());
 
         final Trip trip = trips.get(position);
-        txtTitle.setText(trip.getTitleTrip());
+        txtTitle.setText(trip.getTitle());
 
         Calendar tmp = Calendar.getInstance();
         Calendar tmp2 = Calendar.getInstance();

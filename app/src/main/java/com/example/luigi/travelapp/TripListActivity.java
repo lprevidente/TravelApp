@@ -167,6 +167,5 @@ public class TripListActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.ic_action_name_back);
         menu.findItem(R.id.item_edit).setVisible(true);
         menu.findItem(R.id.item_delete).setVisible(true);
-
     }
 }
