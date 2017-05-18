@@ -101,6 +101,8 @@ public class DataStore {
         // trips.set(tripIndex, tmp);
         DatabaseReference reference =  database.getReference(user.getUid());
                 //.child(Integer.toString(tripIndex));
+
+        database.
         reference.setValue(tmp);
 
     }
@@ -179,16 +181,17 @@ public class DataStore {
                 // ArrayList<Trip> value = dataSnapshot.getValue(tmp);
 
                 Trip value = dataSnapshot.getValue(Trip.class);
-                 Log.i("DataSore", "Value is: " + value);
+                Log.i("DataSore", "Value is: " + value.getTitleTrip());
                 trips.add(value);
-               // String value = dataSnapshot.getValue(String.class);
-              //  Log.d("Va", "Value is: " + value);
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Failed to read value
             }
+
+
         });
 
         return trips;

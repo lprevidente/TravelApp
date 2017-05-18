@@ -38,6 +38,9 @@ public class TripListActivity extends AppCompatActivity {
     private final int CODE = 1;
     private final int CODE4=4;
 
+
+
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_list);
@@ -66,6 +69,7 @@ public class TripListActivity extends AppCompatActivity {
 
         list = (ListView)findViewById(R.id.dayListView);
         list.setAdapter(adapter);
+
 
         addcity.setImageResource(R.drawable.ic_action_name_add);
 
