@@ -139,7 +139,7 @@ public class EventActivity extends Activity {
                             // get the event's day date and set the new hour and minute
                             Calendar oldcal = Calendar.getInstance();
                             Calendar newcal = Calendar.getInstance();
-                            Trip tmpTrip = dataStore.getTrip(tripIndex);
+                            Trip tmpTrip = dataStore.getTrips().get(tripIndex);
 
                             oldcal.setTime(tmpTrip.getStartDate());
                             oldcal.add(Calendar.DATE, dayIndex);
@@ -153,7 +153,7 @@ public class EventActivity extends Activity {
                             finish();
                             return true;
                         }
-                        else{
+                        else {
                             titleEventTextView.setError(getString(R.string.TitleEventEmpty));
                         }
                 }

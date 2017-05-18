@@ -16,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Trip;
 
 import java.text.ParseException;
@@ -85,7 +86,6 @@ public class CityActivity extends Activity {
 
             tmp.setTime(trip.getEndDate());
             setDate2TextView(tmp, ritornoTextView);
-
         }
 
         partenzaTextView.setOnClickListener(new View.OnClickListener() {
@@ -107,12 +107,14 @@ public class CityActivity extends Activity {
         addTripbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DataStore dataStore = DataStore.getInstance();
                 String titleTrip = newtripEdit.getText().toString();
 
                 if (!titleTrip.equals(NULLTITLE) && checkValidDateRange()) {
                     Trip trip = new Trip(titleTrip, String2Date(partenzaTextView.getText().toString()), String2Date(ritornoTextView.getText().toString()));
+                    dataStore.addTrip(trip);
                     Intent intent = getIntent();
-                    intent.putExtra(SEND_TRIP, trip);
+                    //intent.putExtra(SEND_TRIP, trip);
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                 }

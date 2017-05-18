@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.luigi.travelapp.datamodel.Trip;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -25,11 +26,14 @@ public class TripListAdapter extends BaseAdapter {
     private List<Trip> trips = Collections.emptyList();
     private Context context;
 
-    public TripListAdapter(Context context ) {
+    public TripListAdapter(Context context) {
         this.context = context;
     }
 
-    public void update(List<Trip> newList) { trips = newList; }
+    public void update(List<Trip> newList) {
+        trips = newList;
+        notifyDataSetChanged();
+    }
 
     public View getView(int position, View view, ViewGroup parent) {
         if (view == null)

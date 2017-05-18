@@ -8,10 +8,17 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+
+import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP_DAY_LIST;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP_END_DATE;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP_START_DATE;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP_TITLE;
 
 /**
  * Created by Bernardo on 08/05/2017.
@@ -19,19 +26,62 @@ import java.util.Collections;
 
 public class DataStore {
     private ArrayList<Trip> trips;
-    private static DataStore dataStore=null;
-    //FirebaseDatabase database;
-    //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private static DataStore dataStore = null;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+    private ValueEventListener listenerTrips;
 
     private DataStore() {
         trips = new ArrayList<> ();
     }
 
-    public static DataStore getInstance(){
+    public static DataStore getInstance() {
         if (dataStore == null){
             dataStore = new DataStore();
         }
         return dataStore;
+    }
+
+    public interface UpdateListener {
+        void tripsUpdated();
+    }
+
+    public void beginTripsObs(final UpdateListener notification) {
+        DatabaseReference reference = database.getReference(user.getUid());
+
+        listenerTrips = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                trips.clear();
+                for (DataSnapshot item : dataSnapshot.getChildren()) {
+                    Trip trip = new Trip();
+
+                    // gli indici dell'arraylist sono le nostre chiavi per identificare i viaggi
+                    trip.setTitle(item.child(Integer.toString(trips.size())).child(KEY_TRIP_TITLE).getValue(String.class));
+                    trip.setStartDate(item.child(Integer.toString(trips.size())).child(KEY_TRIP_START_DATE).getValue(Date.class));
+                    trip.setEndDate(item.child(Integer.toString(trips.size())).child(KEY_TRIP_END_DATE).getValue(Date.class));
+
+                    GenericTypeIndicator<ArrayList<Day>> typeIndicator = new GenericTypeIndicator<ArrayList<Day>>() {};
+                    trip.setDays(item.child(Integer.toString(trips.size())).child(KEY_TRIP_DAY_LIST).getValue(typeIndicator));
+
+                    trips.add(trip);
+                }
+                notification.tripsUpdated();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        reference.addValueEventListener(listenerTrips);
+    }
+
+    public void endTripsObs() {
+        if (listenerTrips != null)
+            FirebaseDatabase.getInstance().getReference(user.getUid()).removeEventListener(listenerTrips);
     }
 
     /**
@@ -39,9 +89,8 @@ public class DataStore {
      * @param trip oggetto di tipo Trip da aggiungere da aggiungere
      */
     public void addTrip(Trip trip) {
-        trips.add(trip);
-        //DatabaseReference reference =  database.getReference(user.getUid());
-        //reference.setValue(trips);
+        DatabaseReference reference = database.getReference(user.getUid()).child(Integer.toString(trips.size()));
+        reference.setValue(trip);
     }
 
     /**
@@ -69,7 +118,6 @@ public class DataStore {
         /*DatabaseReference reference =  database.getReference(user.getUid())
                 .child(Integer.toString(tripIndex)).child(Integer.toString(dayIndex));
         reference.setValue(event);*/
-
     }
 
     /**
@@ -85,7 +133,7 @@ public class DataStore {
         // day check
         if (newDayNumber < oldDayNumber) {
             for (int i = oldDayNumber; i > newDayNumber; i--) {
-                tmp.getDayList().remove(i);
+                tmp.getDays().remove(i);
             }
         } else if (newDayNumber > oldDayNumber) {
             for (int i = oldDayNumber + 1; i <= newDayNumber; i++) {
@@ -135,7 +183,7 @@ public class DataStore {
      * @return ArrayList dei giorni
      */
     public ArrayList<Day> getDayList(int tripIndex) {
-         return trips.get(tripIndex).getDayList();
+         return trips.get(tripIndex).getDays();
     }
 
     /**
@@ -162,11 +210,7 @@ public class DataStore {
      * restituisce la lista dei viaggi
      * @return ArrayList<Trip> contenente i viaggi
      */
-    public ArrayList<Trip> getListTrip(){
+    public ArrayList<Trip> getTrips() {
         return trips;
-    }
-
-    public Trip getTrip(int tripIndex) {
-        return trips.get(tripIndex);
     }
 }

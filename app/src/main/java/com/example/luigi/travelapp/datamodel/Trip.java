@@ -14,6 +14,7 @@ public class Trip implements Serializable {
     private String title;
     private Date startDate;
     private Date endDate;
+
     private ArrayList<Day> days;
 
     public Trip() {
@@ -57,12 +58,16 @@ public class Trip implements Serializable {
         this.endDate = endDate;
     }
 
-    public ArrayList<Day> getDayList(){
+    public int getDaysNumber() {
+        return (int)((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+    }
+
+    public ArrayList<Day> getDays() {
         return days;
     }
 
-    public int getDaysNumber() {
-        return (int)((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+    public void setDays(ArrayList<Day> days) {
+        this.days = days;
     }
 
     public void addDay(Day day){
