@@ -26,4 +26,9 @@
     <string name="TitleTripEmpty">Inserisci il titolo del Viaggio</string>
     <string name="DayList">Lista dei Giorni</string>
 
+    <string name="TypeRestaurant">Ristorante</string>
+    <string name="TypeFlight">Volo</string>
+    <string name="TypeHotel">Hotel</string>
+    <string name="TypeMuseum">Museo</string>
+
 </resources>

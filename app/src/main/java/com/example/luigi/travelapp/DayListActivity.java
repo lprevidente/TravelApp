@@ -38,4 +38,14 @@ public class DayListActivity extends Activity {
             }
         });
     }
+
+    /**
+     *  when the user add a new event and go back to this activity
+     *  there is a refresh of the listView
+     */
+    protected void onResume(){
+        super.onResume();
+        dayListAdapter.notifyDataSetChanged();
+
+    }
 }
