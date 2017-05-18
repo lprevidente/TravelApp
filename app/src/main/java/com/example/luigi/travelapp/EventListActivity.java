@@ -16,6 +16,7 @@ import android.widget.ListView;
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Event;
 
+import static android.support.v7.appcompat.R.attr.colorControlHighlight;
 import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.EVENTNEW;
@@ -41,6 +42,7 @@ public class EventListActivity extends Activity{
     private final int CODE3 = 3;
 
     private Intent intent;
+    private View mview=null;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -73,8 +75,12 @@ public class EventListActivity extends Activity{
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                EditToolbar();
+                if(mview!=null)
+                    mview.setBackground(getDrawable(R.color.colorTransparet));
+                mview=view;
+                EditToolbar(mview);
                 positione = position;
+
                 return true;
             }
 
@@ -85,7 +91,9 @@ public class EventListActivity extends Activity{
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                DefaulToolbar();
+               // mview=view;
+                DefaulToolbar(mview);
+
             }
         });
 
@@ -101,11 +109,12 @@ public class EventListActivity extends Activity{
                     case R.id.item_delete:
                         dataStore.deleteEvent(tripIndex, dayIndex, positione);
                         eventListAdapter.notifyDataSetChanged();
-                        DefaulToolbar();
+                        DefaulToolbar(mview);
+
                         return true;
 
                     case R.id.item_edit:
-                        DefaulToolbar();
+                        DefaulToolbar(mview);
                         intent= new Intent(EventListActivity.this, EventActivity.class);
                         intent.putExtra(EVENT, dataStore.getEventList(tripIndex, dayIndex).get(positione));
                         intent.putExtra(EVENTNEW, "NO");
@@ -119,7 +128,7 @@ public class EventListActivity extends Activity{
         addEvent.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DefaulToolbar();
+                DefaulToolbar(mview);
                 intent = new Intent(EventListActivity.this, EventActivity.class);
                 intent.putExtra("TRIP_INDEX", tripIndex);
                 intent.putExtra("DAY_INDEX", dayIndex);
@@ -131,7 +140,7 @@ public class EventListActivity extends Activity{
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               DefaulToolbar();
+               DefaulToolbar(mview);
             }
         });
     }
@@ -150,26 +159,30 @@ public class EventListActivity extends Activity{
                 Event event = (Event)data.getSerializableExtra(EVENT_INDEX);
                 dataStore.updateEvent(tripIndex, dayIndex,positione, event);
                 eventListAdapter.notifyDataSetChanged();
-                DefaulToolbar();
+                DefaulToolbar(mview);
             }
         }
     }
 
-    private void DefaulToolbar(){
+    private void DefaulToolbar(View view){
         toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
         toolbar.setTitle(R.string.titleEvents);
         toolbar.setNavigationIcon(null);
         menu.findItem(R.id.item_edit).setVisible(false);
         menu.findItem(R.id.item_delete).setVisible(false);
+        if(view!= null)
+        view.setBackground(getDrawable(R.color.colorTransparet));
 
     }
 
-    private void EditToolbar(){
+    private void EditToolbar(View view){
         toolbar.setBackgroundColor(Color.GRAY);
         toolbar.setTitle("");
         toolbar.setNavigationIcon(R.drawable.ic_action_name_back);
         menu.findItem(R.id.item_edit).setVisible(true);
         menu.findItem(R.id.item_delete).setVisible(true);
+        if(view!= null)
+        view.setBackground(getDrawable(R.color.colorHilightGrey));
 
     }
 }

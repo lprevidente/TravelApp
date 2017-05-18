@@ -16,6 +16,7 @@ public class Event implements Comparable<Event>, Serializable{
     private String note;
     private boolean notify;
     private int Image;
+    private String typeEvent;
 
     /**
      * costruttore dell'oggetto di tipo Event
@@ -25,12 +26,13 @@ public class Event implements Comparable<Event>, Serializable{
      * @param note descrizione aggiuntiva per l'evento (che verrà eventualmente mostrata in notifica)
      * @param notify notificare o meno l'evento
      */
-    public Event(Date date, String title, String note, boolean notify, int Image) {
+    public Event(Date date, String title, String note, boolean notify, int Image, String string) {
         this.date = date;
         this.title = title;
         this.note = note;
         this.notify = notify;
         this.Image=Image;
+        typeEvent=string;
     }
 
     // Get methods
@@ -52,6 +54,10 @@ public class Event implements Comparable<Event>, Serializable{
 
     public int getImage() {
         return Image;
+    }
+
+    public String getTypeEvent() {
+        return typeEvent;
     }
 
     //Set methods
@@ -79,6 +85,10 @@ public class Event implements Comparable<Event>, Serializable{
         SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm");
         String time = localDateFormat.format(date);
         return time;
+    }
+
+    public void setTypeEvent(String typeEvent) {
+        this.typeEvent = typeEvent;
     }
 
     @Override

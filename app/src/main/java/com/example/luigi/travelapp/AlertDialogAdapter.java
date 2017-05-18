@@ -34,7 +34,9 @@ public class AlertDialogAdapter extends BaseAdapter {
             typesEvents.add(new TypesEvent(integers[i], textTypes[i])) ;
         }
     }
-
+    public List<TypesEvent> getList (){
+        return typesEvents;
+    }
     @Override
     public int getCount() {
         return typesEvents.size();

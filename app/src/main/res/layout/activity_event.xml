@@ -12,17 +12,18 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:contentDescription="@string/titleEvent"
+        android:contentDescription="Dove Vuoi andare?"
         android:ems="10"
+        android:hint="@string/titleEvent"
         android:inputType="textPersonName"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/imageButton_typeEvent"
+        android:layout_marginRight="16dp"
+        app:layout_constraintHorizontal_bias="0.0" />
 
     <TextView
         android:id="@+id/textView"
@@ -50,9 +51,9 @@
         android:id="@+id/checkBoxNotifica"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="24dp"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintTop_toBottomOf="@+id/oraTextView" />
 
     <EditText
@@ -63,44 +64,42 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:contentDescription="@string/notesOnEvent"
+        android:layout_marginTop="30dp"
         android:ems="10"
+        android:hint="@string/notesOnEvent"
         android:inputType="textMultiLine"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/oraTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
-        android:layout_marginRight="7dp"
+        android:layout_marginRight="8dp"
         android:layout_marginTop="29dp"
         android:text="Ora"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="@+id/checkBoxNotifica"
         app:layout_constraintRight_toRightOf="@+id/checkBoxNotifica"
-        app:layout_constraintTop_toBottomOf="@+id/titleEventEdit" />
+        app:layout_constraintTop_toBottomOf="@+id/titleEventEdit"
+        app:layout_constraintHorizontal_bias="0.384" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginLeft="102dp"
+        android:layout_marginTop="19dp"
         android:gravity="top|bottom"
         android:lineSpacingExtra="8sp"
         android:text="@string/TitleEvent"
         android:textAlignment="gravity"
         android:textSize="24sp"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarEvent" />
 
     <android.support.v7.widget.Toolbar
@@ -119,27 +118,26 @@
 
     <ImageButton
         android:id="@+id/imageButton_typeEvent"
-        android:layout_width="54dp"
-        android:layout_height="54dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="22dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:src="@drawable/ic_action_name_place"
+        android:layout_marginRight="24dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/notesText" />
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <TextView
         android:id="@+id/textView_typeEvent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:layout_marginTop="8dp"
+        android:text="Museo"
         app:layout_constraintTop_toBottomOf="@+id/imageButton_typeEvent"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/imageButton_typeEvent"
         android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="@+id/imageButton_typeEvent" />
 
 
 </android.support.constraint.ConstraintLayout>

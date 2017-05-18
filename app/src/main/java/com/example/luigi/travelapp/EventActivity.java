@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -18,11 +19,13 @@ import android.widget.TimePicker;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Event;
+import com.example.luigi.travelapp.datamodel.TypesEvent;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT;
@@ -47,7 +50,9 @@ public class EventActivity extends Activity {
     private CheckBox notifyCheckBox;
     private TextView TimePickerTextView;
     private ImageButton typeEvent;
+    private TextView textViewtypeEvent;
 
+    private String stringtypeEvent;
     private int resImage;
 
     private boolean notify=false;
@@ -71,10 +76,14 @@ public class EventActivity extends Activity {
         TimePickerTextView = (TextView) findViewById(R.id.oraTextView);
 
         typeEvent = (ImageButton) findViewById(R.id.imageButton_typeEvent);
-        typeEvent.setImageResource(R.drawable.ic_action_name_place);
+
+        textViewtypeEvent = (TextView) findViewById(R.id.textView_typeEvent);
 
         if(extras.getString(EVENTNEW).equals("yes")) {
             setCurrentTime();
+            resImage=R.drawable.ic_action_name_place;
+            stringtypeEvent="Museo";
+
         }
         else {
             Event event = (Event) getIntent().getSerializableExtra(EVENT);
@@ -82,6 +91,8 @@ public class EventActivity extends Activity {
             noteEditview.setText(event.getNote());
             notifyCheckBox.setChecked(event.getNotify());
             TimePickerTextView.setText(event.getTimeString());
+            resImage=event.getImage();
+            stringtypeEvent=event.getTypeEvent();
         }
         /**
          * Creo un Alert Dialog per avere
@@ -89,7 +100,9 @@ public class EventActivity extends Activity {
          * e non ridurmi solo a 3
          */
 
-        AlertDialogAdapter alertDialogAdapter = new AlertDialogAdapter(this);
+        typeEvent.setImageResource(resImage);
+        textViewtypeEvent.setText(stringtypeEvent);
+        final AlertDialogAdapter alertDialogAdapter = new AlertDialogAdapter(this);
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Scegli il tipo di Evento");
@@ -98,9 +111,16 @@ public class EventActivity extends Activity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Qui inserisco il metodo per prendere il testo e l'immagine dell'item
-                // selezionato per poi sostituirli nel ImageButton and Text view sotto
+                // selezionato per poi sostituirli nel ImageButton and nella Text view sotto
+                List<TypesEvent> list = alertDialogAdapter.getList();
+
+                resImage=list.get(which).getImage();
+                typeEvent.setImageResource(resImage);
+                stringtypeEvent=list.get(which).getText().toString();
+                textViewtypeEvent.setText(stringtypeEvent);
             }
         });
+
         // Al click del button mostro l'Alert Dialog con i vari tipi di Eventi
        typeEvent.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -135,7 +155,7 @@ public class EventActivity extends Activity {
                             newcal.setTime(setString2DateTime(oldcal.getTime(), TimePickerTextView.getText().toString()));
 
                             Event event = new Event(newcal.getTime(),
-                                    titleEventTextView.getText().toString(), noteEditview.getText().toString(), notify, resImage);
+                                    titleEventTextView.getText().toString(), noteEditview.getText().toString(), notify, resImage, stringtypeEvent);
 
                            getIntent().putExtra(EVENT_INDEX, event);
                             setResult(Activity.RESULT_OK, getIntent());
@@ -163,7 +183,6 @@ public class EventActivity extends Activity {
         });
 
     }
-
     private class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
 
         @Override

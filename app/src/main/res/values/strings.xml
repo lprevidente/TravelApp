@@ -1,34 +1,38 @@
 <resources>
     <string name="app_name">Travel App</string>
-    <string name="descr_overflow_button">Popup Menu</string>
-    <string name="Item1">Modifica</string>
-    <string name="Item2">Cancella</string>
+
+    <!-- Strings of Toolbars -->
     <string name="titleCities">I Tuoi Viaggi</string>
     <string name="titleEvents">I Tuoi Eventi</string>
+    <string name="DayList">Lista dei Giorni</string>
+    <string name="ToolbarListDays">Ecco il tuo fantastico programma</string>
+
+    <!-- Strings of City Activity -->
     <string name="AddNewCity">Aggiungi un nuovo viaggio</string>
     <string name="autocomplete_hint">Inserisci una località</string>
-    <string name="AddedaNewTrip">È stato aggiunto un nuovo viaggio</string>
-    <string name="DeleteTrip">Il viaggio è stato cancellato</string>
-    <string name="ItemDone">Click when you have done</string>
-    <string name="NewEvent">Nuovo Evento</string>
+    <string name="destination">Dove vorresti andare?</string>
+    <string name="TitleTripEmpty">Inserisci il titolo del Viaggio</string>
 
-    <string name="titleEvent">Titolo</string>
+    <string name="AddedaNewTrip">È stato aggiunto un nuovo viaggio</string>
+
+    <!-- Strings of Event Activity-->
+    <string name="NewEvent">Nuovo Evento</string>
+    <string name="TitleEvent">Cosa Farai Oggi?</string>
+    <string name="TitleEventEmpty">Inserisci il Titolo Evento</string>
+    <string name="titleEvent">Scegli dove andare</string>
+    <string name="notesOnEvent">Note</string>
     <string name="beginEvent">Ora di inizio</string>
     <string name="notifyEvent">Notificami</string>
-    <string name="notesOnEvent">Note</string>
-    <string name="title_activity_list_days">ListDaysActivity</string>
 
-    <string name="ToolbarListDays">Ecco il tuo fantastico programma</string>
+
     <string name="google_api_key">AIzaSyCKAfK7SUohc1UUZJtV42AdOnN2ayqNGZ4</string>
-    <string name="title_activity_maps">Map</string>
-    <string name="TitleEvent">Cosa vuoi fare?</string>
-    <string name="TitleEventEmpty">Inserisci il Titolo Evento</string>
-    <string name="TitleTripEmpty">Inserisci il titolo del Viaggio</string>
-    <string name="DayList">Lista dei Giorni</string>
 
+    <!--Strings of Alert Dialog -->
     <string name="TypeRestaurant">Ristorante</string>
     <string name="TypeFlight">Volo</string>
     <string name="TypeHotel">Hotel</string>
     <string name="TypeMuseum">Museo</string>
+
+    <string name="ItemDone">Done</string>
 
 </resources>
