@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Intent;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -22,14 +21,9 @@ import com.example.luigi.travelapp.datamodel.Trip;
 import java.text.ParseException;
 import java.util.Date;
 
-import static android.R.string.yes;
 import static com.example.luigi.travelapp.costanti.Constants.DATE_PICKER_FROM;
 import static com.example.luigi.travelapp.costanti.Constants.DATE_PICKER_TO;
-import static com.example.luigi.travelapp.costanti.Constants.EVENT;
-import static com.example.luigi.travelapp.costanti.Constants.EVENTNEW;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
-import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
-import static com.example.luigi.travelapp.costanti.Constants.SEND_TRIP;
 
 /**
  * Created by Luigi on 08/05/2017.

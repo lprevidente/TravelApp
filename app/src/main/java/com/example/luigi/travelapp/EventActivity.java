@@ -26,14 +26,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
-import static com.example.luigi.travelapp.costanti.Constants.EVENT;
-import static com.example.luigi.travelapp.costanti.Constants.EVENTNEW;
-import static com.example.luigi.travelapp.costanti.Constants.EVENT_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
-import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
-import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
 
 /**
@@ -62,6 +57,7 @@ public class EventActivity extends Activity {
 
     private String dayKey;
     private String tripKey;
+    private int tmpIndex;
 
     public void onCreate(Bundle savedInstanceState) {
 
@@ -72,6 +68,7 @@ public class EventActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         tripKey = extras.getString(KEY_TRIP);
         dayKey = extras.getString(KEY_DAY);
+        tmpIndex = extras.getInt(KEY_EVENT);
 
         Toolbar toolbarEvent = (Toolbar) findViewById(R.id.toolbarEvent);
         toolbarEvent.setTitle(R.string.NewEvent);
@@ -100,11 +97,11 @@ public class EventActivity extends Activity {
 
         TimePickerTextView = (TextView) findViewById(R.id.oraTextView);
 
-        if(extras.getString(EVENTNEW).equals("yes")) {
+        if (tmpIndex == -1) {
             setCurrentTime();
         }
         else {
-            Event event = (Event)intent.getSerializableExtra(EVENT);
+            Event event = dataStore.getEvents().get(tmpIndex);
             titleEventTextView.setText(event.getTitle());
             noteEditview.setText(event.getNote());
             notifyCheckBox.setChecked(event.getNotify());
@@ -154,7 +151,11 @@ public class EventActivity extends Activity {
                                 Event event = new Event(newcal.getTime(),
                                         titleEventTextView.getText().toString(), noteEditview.getText().toString(), notify, resImage);
 
-                                dataStore.addEvent(event, day.getEventsReference());
+                                if (tmpIndex == -1)
+                                    dataStore.addEvent(event, day.getEventsReference());
+                                else {
+                                    // codice per l'update
+                                }
                                 setResult(Activity.RESULT_OK, intent);
                                 finish();
                             }

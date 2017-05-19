@@ -15,18 +15,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
-import com.example.luigi.travelapp.datamodel.Trip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 import static com.example.luigi.travelapp.costanti.Constants.DAY_REFERENCE;
-import static com.example.luigi.travelapp.costanti.Constants.EVENT;
-import static com.example.luigi.travelapp.costanti.Constants.EVENTNEW;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
 import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
-import static com.example.luigi.travelapp.costanti.Constants.SEND_TRIP;
-import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
 public class TripListActivity extends AppCompatActivity {
     private DataStore dataStore;

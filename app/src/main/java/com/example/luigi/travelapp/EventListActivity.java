@@ -13,12 +13,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
-import com.example.luigi.travelapp.datamodel.Event;
 
-import static com.example.luigi.travelapp.costanti.Constants.EVENTNEW;
-import static com.example.luigi.travelapp.costanti.Constants.EVENT_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_REFERENCE;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
 
 /**
@@ -33,9 +31,7 @@ public class EventListActivity extends Activity{
     private EventListAdapter eventListAdapter;
     private Toolbar toolbar;
     private Menu menu;
-    private final int CODE2 = 2;
-    private final int CODE3 = 3;
-    private int positione;
+    private int posizione;
 
     String eventReference;
     String tripKey;
@@ -85,7 +81,7 @@ public class EventListActivity extends Activity{
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 EditToolbar();
-                positione = position;
+                posizione = position;
                 return true;
             }
         });
@@ -102,17 +98,17 @@ public class EventListActivity extends Activity{
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_delete:
-                        dataStore.deleteEvent(eventReference, dataStore.getEvents().get(positione).getKey());
+                        dataStore.deleteEvent(eventReference, dataStore.getEvents().get(posizione).getKey());
                         DefaulToolbar();
                         return true;
 
                     case R.id.item_edit:
                         DefaulToolbar();
-                        /*intent= new Intent(EventListActivity.this, EventActivity.class);
-                        intent.putExtra(EVENT, dataStore.getEventList(tripIndex, dayIndex).get(positione));
-                        intent.putExtra(EVENTNEW, "NO");
-                        Log.i("EventListActivity: ", "VALORE EVENT:" +EVENT);
-                        startActivityForResult(intent, CODE3);*/
+                        Intent intent = new Intent(EventListActivity.this, EventActivity.class);
+                        intent.putExtra(KEY_EVENT, posizione);
+                        intent.putExtra(KEY_TRIP, tripKey);
+                        intent.putExtra(KEY_DAY, dayKey);
+                        startActivityForResult(intent, 0);
                 }
                 return false;
             }
@@ -122,11 +118,11 @@ public class EventListActivity extends Activity{
             @Override
             public void onClick(View v) {
                 DefaulToolbar();
-                intent = new Intent(EventListActivity.this, EventActivity.class);
-                intent.putExtra(EVENTNEW, "yes");
+                Intent intent = new Intent(EventListActivity.this, EventActivity.class);
+                intent.putExtra(KEY_EVENT, -1);
                 intent.putExtra(KEY_TRIP, tripKey);
                 intent.putExtra(KEY_DAY, dayKey);
-                startActivityForResult(intent, CODE2);
+                startActivityForResult(intent, 0);
             }
         }));
 
@@ -139,20 +135,7 @@ public class EventListActivity extends Activity{
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CODE2) {
-            if (resultCode == Activity.RESULT_OK) {
-                //Event event = (Event)data.getSerializableExtra(EVENT_INDEX);
-                //dataStore.addEvent(event, eventReference);
-            }
-        }
-        if(requestCode==CODE3){
-            if(resultCode==Activity.RESULT_OK){
-                //Event event = (Event)data.getSerializableExtra(EVENT_INDEX);
-                //dataStore.updateEvent(tripIndex, dayIndex,positione, event);
-                //eventListAdapter.notifyDataSetChanged();
-                DefaulToolbar();
-            }
-        }
+        DefaulToolbar();
     }
 
     private void DefaulToolbar(){
