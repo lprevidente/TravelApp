@@ -15,6 +15,7 @@ public class Trip implements Serializable {
     private long startTime;
     private long endTime;
     private String daysReference;
+    private String key;
 
     public Trip() { }
 
@@ -54,6 +55,14 @@ public class Trip implements Serializable {
 
     public void setDaysReference(String daysReference) {
         this.daysReference = daysReference;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public int getDaysNumber() {

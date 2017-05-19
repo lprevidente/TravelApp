@@ -71,6 +71,7 @@ public class DataStore {
                 for (DataSnapshot item : dataSnapshot.getChildren()) {
                     Trip trip = new Trip();
 
+                    trip.setKey(item.getKey());
                     trip.setTitle(item.child(KEY_TRIP_TITLE).getValue(String.class));
                     trip.setStartTime(item.child(KEY_TRIP_START_TIME).getValue(Long.class));
                     trip.setEndTime(item.child(KEY_TRIP_END_TIME).getValue(Long.class));
@@ -102,6 +103,7 @@ public class DataStore {
                 for (DataSnapshot item : dataSnapshot.getChildren()) {
                     Day day = new Day();
 
+                    day.setKey(item.getKey());
                     day.setNumber(item.child(KEY_DAY_NUMBER).getValue(Integer.class));
                     day.setEventsReference(item.child(KEY_DAY_EVENT_LIST_REFERENCE).getValue(String.class));
 
@@ -131,6 +133,7 @@ public class DataStore {
                 for (DataSnapshot item : dataSnapshot.getChildren()) {
                     Event event = new Event();
 
+                    event.setKey(item.getKey());
                     event.setTitle(item.child(KEY_EVENT_TITLE).getValue(String.class));
                     event.setNote(item.child(KEY_EVENT_NOTE).getValue(String.class));
                     event.setImage(item.child(KEY_EVENT_IMAGE).getValue(Integer.class));
@@ -182,7 +185,12 @@ public class DataStore {
             addDay(new Day(i + 1), dayReference);
         }
 
-        DatabaseReference reference = database.getReference(user.getUid()).child(KEY_TRIP_LIST).push();
+        String tripKey = database.getReference(user.getUid())
+                .child(KEY_TRIP_LIST)
+                .push()
+                .getKey();
+        trip.setKey(tripKey);
+        DatabaseReference reference = database.getReference(user.getUid()).child(KEY_TRIP_LIST).child(tripKey);
         reference.setValue(trip);
     }
 
@@ -196,12 +204,24 @@ public class DataStore {
         // setto la chiave nel giorno
         day.setEventsReference(eventReference);
 
-        DatabaseReference reference = database.getReference(user.getUid()).child(KEY_DAY_LIST).child(dayReference).push();
+        String dayKey = database.getReference(user.getUid())
+                .child(KEY_DAY_LIST)
+                .child(dayReference)
+                .push()
+                .getKey();
+        day.setKey(dayKey);
+        DatabaseReference reference = database.getReference(user.getUid()).child(KEY_DAY_LIST).child(dayReference).child(dayKey);
         reference.setValue(day);
     }
 
     public void addEvent(Event event, String eventReference) {
-        DatabaseReference reference = database.getReference(user.getUid()).child(KEY_EVENT_LIST).child(eventReference).push();
+        String eventKey = database.getReference(user.getUid())
+                .child(KEY_EVENT_LIST)
+                .child(eventReference)
+                .push()
+                .getKey();
+        event.setKey(eventKey);
+        DatabaseReference reference = database.getReference(user.getUid()).child(KEY_EVENT_LIST).child(eventReference).child(eventKey);
         reference.setValue(event);
     }
 

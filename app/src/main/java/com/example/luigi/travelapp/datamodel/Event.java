@@ -12,6 +12,7 @@ import java.util.Date;
 
 public class Event implements Comparable<Event>, Serializable {
 
+    private String key;
     private long time;
     private String title;
     private String note;
@@ -72,6 +73,14 @@ public class Event implements Comparable<Event>, Serializable {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     @Override

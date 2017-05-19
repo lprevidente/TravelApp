@@ -8,6 +8,8 @@ import java.util.ArrayList;
  */
 
 public class Day implements Serializable{
+
+    private String key;
     private int number;
     private String eventsReference;
 
@@ -31,5 +33,13 @@ public class Day implements Serializable{
 
     public void setEventsReference(String eventsReference) {
         this.eventsReference = eventsReference;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }
