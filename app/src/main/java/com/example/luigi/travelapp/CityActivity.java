@@ -16,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Trip;
 
 import java.text.ParseException;
@@ -39,7 +40,6 @@ public class CityActivity extends Activity {
     private TextView partenzaTextView;
     private TextView ritornoTextView;
     private int id;
-    private Intent intent;
 
     private DatePickerDialog.OnDateSetListener from_dateListener, to_dateListener;
 
@@ -47,7 +47,6 @@ public class CityActivity extends Activity {
 
         super.onCreate(savedInstanceStat);
         setContentView(R.layout.activity_city);
-
 
         newtripEdit = (EditText)findViewById(R.id.autocompleteEditText);
         addTripbtn = (Button)findViewById(R.id.btnAddCity);
@@ -69,23 +68,20 @@ public class CityActivity extends Activity {
         partenzaTextView = (TextView)findViewById(R.id.partenzaTextView);
         ritornoTextView = (TextView)findViewById(R.id.ritornoTextView);
 
-
-        if(getIntent().getSerializableExtra(EVENTNEW).equals("yes"))
-        {
+        if (getIntent().getSerializableExtra(EVENTNEW).equals("yes")) {
             ritornoTextView.setText(DateFormat.getDateInstance().format(Calendar.getInstance().getTime()));
             partenzaTextView.setText(DateFormat.getDateInstance().format(Calendar.getInstance().getTime()));
         }
-        else{
-            Trip trip= (Trip) getIntent().getSerializableExtra(EVENT);
-            newtripEdit.setText(trip.getTitleTrip());
+        else {
+            Trip trip = (Trip) getIntent().getSerializableExtra(EVENT);
+            newtripEdit.setText(trip.getTitle());
             Calendar tmp = Calendar.getInstance();
 
-            tmp.setTime(trip.getStartDate());
+            tmp.setTime(new Date(trip.getStartTime()));
             setDate2TextView(tmp, partenzaTextView);
 
-            tmp.setTime(trip.getEndDate());
+            tmp.setTime(new Date(trip.getEndTime()));
             setDate2TextView(tmp, ritornoTextView);
-
         }
 
         partenzaTextView.setOnClickListener(new View.OnClickListener() {
@@ -107,20 +103,17 @@ public class CityActivity extends Activity {
         addTripbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DataStore dataStore = DataStore.getInstance();
                 String titleTrip = newtripEdit.getText().toString();
 
-                if (!titleTrip.equals(NULLTITLE) && checkValidDateRange()) {
+                if (!titleTrip.isEmpty() && checkValidDateRange()) {
                     Trip trip = new Trip(titleTrip, String2Date(partenzaTextView.getText().toString()), String2Date(ritornoTextView.getText().toString()));
-                    Intent intent = getIntent();
-                    intent.putExtra(SEND_TRIP, trip);
-                    setResult(Activity.RESULT_OK, intent);
+                    dataStore.addTrip(trip);
+                    setResult(Activity.RESULT_OK, getIntent());
                     finish();
-                }
-                else{
+                } else {
                    newtripEdit.setError(getString(R.string.TitleTripEmpty));
                 }
-
-
             }
         });
     }

@@ -11,62 +11,61 @@ import static com.example.luigi.travelapp.util.DateUtil.incrementDay;
  */
 
 public class Trip implements Serializable {
-    private String titleTrip;
-    private Date startDate;
-    private Date endDate;
-    private ArrayList<Day> days;
+    private String title;
+    private long startTime;
+    private long endTime;
+    private String daysReference;
+    private String key;
 
-    public Trip() {
+    public Trip() { }
+
+    public Trip(String title, Date startDate, Date endDate) {
+        this.title = title;
+        startTime = startDate.getTime();
+        endTime = endDate.getTime();
     }
 
-    // Constructor
-    public Trip(String titleTrip, Date startDate, Date endDate) {
-        this.titleTrip = titleTrip;
-        this.startDate = startDate;
-        this.endDate = endDate;
-
-        days = new ArrayList<>();
-        for (int i = 1; i <= getDaysNumber(); i++) {
-            days.add(new Day(i));
-        }
+    public String getTitle() {
+        return title;
     }
 
-    // Get Methods
-    public String getTitleTrip() {
-        return titleTrip;
+    public long getStartTime() {
+        return startTime;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public long getEndTime() {
+        return endTime;
     }
 
-    // Set Methods
-    public void setTitleTrip(String titleTrip) {
-        this.titleTrip = titleTrip;
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setTitle(String titleTrip) {
+        this.title = titleTrip;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public String getDaysReference() {
+        return daysReference;
     }
 
-    public ArrayList<Day> getDayList(){
-        return days;
+    public void setDaysReference(String daysReference) {
+        this.daysReference = daysReference;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public int getDaysNumber() {
-        return (int)((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+        return (int)((endTime - startTime) / (1000 * 60 * 60 * 24)) + 1;
     }
-
-    public void addDay(Day day){
-        days.add(day);
-    }
-
 }

@@ -8,28 +8,38 @@ import java.util.ArrayList;
  */
 
 public class Day implements Serializable{
-    private int dayNumber;
-    private ArrayList<Event> events;
 
-    /**
-     * Day object constructor
-     * @param dayNumber ID for the day to be represented in the list view
-     */
-    public Day(int dayNumber) {
-        this.dayNumber = dayNumber;
-        events = new ArrayList<>();
+    private String key;
+    private int number;
+    private String eventsReference;
+
+    public Day() { }
+
+    public Day(int number) {
+        this.number = number;
     }
 
-    // Get the day's number
-    public int getDayNumber() {
-        return dayNumber;
+    public int getNumber() {
+        return number;
     }
 
-    /**
-     * restituisce la lista eventi dell'oggetto
-     * @return ArrayList di oggetti di tipo evento
-     */
-    public ArrayList<Event> getEventList(){
-       return events;
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public String getEventsReference() {
+        return eventsReference;
+    }
+
+    public void setEventsReference(String eventsReference) {
+        this.eventsReference = eventsReference;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

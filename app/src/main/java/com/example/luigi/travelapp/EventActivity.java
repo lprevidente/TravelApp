@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
+import com.example.luigi.travelapp.datamodel.Day;
 import com.example.luigi.travelapp.datamodel.Event;
 import com.example.luigi.travelapp.datamodel.Trip;
 
@@ -29,6 +30,8 @@ import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.EVENTNEW;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_INDEX;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
 import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
 import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
@@ -40,8 +43,6 @@ import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 public class EventActivity extends Activity {
 
     private DataStore dataStore = DataStore.getInstance();
-    private int tripIndex;
-    private int dayIndex;
     private EditText titleEventTextView;
     private EditText noteEditview;
     private CheckBox notifyCheckBox;
@@ -59,15 +60,18 @@ public class EventActivity extends Activity {
     private int resImage;
     private boolean notify=false;
 
+    private String dayKey;
+    private String tripKey;
+
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
 
-        intent= getIntent();
+        intent = getIntent();
         Bundle extras = getIntent().getExtras();
-        tripIndex = extras.getInt(TRIP_INDEX);
-        dayIndex = extras.getInt(DAY_INDEX);
+        tripKey = extras.getString(KEY_TRIP);
+        dayKey = extras.getString(KEY_DAY);
 
         Toolbar toolbarEvent = (Toolbar) findViewById(R.id.toolbarEvent);
         toolbarEvent.setTitle(R.string.NewEvent);
@@ -84,7 +88,6 @@ public class EventActivity extends Activity {
 
         radioResturant= (RadioButton) findViewById(R.id.radioRestaurant);
 
-
         // devo settarli in questo modo altrimenti non si vedono per via delle varie dimensioni
         imageView = (ImageView) findViewById(R.id.imageVisit);
         imageView.setImageResource(R.drawable.ic_action_name_place);
@@ -95,15 +98,13 @@ public class EventActivity extends Activity {
         imageView = (ImageView) findViewById(R.id.imageFlight);
         imageView.setImageResource(R.drawable.ic_action_name_flight);
 
-
         TimePickerTextView = (TextView) findViewById(R.id.oraTextView);
-
 
         if(extras.getString(EVENTNEW).equals("yes")) {
             setCurrentTime();
         }
-        else{
-            Event event=(Event) intent.getSerializableExtra(EVENT);
+        else {
+            Event event = (Event)intent.getSerializableExtra(EVENT);
             titleEventTextView.setText(event.getTitle());
             noteEditview.setText(event.getNote());
             notifyCheckBox.setChecked(event.getNotify());
@@ -135,25 +136,31 @@ public class EventActivity extends Activity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_done:
-                        if (!titleEventTextView.getText().toString().equals(NULLTITLE)) {
+                        if (!titleEventTextView.getText().toString().isEmpty()) {
+
                             // get the event's day date and set the new hour and minute
                             Calendar oldcal = Calendar.getInstance();
                             Calendar newcal = Calendar.getInstance();
-                            Trip tmpTrip = dataStore.getTrip(tripIndex);
 
-                            oldcal.setTime(tmpTrip.getStartDate());
-                            oldcal.add(Calendar.DATE, dayIndex);
-                            newcal.setTime(setString2DateTime(oldcal.getTime(), TimePickerTextView.getText().toString()));
+                            int index = dataStore.tripIndex(tripKey);
+                            if (index != -1) {
+                                Trip tmpTrip = dataStore.getTrips().get(index);
+                                Day day = dataStore.getDays().get(dataStore.dayIndex(dayKey));
 
-                            Event event = new Event(newcal.getTime(),
-                                    titleEventTextView.getText().toString(), noteEditview.getText().toString(), notify, resImage);
+                                oldcal.setTime(new Date(tmpTrip.getStartTime()));
+                                oldcal.add(Calendar.DATE, day.getNumber());
+                                newcal.setTime(setString2DateTime(oldcal.getTime(), TimePickerTextView.getText().toString()));
 
-                            intent.putExtra(EVENT_INDEX, event);
-                            setResult(Activity.RESULT_OK, intent);
-                            finish();
+                                Event event = new Event(newcal.getTime(),
+                                        titleEventTextView.getText().toString(), noteEditview.getText().toString(), notify, resImage);
+
+                                dataStore.addEvent(event, day.getEventsReference());
+                                setResult(Activity.RESULT_OK, intent);
+                                finish();
+                            }
                             return true;
                         }
-                        else{
+                        else {
                             titleEventTextView.setError(getString(R.string.TitleEventEmpty));
                         }
                 }

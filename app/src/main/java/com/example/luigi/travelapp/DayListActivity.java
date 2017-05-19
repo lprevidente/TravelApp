@@ -7,14 +7,20 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
-import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
+import com.example.luigi.travelapp.datamodel.DataStore;
+
+import static com.example.luigi.travelapp.costanti.Constants.DAY_REFERENCE;
+import static com.example.luigi.travelapp.costanti.Constants.EVENT_REFERENCE;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
 
 public class DayListActivity extends Activity {
 
+    private DataStore dataStore = DataStore.getInstance();
     private DayListAdapter dayListAdapter;
     private ListView listView;
-    private int tripIndex;
+    private String dayReference;
+    private String tripKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +28,26 @@ public class DayListActivity extends Activity {
         setContentView(R.layout.activity_day_list);
 
         Bundle extras = getIntent().getExtras();
-        tripIndex = extras.getInt(TRIP_INDEX);
+        tripKey = extras.getString(KEY_TRIP);
+        dayReference = extras.getString(DAY_REFERENCE);
 
-        dayListAdapter = new DayListAdapter(tripIndex, this);
+        dayListAdapter = new DayListAdapter(this);
+        dataStore.beginDaysObs(new DataStore.UpdateListener() {
+            @Override
+            public void tripsUpdated() {
+
+            }
+
+            @Override
+            public void daysUpdated() {
+                dayListAdapter.update(dataStore.getDays());
+            }
+
+            @Override
+            public void eventsUpdated() {
+
+            }
+        }, dayReference);
 
         listView = (ListView)findViewById(R.id.dayListView);
         listView.setAdapter(dayListAdapter);
@@ -32,10 +55,17 @@ public class DayListActivity extends Activity {
         listView.setOnItemClickListener( new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(view.getContext(), EventListActivity.class);
-                intent.putExtra(TRIP_INDEX, tripIndex);
-                intent.putExtra(DAY_INDEX, position);
+                intent.putExtra(KEY_TRIP, tripKey);
+                intent.putExtra(KEY_DAY, dataStore.getDays().get(position).getKey());
+                intent.putExtra(EVENT_REFERENCE, dataStore.getDays().get(position).getEventsReference());
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dataStore.endDaysObs();
     }
 }

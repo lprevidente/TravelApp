@@ -11,8 +11,10 @@ import android.widget.TextView;
 import com.example.luigi.travelapp.datamodel.Trip;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -25,11 +27,14 @@ public class TripListAdapter extends BaseAdapter {
     private List<Trip> trips = Collections.emptyList();
     private Context context;
 
-    public TripListAdapter(Context context ) {
+    public TripListAdapter(Context context) {
         this.context = context;
     }
 
-    public void update(List<Trip> newList) { trips = newList; }
+    public void update(List<Trip> newList) {
+        trips = newList;
+        notifyDataSetChanged();
+    }
 
     public View getView(int position, View view, ViewGroup parent) {
         if (view == null)
@@ -41,12 +46,12 @@ public class TripListAdapter extends BaseAdapter {
         txtTitle.setTextColor(getRandomColor());
 
         final Trip trip = trips.get(position);
-        txtTitle.setText(trip.getTitleTrip());
+        txtTitle.setText(trip.getTitle());
 
         Calendar tmp = Calendar.getInstance();
         Calendar tmp2 = Calendar.getInstance();
-        tmp.setTime(trip.getStartDate());
-        tmp2.setTime(trip.getEndDate());
+        tmp.setTime(new Date(trip.getStartTime()));
+        tmp2.setTime(new Date(trip.getEndTime()));
         setDate2TextView(tmp, tmp2,textViewDate);
 
         return view;
@@ -72,7 +77,7 @@ public class TripListAdapter extends BaseAdapter {
         return 0;
     }
 
-    public int getRandomColor(){
+    public int getRandomColor() {
         Random rnd = new Random();
         return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }

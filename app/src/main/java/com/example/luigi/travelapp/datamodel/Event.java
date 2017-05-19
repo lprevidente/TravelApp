@@ -10,32 +10,23 @@ import java.util.Date;
  * Created by Luigi on 08/05/2017.
  */
 
-public class Event implements Comparable<Event>, Serializable {
-    private Date date;
+public class Event implements Comparable<Event> {
+
+    private String key;
+    private long time;
     private String title;
     private String note;
     private boolean notify;
     private int Image;
 
-    /**
-     * costruttore dell'oggetto di tipo Event
-     * @param date oggetto Date che manterrà l'informazione sull'orario dell'evento
-     *             TODO: usare Time per sprecare meno informazioni?
-     * @param title titolo dell'evento
-     * @param note descrizione aggiuntiva per l'evento (che verrà eventualmente mostrata in notifica)
-     * @param notify notificare o meno l'evento
-     */
+    public Event() { }
+
     public Event(Date date, String title, String note, boolean notify, int Image) {
-        this.date = date;
+        time = date.getTime();
         this.title = title;
         this.note = note;
         this.notify = notify;
         this.Image=Image;
-    }
-
-    // Get methods
-    public Date getDate() {
-        return date;
     }
 
     public String getTitle() {
@@ -52,11 +43,6 @@ public class Event implements Comparable<Event>, Serializable {
 
     public int getImage() {
         return Image;
-    }
-
-    //Set methods
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public void setTitle(String title) {
@@ -77,12 +63,30 @@ public class Event implements Comparable<Event>, Serializable {
 
     public String getTimeString() {
         SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm");
-        String time = localDateFormat.format(date);
+        String str = localDateFormat.format(new Date(time));
+        return str;
+    }
+
+    public long getTime() {
         return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     @Override
     public int compareTo(@NonNull Event o) {
-        return getDate().compareTo(o.getDate());
+        Date thisDate = new Date(time);
+        Date thatDate = new Date(o.getTime());
+        return thisDate.compareTo(thatDate);
     }
 }

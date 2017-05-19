@@ -18,9 +18,13 @@ import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Trip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
+import static com.example.luigi.travelapp.costanti.Constants.DAY_REFERENCE;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.EVENTNEW;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
+import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
 import static com.example.luigi.travelapp.costanti.Constants.SEND_TRIP;
 import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
@@ -38,27 +42,38 @@ public class TripListActivity extends AppCompatActivity {
     private final int CODE = 1;
     private final int CODE4=4;
 
-
-
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_list);
 
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
-            // devo fare il login
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         } else {
-            // sono già loggato
             Toast.makeText(getApplicationContext(), "Loggato come: "+  user.getEmail(), Toast.LENGTH_SHORT).show();
         }
 
-        dataStore = DataStore.getInstance();
-
         adapter = new TripListAdapter(this);
-        adapter.update(dataStore.getListTrip());
+
+        list = (ListView)findViewById(R.id.dayListView);
+        list.setAdapter(adapter);
+
+        dataStore = DataStore.getInstance();
+        dataStore.beginTripsObs(new DataStore.UpdateListener() {
+            @Override
+            public void tripsUpdated() {
+                adapter.update(dataStore.getTrips());
+            }
+
+            @Override
+            public void eventsUpdated() { }
+
+            @Override
+            public void daysUpdated() { }
+
+        });
 
         toolbar = (Toolbar)findViewById(R.id.toolbar_trip_list);
         toolbar.setTitle(R.string.titleCities);
@@ -66,17 +81,7 @@ public class TripListActivity extends AppCompatActivity {
         menu = toolbar.getMenu();
 
         addcity = (FloatingActionButton)findViewById(R.id.AddCity);
-
-        list = (ListView)findViewById(R.id.dayListView);
-        list.setAdapter(adapter);
-
-
         addcity.setImageResource(R.drawable.ic_action_name_add);
-
-        /**
-         * Make the two icon, DELETE and EDIT, visible on a long Click
-         *
-         */
 
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
@@ -92,7 +97,8 @@ public class TripListActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DefaulToolbar();
                 Intent intent = new Intent(view.getContext(), DayListActivity.class);
-                intent.putExtra(TRIP_INDEX, position);
+                intent.putExtra(KEY_TRIP, dataStore.getTrips().get(position).getKey());
+                intent.putExtra(DAY_REFERENCE, dataStore.getTrips().get(position).getDaysReference());
                 startActivity(intent);
             }
         });
@@ -119,14 +125,13 @@ public class TripListActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_delete:
-                        dataStore.deleteTrip(posizione);
-                        adapter.notifyDataSetChanged();
+                        dataStore.deleteTrip(dataStore.getTrips().get(posizione).getKey());
                         DefaulToolbar();
                         return true;
                     case R.id.item_edit:
                         DefaulToolbar();
                         intent= new Intent(TripListActivity.this, CityActivity.class);
-                        intent.putExtra(EVENT, dataStore.getListTrip().get(posizione));
+                        intent.putExtra(EVENT, dataStore.getTrips().get(posizione));
                         intent.putExtra(EVENTNEW, "NO");
                         startActivityForResult(intent, CODE4);
                 }
@@ -138,18 +143,15 @@ public class TripListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                Trip trip = (Trip) data.getSerializableExtra(SEND_TRIP);
-                dataStore.addTrip(trip);
-                adapter.notifyDataSetChanged();
                 menu.findItem(R.id.item_edit).setVisible(false);
                 menu.findItem(R.id.item_delete).setVisible(false);
             }
         }
         if(requestCode==CODE4){
             if(resultCode==Activity.RESULT_OK){
-                Trip trip = (Trip) data.getSerializableExtra(EVENT);
+                Trip trip = (Trip)data.getSerializableExtra(EVENT);
                 dataStore.updateTrip(posizione, trip);
-                adapter.notifyDataSetChanged();
+                //adapter.notifyDataSetChanged();
                 menu.findItem(R.id.item_edit).setVisible(false);
                 menu.findItem(R.id.item_delete).setVisible(false);
             }
@@ -167,10 +169,15 @@ public class TripListActivity extends AppCompatActivity {
 
     private void EditToolbar(){
         toolbar.setBackgroundColor(Color.GRAY);
-        toolbar.setTitle("");
+        toolbar.setTitle(NULLTITLE);
         toolbar.setNavigationIcon(R.drawable.ic_action_name_back);
         menu.findItem(R.id.item_edit).setVisible(true);
         menu.findItem(R.id.item_delete).setVisible(true);
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dataStore.endTripsObs();
     }
 }
