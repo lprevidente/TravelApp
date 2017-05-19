@@ -9,6 +9,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY_EVENT_LIST_REFERENCE;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY_LIST;
@@ -142,6 +143,7 @@ public class DataStore {
 
                     events.add(event);
                 }
+                Collections.sort(getEvents());
                 notification.eventsUpdated();
             }
 

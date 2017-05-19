@@ -120,6 +120,7 @@ public class CityActivity extends Activity {
                         dataStore.addTrip(trip);
                     else {
                         trip.setKey(dataStore.getTrips().get(tmpIndex).getKey());
+                        trip.setDaysReference(dataStore.getTrips().get(tmpIndex).getDaysReference());
                         dataStore.updateTrip(trip);
                     }
                     setResult(Activity.RESULT_OK, getIntent());
