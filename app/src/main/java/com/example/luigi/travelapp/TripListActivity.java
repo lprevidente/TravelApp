@@ -1,6 +1,5 @@
 package com.example.luigi.travelapp;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -40,12 +39,10 @@ public class TripListActivity extends AppCompatActivity {
 
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        } else {
-            Toast.makeText(getApplicationContext(), "Loggato come: "+  user.getEmail(), Toast.LENGTH_SHORT).show();
-        }
+        if (user==null)
+            intent= new Intent(TripListActivity.this,LoginActivity.class);
+        else
+        Toast.makeText(getApplicationContext(), "Loggato come: "+  user.getEmail(), Toast.LENGTH_SHORT).show();
 
         adapter = new TripListAdapter(this);
 
@@ -53,6 +50,7 @@ public class TripListActivity extends AppCompatActivity {
         list.setAdapter(adapter);
 
         dataStore = DataStore.getInstance();
+
         dataStore.beginTripsObs(new DataStore.UpdateListener() {
             @Override
             public void tripsUpdated() {
@@ -131,15 +129,8 @@ public class TripListActivity extends AppCompatActivity {
         });
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            menu.findItem(R.id.item_edit).setVisible(false);
-            menu.findItem(R.id.item_delete).setVisible(false);
-        }
-    }
-
     private void DefaulToolbar(){
-        //toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
+        toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
         toolbar.setTitle(R.string.titleCities);
         toolbar.setNavigationIcon(null);
         menu.findItem(R.id.item_edit).setVisible(false);

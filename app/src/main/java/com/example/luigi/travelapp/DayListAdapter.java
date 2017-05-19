@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Day;
 
 import java.util.Collections;
@@ -21,6 +22,7 @@ public class DayListAdapter extends BaseAdapter {
 
     private Context context;
     private List<Day> days = Collections.emptyList();
+    DataStore dataStore = DataStore.getInstance();
 
     public DayListAdapter(Context context) {
         this.context = context;
@@ -42,16 +44,20 @@ public class DayListAdapter extends BaseAdapter {
         TextView Event3txt = (TextView)view.findViewById(R.id.textViewEvent3);
 
         numDaytxt.setText(days.get(position).getNumber()+"°");
-        //todo: fare in modo che quando si torni indietro la lista si aggiorni
-        // Mostro soltanto i primi 3 eventi
-        /*if(!dataStore.getEventList(tripIndex, position).isEmpty()) {
-            int sizeEventList = dataStore.getEventList(tripIndex, position).size();
+
+        // Mostro soltanto i primi 3 eventi di quel determinato giorno
+        // todo: La lista degli eventi non è collegata con un determinato giorno
+        // todo: Quando entro nell'activity non si vedono gli eventi a meno che non faccio un refresh
+/*
+        if(!dataStore.getEvents().isEmpty()) {
+            int sizeEventList = dataStore.getEvents().size();
                 if (1<=sizeEventList)
-                    Event1txt.setText(dataStore.getEventList(tripIndex, position).get(0).getTitle());
+                    Event1txt.setText(dataStore.getEvents().get(0).getTitle());
+            Log.i("Day_list_adapter", "Valore del dayKey" +dataStore.getEvents().get(1).getKey());
                 if (2<=sizeEventList)
-                    Event2txt.setText(dataStore.getEventList(tripIndex, position).get(1).getTitle());
+                    Event2txt.setText(dataStore.getEvents().get(1).getTitle());
                 if (3<=sizeEventList)
-                    Event3txt.setText(dataStore.getEventList(tripIndex, position).get(2).getTitle());
+                    Event3txt.setText(dataStore.getEvents().get(2).getTitle());
         }*/
         return view;
     }

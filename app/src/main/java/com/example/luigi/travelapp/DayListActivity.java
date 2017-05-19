@@ -34,9 +34,7 @@ public class DayListActivity extends Activity {
         dayListAdapter = new DayListAdapter(this);
         dataStore.beginDaysObs(new DataStore.UpdateListener() {
             @Override
-            public void tripsUpdated() {
-
-            }
+            public void tripsUpdated() {}
 
             @Override
             public void daysUpdated() {
@@ -70,7 +68,6 @@ public class DayListActivity extends Activity {
     protected void onResume(){
         super.onResume();
         dayListAdapter.notifyDataSetChanged();
-
     }
 
     @Override

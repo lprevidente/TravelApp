@@ -1,8 +1,5 @@
 package com.example.luigi.travelapp.datamodel;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
 /**
  * Created by Luigi on 08/05/2017.
  */

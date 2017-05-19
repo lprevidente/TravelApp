@@ -2,7 +2,6 @@ package com.example.luigi.travelapp.datamodel;
 
 import android.support.annotation.NonNull;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -22,7 +21,7 @@ public class Event implements Comparable<Event> {
 
     public Event() { }
 
-    public Event(Date date, String title, String note, boolean notify, int Image) {
+    public Event(Date date, String title, String note, boolean notify, int Image, String string) {
         time = date.getTime();
         this.title = title;
         this.note = note;
@@ -51,9 +50,23 @@ public class Event implements Comparable<Event> {
         return typeEvent;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public String getTimeString() {
+        SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm");
+        String str = localDateFormat.format(new Date(time));
+        return str;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
     //Set methods
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDate(long time) {
+        this.time = time;
     }
 
     public void setTitle(String title) {
@@ -72,26 +85,12 @@ public class Event implements Comparable<Event> {
         Image = image;
     }
 
-    public String getTimeString() {
-        SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm");
-        String str = localDateFormat.format(new Date(time));
-        return str;
-    }
-
-    public long getTime() {
-        return time;
-    }
-
     public void setTypeEvent(String typeEvent) {
         this.typeEvent = typeEvent;
     }
 
     public void setTime(long time) {
         this.time = time;
-    }
-
-    public String getKey() {
-        return key;
     }
 
     public void setKey(String key) {

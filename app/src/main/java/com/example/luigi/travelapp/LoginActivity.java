@@ -44,6 +44,9 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         if (mAuth.getCurrentUser() != null) {
+                                            Intent intent = new Intent(LoginActivity.this, TripListActivity.class);
+                                            startActivity(intent);
+                                            finish();
                                             Toast.makeText(getApplicationContext(), "AUTENTICATO", Toast.LENGTH_SHORT).show();
                                         } else {
                                             createAccount(name, pass);

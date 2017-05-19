@@ -8,21 +8,19 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RadioButton;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Day;
 import com.example.luigi.travelapp.datamodel.Event;
-import com.example.luigi.travelapp.datamodel.TypesEvent;
 import com.example.luigi.travelapp.datamodel.Trip;
+import com.example.luigi.travelapp.datamodel.TypesEvent;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -81,7 +79,7 @@ public class EventActivity extends Activity {
 
         textViewtypeEvent = (TextView) findViewById(R.id.textView_typeEvent);
 
-        if(extras.getString(EVENTNEW).equals("yes")) {
+
         if (tmpIndex == -1) {
             setCurrentTime();
             resImage=R.drawable.ic_action_name_place;
@@ -97,14 +95,16 @@ public class EventActivity extends Activity {
             resImage=event.getImage();
             stringtypeEvent=event.getTypeEvent();
         }
+
+        typeEvent.setImageResource(resImage);
+        textViewtypeEvent.setText(stringtypeEvent);
+
         /**
          * Creo un Alert Dialog per avere
          * più scelte sui vari tipi di eventi
          * e non ridurmi solo a 3
          */
 
-        typeEvent.setImageResource(resImage);
-        textViewtypeEvent.setText(stringtypeEvent);
         final AlertDialogAdapter alertDialogAdapter = new AlertDialogAdapter(this);
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -165,17 +165,15 @@ public class EventActivity extends Activity {
                                 oldcal.add(Calendar.DATE, day.getNumber());
                                 newcal.setTime(setString2DateTime(oldcal.getTime(), TimePickerTextView.getText().toString()));
 
-                            Event event = new Event(newcal.getTime(),
-                                    titleEventTextView.getText().toString(), noteEditview.getText().toString(), notify, resImage, stringtypeEvent);
                                 Event event = new Event(newcal.getTime(),
-                                        titleEventTextView.getText().toString(), noteEditview.getText().toString(), notify, resImage);
+                                    titleEventTextView.getText().toString(),
+                                    noteEditview.getText().toString(), notify, resImage, stringtypeEvent);
 
                                 if (tmpIndex == -1)
                                     dataStore.addEvent(event, day.getEventsReference());
                                 else {
                                     // codice per l'update
-                                }
-                                setResult(Activity.RESULT_OK, intent);
+                                    }
                                 finish();
                             }
                             return true;
@@ -201,6 +199,7 @@ public class EventActivity extends Activity {
         });
 
     }
+
     private class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
 
         @Override

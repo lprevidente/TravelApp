@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,16 +15,11 @@ import android.widget.ListView;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
 
+
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_REFERENCE;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
-import static android.support.v7.appcompat.R.attr.colorControlHighlight;
-import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
-import static com.example.luigi.travelapp.costanti.Constants.EVENT;
-import static com.example.luigi.travelapp.costanti.Constants.EVENTNEW;
-import static com.example.luigi.travelapp.costanti.Constants.EVENT_INDEX;
-import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
 /**
  * Created by Bernardo on 09/05/2017.
@@ -58,14 +54,10 @@ public class EventListActivity extends Activity{
         eventListAdapter = new EventListAdapter(this);
         dataStore.beginEventsObs(new DataStore.UpdateListener() {
             @Override
-            public void tripsUpdated() {
-
-            }
+            public void tripsUpdated() {}
 
             @Override
-            public void daysUpdated() {
-
-            }
+            public void daysUpdated() {}
 
             @Override
             public void eventsUpdated() {
@@ -87,13 +79,13 @@ public class EventListActivity extends Activity{
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                EditToolbar();
+                EditToolbar(mview);
                 posizione = position;
                 if(mview!=null)
                     mview.setBackground(getDrawable(R.color.colorTransparet));
                 mview=view;
                 EditToolbar(mview);
-                positione = position;
+                posizione = position;
 
                 return true;
             }
@@ -102,9 +94,7 @@ public class EventListActivity extends Activity{
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-               // mview=view;
                 DefaulToolbar(mview);
-
             }
         });
 
@@ -118,27 +108,18 @@ public class EventListActivity extends Activity{
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_delete:
-                        dataStore.deleteEvent(tripIndex, dayIndex, positione);
+                        dataStore.deleteEvent(eventReference, dataStore.getEvents().get(posizione).getKey());
                         eventListAdapter.notifyDataSetChanged();
                         DefaulToolbar(mview);
-
-                        dataStore.deleteEvent(eventReference, dataStore.getEvents().get(posizione).getKey());
-                        DefaulToolbar();
                         return true;
 
                     case R.id.item_edit:
-                        DefaulToolbar();
+                        DefaulToolbar(mview);
                         Intent intent = new Intent(EventListActivity.this, EventActivity.class);
                         intent.putExtra(KEY_EVENT, posizione);
                         intent.putExtra(KEY_TRIP, tripKey);
                         intent.putExtra(KEY_DAY, dayKey);
                         startActivityForResult(intent, 0);
-                        DefaulToolbar(mview);
-                        intent= new Intent(EventListActivity.this, EventActivity.class);
-                        intent.putExtra(EVENT, dataStore.getEventList(tripIndex, dayIndex).get(positione));
-                        intent.putExtra(EVENTNEW, "NO");
-                        Log.i("EventListActivity: ", "VALORE EVENT:" +EVENT);
-                        startActivityForResult(intent, CODE3);
                 }
                 return false;
             }
@@ -147,18 +128,12 @@ public class EventListActivity extends Activity{
         addEvent.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DefaulToolbar();
+                DefaulToolbar(mview);
                 Intent intent = new Intent(EventListActivity.this, EventActivity.class);
                 intent.putExtra(KEY_EVENT, -1);
                 intent.putExtra(KEY_TRIP, tripKey);
                 intent.putExtra(KEY_DAY, dayKey);
                 startActivityForResult(intent, 0);
-                DefaulToolbar(mview);
-                intent = new Intent(EventListActivity.this, EventActivity.class);
-                intent.putExtra("TRIP_INDEX", tripIndex);
-                intent.putExtra("DAY_INDEX", dayIndex);
-                intent.putExtra(EVENTNEW, "yes");
-                startActivityForResult(intent, CODE2);
             }
         }));
 
@@ -170,11 +145,6 @@ public class EventListActivity extends Activity{
         });
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        DefaulToolbar();
-    }
-
-    private void DefaulToolbar(){
         //toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
     private void DefaulToolbar(View view){
         toolbar.setBackgroundColor(getColor(R.color.colorPrimary));

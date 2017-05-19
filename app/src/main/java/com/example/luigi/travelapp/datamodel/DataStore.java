@@ -1,5 +1,7 @@
 package com.example.luigi.travelapp.datamodel;
 
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -133,9 +135,9 @@ public class DataStore {
                 events.clear();
                 for (DataSnapshot item : dataSnapshot.getChildren()) {
                     Event event = new Event();
-
                     event.setKey(item.getKey());
                     event.setTitle(item.child(KEY_EVENT_TITLE).getValue(String.class));
+                    Log.i("DATASTORE", "TITOLO EVENTO"+item.child(KEY_EVENT_TITLE).getValue(String.class));
                     event.setNote(item.child(KEY_EVENT_NOTE).getValue(String.class));
                     event.setImage(item.child(KEY_EVENT_IMAGE).getValue(Integer.class));
                     event.setNotify(item.child(KEY_EVENT_NOTIFY).getValue(Boolean.class));
@@ -143,6 +145,7 @@ public class DataStore {
 
                     events.add(event);
                 }
+
                 Collections.sort(getEvents());
                 notification.eventsUpdated();
             }
@@ -155,6 +158,7 @@ public class DataStore {
 
         reference.addValueEventListener(listenerEvents);
     }
+
 
     public void endTripsObs() {
         if (listenerTrips != null)
@@ -170,6 +174,7 @@ public class DataStore {
         if (listenerEvents != null)
             FirebaseDatabase.getInstance().getReference(user.getUid()).child(KEY_EVENT_LIST).removeEventListener(listenerEvents);
     }
+
 
     public void addTrip(Trip trip) {
         int daysNumber = trip.getDaysNumber();
@@ -238,6 +243,7 @@ public class DataStore {
         reference.setValue(event);
     }
 
+
     public void updateTrip(Trip trip) {
         int index = tripIndex(trip.getKey());
         Trip tmp = trips.get(index);
@@ -261,9 +267,8 @@ public class DataStore {
         reference.setValue(trip);
     }
 
-    public void updateEvent(int tripIndex, int dayIndex, int eventIndex, Event event) {
+    public void updateEvent(int tripIndex, int dayIndex, int eventIndex, Event event) {}
 
-    }
 
     public void deleteTrip(String key) {
         DatabaseReference reference = database.getReference(user.getUid())
@@ -299,6 +304,7 @@ public class DataStore {
         reference.removeValue();
     }
 
+
     public ArrayList<Trip> getTrips() {
         return trips;
     }
@@ -308,8 +314,10 @@ public class DataStore {
     }
 
     public ArrayList<Event> getEvents() {
+        // database.getReference(user.getUid()).child(dayKey);
         return events;
     }
+
 
     public int tripIndex(String key) {
         int i = 0;
