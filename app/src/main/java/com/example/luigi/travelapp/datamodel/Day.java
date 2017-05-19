@@ -9,19 +9,12 @@ import java.util.ArrayList;
 
 public class Day implements Serializable{
     private int number;
-    private ArrayList<Event> events;
+    private String eventsReference;
 
-    /**
-     * Day object constructor
-     * @param number ID for the day to be represented in the list view
-     */
+    public Day() { }
+
     public Day(int number) {
         this.number = number;
-        events = new ArrayList<>();
-    }
-
-    public Day() {
-
     }
 
     public int getNumber() {
@@ -32,11 +25,11 @@ public class Day implements Serializable{
         this.number = number;
     }
 
-    public ArrayList<Event> getEvents() {
-        return events;
+    public String getEventsReference() {
+        return eventsReference;
     }
 
-    public void setEvents(ArrayList<Event> events) {
-        this.events = events;
+    public void setEventsReference(String eventsReference) {
+        this.eventsReference = eventsReference;
     }
 }

@@ -40,8 +40,6 @@ import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 public class EventActivity extends Activity {
 
     private DataStore dataStore = DataStore.getInstance();
-    private int tripIndex;
-    private int dayIndex;
     private EditText titleEventTextView;
     private EditText noteEditview;
     private CheckBox notifyCheckBox;
@@ -66,8 +64,6 @@ public class EventActivity extends Activity {
 
         intent= getIntent();
         Bundle extras = getIntent().getExtras();
-        tripIndex = extras.getInt(TRIP_INDEX);
-        dayIndex = extras.getInt(DAY_INDEX);
 
         Toolbar toolbarEvent = (Toolbar) findViewById(R.id.toolbarEvent);
         toolbarEvent.setTitle(R.string.NewEvent);
@@ -84,7 +80,6 @@ public class EventActivity extends Activity {
 
         radioResturant= (RadioButton) findViewById(R.id.radioRestaurant);
 
-
         // devo settarli in questo modo altrimenti non si vedono per via delle varie dimensioni
         imageView = (ImageView) findViewById(R.id.imageVisit);
         imageView.setImageResource(R.drawable.ic_action_name_place);
@@ -95,9 +90,7 @@ public class EventActivity extends Activity {
         imageView = (ImageView) findViewById(R.id.imageFlight);
         imageView.setImageResource(R.drawable.ic_action_name_flight);
 
-
         TimePickerTextView = (TextView) findViewById(R.id.oraTextView);
-
 
         if(extras.getString(EVENTNEW).equals("yes")) {
             setCurrentTime();
@@ -135,7 +128,9 @@ public class EventActivity extends Activity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_done:
-                        if (!titleEventTextView.getText().toString().equals(NULLTITLE)) {
+                        if (!titleEventTextView.getText().toString().isEmpty()) {
+                            // todo: modificare il modo in cui si ricava il viaggio corrispondente
+                            /*
                             // get the event's day date and set the new hour and minute
                             Calendar oldcal = Calendar.getInstance();
                             Calendar newcal = Calendar.getInstance();
@@ -151,6 +146,7 @@ public class EventActivity extends Activity {
                             intent.putExtra(EVENT_INDEX, event);
                             setResult(Activity.RESULT_OK, intent);
                             finish();
+                            */
                             return true;
                         }
                         else {

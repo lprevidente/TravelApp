@@ -14,22 +14,14 @@ public class Trip implements Serializable {
     private String title;
     private long startTime;
     private long endTime;
+    private String daysReference;
 
-    private ArrayList<Day> days;
+    public Trip() { }
 
-    public Trip() {
-    }
-
-    // Constructor
     public Trip(String title, Date startDate, Date endDate) {
         this.title = title;
         startTime = startDate.getTime();
         endTime = endDate.getTime();
-
-        days = new ArrayList<>();
-        for (int i = 1; i <= getDaysNumber(); i++) {
-            days.add(new Day(i));
-        }
     }
 
     public String getTitle() {
@@ -56,19 +48,15 @@ public class Trip implements Serializable {
         this.title = titleTrip;
     }
 
+    public String getDaysReference() {
+        return daysReference;
+    }
+
+    public void setDaysReference(String daysReference) {
+        this.daysReference = daysReference;
+    }
+
     public int getDaysNumber() {
         return (int)((endTime - startTime) / (1000 * 60 * 60 * 24)) + 1;
-    }
-
-    public ArrayList<Day> getDays() {
-        return days;
-    }
-
-    public void setDays(ArrayList<Day> days) {
-        this.days = days;
-    }
-
-    public void addDay(Day day){
-        days.add(day);
     }
 }

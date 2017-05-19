@@ -48,7 +48,6 @@ public class CityActivity extends Activity {
         super.onCreate(savedInstanceStat);
         setContentView(R.layout.activity_city);
 
-
         newtripEdit = (EditText)findViewById(R.id.autocompleteEditText);
         addTripbtn = (Button)findViewById(R.id.btnAddCity);
 
@@ -68,7 +67,6 @@ public class CityActivity extends Activity {
 
         partenzaTextView = (TextView)findViewById(R.id.partenzaTextView);
         ritornoTextView = (TextView)findViewById(R.id.ritornoTextView);
-
 
         if (getIntent().getSerializableExtra(EVENTNEW).equals("yes")) {
             ritornoTextView.setText(DateFormat.getDateInstance().format(Calendar.getInstance().getTime()));

@@ -21,19 +21,15 @@ import java.util.List;
 
 public class DayListAdapter extends BaseAdapter {
 
-    private DataStore dataStore = DataStore.getInstance();
     private Context context;
     private List<Day> days = Collections.emptyList();
-    private int tripIndex;
 
-
-    public DayListAdapter(int tripIndex, Context context) {
+    public DayListAdapter(Context context) {
         this.context = context;
-        this.tripIndex = tripIndex;
     }
 
-    public void update() {
-        days = dataStore.getDayList(tripIndex);
+    public void update(List<Day> newList) {
+        days = newList;
         notifyDataSetChanged();
     }
 
@@ -50,7 +46,7 @@ public class DayListAdapter extends BaseAdapter {
         numDaytxt.setText(days.get(position).getNumber()+"°");
         //todo: fare in modo che quando si torni indietro la lista si aggiorni
         // Mostro soltanto i primi 3 eventi
-        if(!dataStore.getEventList(tripIndex, position).isEmpty()) {
+        /*if(!dataStore.getEventList(tripIndex, position).isEmpty()) {
             int sizeEventList = dataStore.getEventList(tripIndex, position).size();
                 if (1<=sizeEventList)
                     Event1txt.setText(dataStore.getEventList(tripIndex, position).get(0).getTitle());
@@ -58,7 +54,7 @@ public class DayListAdapter extends BaseAdapter {
                     Event2txt.setText(dataStore.getEventList(tripIndex, position).get(1).getTitle());
                 if (3<=sizeEventList)
                     Event3txt.setText(dataStore.getEventList(tripIndex, position).get(2).getTitle());
-        }
+        }*/
         return view;
     }
 

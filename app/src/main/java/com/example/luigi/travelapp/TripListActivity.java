@@ -18,9 +18,12 @@ import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Trip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
+import static com.example.luigi.travelapp.costanti.Constants.DAY_REFERENCE;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.EVENTNEW;
+import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
 import static com.example.luigi.travelapp.costanti.Constants.SEND_TRIP;
 import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
@@ -42,6 +45,7 @@ public class TripListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_list);
 
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
             Intent intent = new Intent(this, LoginActivity.class);
@@ -61,6 +65,13 @@ public class TripListActivity extends AppCompatActivity {
             public void tripsUpdated() {
                 adapter.update(dataStore.getTrips());
             }
+
+            @Override
+            public void eventsUpdated() { }
+
+            @Override
+            public void daysUpdated() { }
+
         });
 
         toolbar = (Toolbar)findViewById(R.id.toolbar_trip_list);
@@ -85,7 +96,7 @@ public class TripListActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DefaulToolbar();
                 Intent intent = new Intent(view.getContext(), DayListActivity.class);
-                intent.putExtra(TRIP_INDEX, position);
+                intent.putExtra(DAY_REFERENCE, dataStore.getTrips().get(position).getDaysReference());
                 startActivity(intent);
             }
         });
@@ -112,7 +123,7 @@ public class TripListActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_delete:
-                        dataStore.deleteTrip(posizione);
+                        //dataStore.deleteTrip(posizione);
                         DefaulToolbar();
                         return true;
                     case R.id.item_edit:
@@ -156,7 +167,7 @@ public class TripListActivity extends AppCompatActivity {
 
     private void EditToolbar(){
         toolbar.setBackgroundColor(Color.GRAY);
-        toolbar.setTitle("");
+        toolbar.setTitle(NULLTITLE);
         toolbar.setNavigationIcon(R.drawable.ic_action_name_back);
         menu.findItem(R.id.item_edit).setVisible(true);
         menu.findItem(R.id.item_delete).setVisible(true);

@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,11 +15,9 @@ import android.widget.ListView;
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Event;
 
-import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
-import static com.example.luigi.travelapp.costanti.Constants.EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.EVENTNEW;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_INDEX;
-import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
+import static com.example.luigi.travelapp.costanti.Constants.EVENT_REFERENCE;
 
 /**
  * Created by Bernardo on 09/05/2017.
@@ -32,32 +29,40 @@ public class EventListActivity extends Activity{
     private ListView list;
     private FloatingActionButton addEvent;
     private EventListAdapter eventListAdapter;
-    private int tripIndex;
-    private int dayIndex;
     private Toolbar toolbar;
     private Menu menu;
-    private int positione;
     private final int CODE2 = 2;
     private final int CODE3 = 3;
+    private int positione;
+
+    String eventReference;
 
     private Intent intent;
-
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
 
         Bundle extras = getIntent().getExtras();
-        tripIndex = extras.getInt(TRIP_INDEX);
-        dayIndex = extras.getInt(DAY_INDEX);
+        eventReference = extras.getString(EVENT_REFERENCE);
 
         eventListAdapter = new EventListAdapter(this);
-        dataStore.beginTripsObs(new DataStore.UpdateListener() {
+        dataStore.beginEventsObs(new DataStore.UpdateListener() {
             @Override
             public void tripsUpdated() {
-                eventListAdapter.update(dataStore.getEventList(tripIndex, dayIndex));
+
             }
-        });
+
+            @Override
+            public void daysUpdated() {
+
+            }
+
+            @Override
+            public void eventsUpdated() {
+                eventListAdapter.update(dataStore.getEvents());
+            }
+        }, eventReference);
 
         addEvent = (FloatingActionButton)findViewById(R.id.AddEvent);
 
@@ -70,10 +75,6 @@ public class EventListActivity extends Activity{
 
         addEvent.setImageResource(R.drawable.ic_action_name_add);
 
-        /**
-         * se c'è un click lungo fa compare sulla toolbar due icone una serve per modificare e l'altra
-         * per cancellare l'evento
-         */
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -81,11 +82,8 @@ public class EventListActivity extends Activity{
                 positione = position;
                 return true;
             }
-
         });
-    /**
-     * Nel caso volessi tornare indietro dopo il tocco prolungato clicco semplicemente su uno dei tanti eventi presenti
-     */
+
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -93,28 +91,23 @@ public class EventListActivity extends Activity{
             }
         });
 
-        /**
-         * Mi serve per gesitre gli hendler dei due Item posti nella Toolbar
-         * Delete: cancello il dato dal datastore
-         * Edit: Ho la possibilità di modificare il mio evento
-         */
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_delete:
-                        dataStore.deleteEvent(tripIndex, dayIndex, positione);
-                        //eventListAdapter.notifyDataSetChanged();
+                        /*dataStore.deleteEvent(tripIndex, dayIndex, positione);
+                        eventListAdapter.notifyDataSetChanged();*/
                         DefaulToolbar();
                         return true;
 
                     case R.id.item_edit:
                         DefaulToolbar();
-                        intent= new Intent(EventListActivity.this, EventActivity.class);
+                        /*intent= new Intent(EventListActivity.this, EventActivity.class);
                         intent.putExtra(EVENT, dataStore.getEventList(tripIndex, dayIndex).get(positione));
                         intent.putExtra(EVENTNEW, "NO");
                         Log.i("EventListActivity: ", "VALORE EVENT:" +EVENT);
-                        startActivityForResult(intent, CODE3);
+                        startActivityForResult(intent, CODE3);*/
                 }
                 return false;
             }
@@ -125,8 +118,6 @@ public class EventListActivity extends Activity{
             public void onClick(View v) {
                 DefaulToolbar();
                 intent = new Intent(EventListActivity.this, EventActivity.class);
-                intent.putExtra("TRIP_INDEX", tripIndex);
-                intent.putExtra("DAY_INDEX", dayIndex);
                 intent.putExtra(EVENTNEW, "yes");
                 startActivityForResult(intent, CODE2);
             }
@@ -144,14 +135,12 @@ public class EventListActivity extends Activity{
         if (requestCode == CODE2) {
             if (resultCode == Activity.RESULT_OK) {
                 Event event = (Event)data.getSerializableExtra(EVENT_INDEX);
-                // add the new trip in the data store
-                dataStore.addEvent(tripIndex, dayIndex, event);
-                //eventListAdapter.notifyDataSetChanged();
+                dataStore.addEvent(event, eventReference);
             }
         }
         if(requestCode==CODE3){
             if(resultCode==Activity.RESULT_OK){
-                Event event = (Event)data.getSerializableExtra(EVENT_INDEX);
+                //Event event = (Event)data.getSerializableExtra(EVENT_INDEX);
                 //dataStore.updateEvent(tripIndex, dayIndex,positione, event);
                 //eventListAdapter.notifyDataSetChanged();
                 DefaulToolbar();
@@ -175,5 +164,11 @@ public class EventListActivity extends Activity{
         menu.findItem(R.id.item_edit).setVisible(true);
         menu.findItem(R.id.item_delete).setVisible(true);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dataStore.endEventsObs();
     }
 }
