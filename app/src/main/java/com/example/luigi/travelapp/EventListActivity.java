@@ -18,6 +18,12 @@ import static com.example.luigi.travelapp.costanti.Constants.EVENT_REFERENCE;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
+import static android.support.v7.appcompat.R.attr.colorControlHighlight;
+import static com.example.luigi.travelapp.costanti.Constants.DAY_INDEX;
+import static com.example.luigi.travelapp.costanti.Constants.EVENT;
+import static com.example.luigi.travelapp.costanti.Constants.EVENTNEW;
+import static com.example.luigi.travelapp.costanti.Constants.EVENT_INDEX;
+import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
 /**
  * Created by Bernardo on 09/05/2017.
@@ -38,6 +44,7 @@ public class EventListActivity extends Activity{
     String dayKey;
 
     private Intent intent;
+    private View mview=null;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +89,12 @@ public class EventListActivity extends Activity{
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 EditToolbar();
                 posizione = position;
+                if(mview!=null)
+                    mview.setBackground(getDrawable(R.color.colorTransparet));
+                mview=view;
+                EditToolbar(mview);
+                positione = position;
+
                 return true;
             }
         });
@@ -89,15 +102,26 @@ public class EventListActivity extends Activity{
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                DefaulToolbar();
+               // mview=view;
+                DefaulToolbar(mview);
+
             }
         });
 
+        /**
+         * Mi serve per gesitre gli hendler dei due Item posti nella Toolbar
+         * Delete: cancello il dato dal datastore
+         * Edit: Ho la possibilità di modificare il mio evento
+         */
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_delete:
+                        dataStore.deleteEvent(tripIndex, dayIndex, positione);
+                        eventListAdapter.notifyDataSetChanged();
+                        DefaulToolbar(mview);
+
                         dataStore.deleteEvent(eventReference, dataStore.getEvents().get(posizione).getKey());
                         DefaulToolbar();
                         return true;
@@ -109,6 +133,12 @@ public class EventListActivity extends Activity{
                         intent.putExtra(KEY_TRIP, tripKey);
                         intent.putExtra(KEY_DAY, dayKey);
                         startActivityForResult(intent, 0);
+                        DefaulToolbar(mview);
+                        intent= new Intent(EventListActivity.this, EventActivity.class);
+                        intent.putExtra(EVENT, dataStore.getEventList(tripIndex, dayIndex).get(positione));
+                        intent.putExtra(EVENTNEW, "NO");
+                        Log.i("EventListActivity: ", "VALORE EVENT:" +EVENT);
+                        startActivityForResult(intent, CODE3);
                 }
                 return false;
             }
@@ -123,13 +153,19 @@ public class EventListActivity extends Activity{
                 intent.putExtra(KEY_TRIP, tripKey);
                 intent.putExtra(KEY_DAY, dayKey);
                 startActivityForResult(intent, 0);
+                DefaulToolbar(mview);
+                intent = new Intent(EventListActivity.this, EventActivity.class);
+                intent.putExtra("TRIP_INDEX", tripIndex);
+                intent.putExtra("DAY_INDEX", dayIndex);
+                intent.putExtra(EVENTNEW, "yes");
+                startActivityForResult(intent, CODE2);
             }
         }));
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               DefaulToolbar();
+               DefaulToolbar(mview);
             }
         });
     }
@@ -140,19 +176,25 @@ public class EventListActivity extends Activity{
 
     private void DefaulToolbar(){
         //toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
+    private void DefaulToolbar(View view){
+        toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
         toolbar.setTitle(R.string.titleEvents);
         toolbar.setNavigationIcon(null);
         menu.findItem(R.id.item_edit).setVisible(false);
         menu.findItem(R.id.item_delete).setVisible(false);
+        if(view!= null)
+        view.setBackground(getDrawable(R.color.colorTransparet));
 
     }
 
-    private void EditToolbar(){
+    private void EditToolbar(View view){
         toolbar.setBackgroundColor(Color.GRAY);
         toolbar.setTitle("");
         toolbar.setNavigationIcon(R.drawable.ic_action_name_back);
         menu.findItem(R.id.item_edit).setVisible(true);
         menu.findItem(R.id.item_delete).setVisible(true);
+        if(view!= null)
+        view.setBackground(getDrawable(R.color.colorHilightGrey));
 
     }
 

@@ -18,6 +18,7 @@ public class Event implements Comparable<Event> {
     private String note;
     private boolean notify;
     private int Image;
+    private String typeEvent;
 
     public Event() { }
 
@@ -27,6 +28,7 @@ public class Event implements Comparable<Event> {
         this.note = note;
         this.notify = notify;
         this.Image=Image;
+        typeEvent=string;
     }
 
     public String getTitle() {
@@ -43,6 +45,15 @@ public class Event implements Comparable<Event> {
 
     public int getImage() {
         return Image;
+    }
+
+    public String getTypeEvent() {
+        return typeEvent;
+    }
+
+    //Set methods
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public void setTitle(String title) {
@@ -69,6 +80,10 @@ public class Event implements Comparable<Event> {
 
     public long getTime() {
         return time;
+    }
+
+    public void setTypeEvent(String typeEvent) {
+        this.typeEvent = typeEvent;
     }
 
     public void setTime(long time) {

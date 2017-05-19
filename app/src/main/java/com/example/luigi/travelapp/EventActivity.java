@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -19,12 +21,14 @@ import android.widget.TimePicker;
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Day;
 import com.example.luigi.travelapp.datamodel.Event;
+import com.example.luigi.travelapp.datamodel.TypesEvent;
 import com.example.luigi.travelapp.datamodel.Trip;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT;
@@ -42,17 +46,12 @@ public class EventActivity extends Activity {
     private EditText noteEditview;
     private CheckBox notifyCheckBox;
     private TextView TimePickerTextView;
+    private ImageButton typeEvent;
+    private TextView textViewtypeEvent;
 
-    private ImageView imageView;
-
-    private Intent intent;
-
-    // todo: bisogna aggiustare i radio button e allinearli con le immagini
-    private RadioButton radioFlight;
-    private RadioButton radioResturant;
-    private RadioButton radioPlaces;
-
+    private String stringtypeEvent;
     private int resImage;
+
     private boolean notify=false;
 
     private String dayKey;
@@ -60,11 +59,9 @@ public class EventActivity extends Activity {
     private int tmpIndex;
 
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
 
-        intent = getIntent();
         Bundle extras = getIntent().getExtras();
         tripKey = extras.getString(KEY_TRIP);
         dayKey = extras.getString(KEY_DAY);
@@ -78,27 +75,18 @@ public class EventActivity extends Activity {
         noteEditview = (EditText) findViewById(R.id.notesText);
         notifyCheckBox = (CheckBox) findViewById(R.id.checkBoxNotifica);
 
-        radioFlight= (RadioButton) findViewById(R.id.radioFlight);
-        radioPlaces= (RadioButton) findViewById(R.id.radioPlaces);
-        radioPlaces.setChecked(true);
-        resImage= R.drawable.ic_action_name_place;
-
-        radioResturant= (RadioButton) findViewById(R.id.radioRestaurant);
-
-        // devo settarli in questo modo altrimenti non si vedono per via delle varie dimensioni
-        imageView = (ImageView) findViewById(R.id.imageVisit);
-        imageView.setImageResource(R.drawable.ic_action_name_place);
-
-        imageView = (ImageView) findViewById(R.id.imageRestaurant);
-        imageView.setImageResource(R.drawable.ic_action_name_rest7aurant);
-
-        imageView = (ImageView) findViewById(R.id.imageFlight);
-        imageView.setImageResource(R.drawable.ic_action_name_flight);
-
         TimePickerTextView = (TextView) findViewById(R.id.oraTextView);
 
+        typeEvent = (ImageButton) findViewById(R.id.imageButton_typeEvent);
+
+        textViewtypeEvent = (TextView) findViewById(R.id.textView_typeEvent);
+
+        if(extras.getString(EVENTNEW).equals("yes")) {
         if (tmpIndex == -1) {
             setCurrentTime();
+            resImage=R.drawable.ic_action_name_place;
+            stringtypeEvent="Museo";
+
         }
         else {
             Event event = dataStore.getEvents().get(tmpIndex);
@@ -106,18 +94,43 @@ public class EventActivity extends Activity {
             noteEditview.setText(event.getNote());
             notifyCheckBox.setChecked(event.getNotify());
             TimePickerTextView.setText(event.getTimeString());
-            int resImageOld=event.getImage();
-            resImage = resImageOld;
+            resImage=event.getImage();
+            stringtypeEvent=event.getTypeEvent();
+        }
+        /**
+         * Creo un Alert Dialog per avere
+         * più scelte sui vari tipi di eventi
+         * e non ridurmi solo a 3
+         */
 
-            if(resImageOld==R.drawable.ic_action_name_place)
-                radioPlaces.setChecked(true);
+        typeEvent.setImageResource(resImage);
+        textViewtypeEvent.setText(stringtypeEvent);
+        final AlertDialogAdapter alertDialogAdapter = new AlertDialogAdapter(this);
 
-            else if (resImageOld==R.drawable.ic_action_name_flight)
-                radioFlight.setChecked(true);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Scegli il tipo di Evento");
 
-            else if (resImageOld==R.drawable.ic_action_name_rest7aurant)
-                radioResturant.setChecked(true);}
+        builder.setAdapter(alertDialogAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Qui inserisco il metodo per prendere il testo e l'immagine dell'item
+                // selezionato per poi sostituirli nel ImageButton and nella Text view sotto
+                List<TypesEvent> list = alertDialogAdapter.getList();
 
+                resImage=list.get(which).getImage();
+                typeEvent.setImageResource(resImage);
+                stringtypeEvent=list.get(which).getText().toString();
+                textViewtypeEvent.setText(stringtypeEvent);
+            }
+        });
+
+        // Al click del button mostro l'Alert Dialog con i vari tipi di Eventi
+       typeEvent.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               builder.show();
+           }
+       });
 
         TimePickerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +141,10 @@ public class EventActivity extends Activity {
 
         });
 
+        /**
+         * Gestisco i click sulla toolbar
+         * Done: mi creo un nuovo evento e lo mando a DayListActivity
+         */
         toolbarEvent.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -148,6 +165,8 @@ public class EventActivity extends Activity {
                                 oldcal.add(Calendar.DATE, day.getNumber());
                                 newcal.setTime(setString2DateTime(oldcal.getTime(), TimePickerTextView.getText().toString()));
 
+                            Event event = new Event(newcal.getTime(),
+                                    titleEventTextView.getText().toString(), noteEditview.getText().toString(), notify, resImage, stringtypeEvent);
                                 Event event = new Event(newcal.getTime(),
                                         titleEventTextView.getText().toString(), noteEditview.getText().toString(), notify, resImage);
 
@@ -169,6 +188,9 @@ public class EventActivity extends Activity {
             }
         });
 
+        /**
+         * Vedo se l'user ha selezionato o meno la notifica
+         */
         notifyCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,26 +201,6 @@ public class EventActivity extends Activity {
         });
 
     }
-    public void onRadioButtonClicked(View view) {
-
-        boolean checked = ((RadioButton) view).isChecked();
-
-        switch(view.getId()) {
-            case R.id.radioFlight:
-                if (checked)
-                    resImage= R.drawable.ic_action_name_flight;
-                    break;
-            case R.id.radioPlaces:
-                if (checked)
-                    resImage= R.drawable.ic_action_name_place;
-                    break;
-            case R.id.radioRestaurant:
-                if(checked)
-                    resImage=R.drawable.ic_action_name_rest7aurant;
-                    break;
-        }
-    }
-
     private class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
 
         @Override
