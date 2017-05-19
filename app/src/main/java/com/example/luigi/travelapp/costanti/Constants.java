@@ -41,4 +41,8 @@ public class Constants {
     public static final String KEY_EVENT_NOTE = "note";
     public static final String KEY_EVENT_NOTIFY = "notify";
     public static final String KEY_EVENT_IMAGE = "image";
+
+    public static final String KEY_TRIP = "keytrip";
+    public static final String KEY_DAY = "keyday";
+    public static final String KEY_EVENT = "keyevent";
 }

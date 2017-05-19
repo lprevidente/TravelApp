@@ -189,8 +189,11 @@ public class DataStore {
                 .child(KEY_TRIP_LIST)
                 .push()
                 .getKey();
+
         trip.setKey(tripKey);
-        DatabaseReference reference = database.getReference(user.getUid()).child(KEY_TRIP_LIST).child(tripKey);
+        DatabaseReference reference = database.getReference(user.getUid())
+                .child(KEY_TRIP_LIST)
+                .child(tripKey);
         reference.setValue(trip);
     }
 
@@ -209,8 +212,12 @@ public class DataStore {
                 .child(dayReference)
                 .push()
                 .getKey();
+
         day.setKey(dayKey);
-        DatabaseReference reference = database.getReference(user.getUid()).child(KEY_DAY_LIST).child(dayReference).child(dayKey);
+        DatabaseReference reference = database.getReference(user.getUid())
+                .child(KEY_DAY_LIST)
+                .child(dayReference)
+                .child(dayKey);
         reference.setValue(day);
     }
 
@@ -220,8 +227,12 @@ public class DataStore {
                 .child(eventReference)
                 .push()
                 .getKey();
+
         event.setKey(eventKey);
-        DatabaseReference reference = database.getReference(user.getUid()).child(KEY_EVENT_LIST).child(eventReference).child(eventKey);
+        DatabaseReference reference = database.getReference(user.getUid())
+                .child(KEY_EVENT_LIST)
+                .child(eventReference)
+                .child(eventKey);
         reference.setValue(event);
     }
 
@@ -233,18 +244,38 @@ public class DataStore {
 
     }
 
-    public void deleteTrip(int i) {
-        /*DatabaseReference reference = database.getReference(user.getUid()).push();
-        reference.removeValue();*/
+    public void deleteTrip(String key) {
+        DatabaseReference reference = database.getReference(user.getUid())
+                .child(KEY_TRIP_LIST)
+                .child(key);
+        reference.removeValue();
+
+        int index = tripIndex(key);
+        if (index != -1) {
+            String dayRootKey = trips.get(index).getDaysReference();
+            DatabaseReference dayRef = database.getReference(user.getUid())
+                    .child(KEY_DAY_LIST)
+                    .child(dayRootKey);
+            dayRef.removeValue();
+        }
     }
 
-    public void deleteEvent(int tripIndex, int dayIndex, int eventIndex) {
-        /*DatabaseReference reference = database.getReference(user.getUid())
-                .child(Integer.toString(tripIndex)).child(KEY_TRIP_DAY_LIST)
-                .child(Integer.toString(dayIndex))
-                .child(KEY_DAY_EVENT_LIST)
-                .child(Integer.toString(eventIndex));
-        reference.removeValue();*/
+    // TODO: come cancellare effettivamente gli eventi dal deletetrip?
+
+    public void deleteDay(String tripKey, String dayKey) {
+        DatabaseReference reference = database.getReference(user.getUid())
+                .child(KEY_DAY_LIST)
+                .child(tripKey)
+                .child(dayKey);
+        reference.removeValue();
+    }
+
+    public void deleteEvent(String dayKey, String eventKey) {
+        DatabaseReference reference = database.getReference(user.getUid())
+                .child(KEY_EVENT_LIST)
+                .child(dayKey)
+                .child(eventKey);
+        reference.removeValue();
     }
 
     public ArrayList<Trip> getTrips() {
@@ -257,5 +288,35 @@ public class DataStore {
 
     public ArrayList<Event> getEvents() {
         return events;
+    }
+
+    public int tripIndex(String key) {
+        int i = 0;
+        while (i < trips.size()) {
+            if (trips.get(i).getKey().equals(key))
+                return i;
+            i++;
+        }
+        return -1;
+    }
+
+    public int dayIndex(String key) {
+        int i = 0;
+        while (i < days.size()) {
+            if (days.get(i).getKey().equals(key))
+                return i;
+            i++;
+        }
+        return -1;
+    }
+
+    public int eventIndex(String key) {
+        int i = 0;
+        while (i < events.size()) {
+            if (events.get(i).getKey().equals(key))
+                return i;
+            i++;
+        }
+        return -1;
     }
 }

@@ -18,6 +18,8 @@ import com.example.luigi.travelapp.datamodel.Event;
 import static com.example.luigi.travelapp.costanti.Constants.EVENTNEW;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_INDEX;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_REFERENCE;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
 
 /**
  * Created by Bernardo on 09/05/2017.
@@ -36,6 +38,8 @@ public class EventListActivity extends Activity{
     private int positione;
 
     String eventReference;
+    String tripKey;
+    String dayKey;
 
     private Intent intent;
 
@@ -44,6 +48,8 @@ public class EventListActivity extends Activity{
         setContentView(R.layout.activity_event_list);
 
         Bundle extras = getIntent().getExtras();
+        tripKey = extras.getString(KEY_TRIP);
+        dayKey = extras.getString(KEY_DAY);
         eventReference = extras.getString(EVENT_REFERENCE);
 
         eventListAdapter = new EventListAdapter(this);
@@ -96,8 +102,7 @@ public class EventListActivity extends Activity{
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_delete:
-                        /*dataStore.deleteEvent(tripIndex, dayIndex, positione);
-                        eventListAdapter.notifyDataSetChanged();*/
+                        dataStore.deleteEvent(eventReference, dataStore.getEvents().get(positione).getKey());
                         DefaulToolbar();
                         return true;
 
@@ -119,6 +124,8 @@ public class EventListActivity extends Activity{
                 DefaulToolbar();
                 intent = new Intent(EventListActivity.this, EventActivity.class);
                 intent.putExtra(EVENTNEW, "yes");
+                intent.putExtra(KEY_TRIP, tripKey);
+                intent.putExtra(KEY_DAY, dayKey);
                 startActivityForResult(intent, CODE2);
             }
         }));
@@ -134,8 +141,8 @@ public class EventListActivity extends Activity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CODE2) {
             if (resultCode == Activity.RESULT_OK) {
-                Event event = (Event)data.getSerializableExtra(EVENT_INDEX);
-                dataStore.addEvent(event, eventReference);
+                //Event event = (Event)data.getSerializableExtra(EVENT_INDEX);
+                //dataStore.addEvent(event, eventReference);
             }
         }
         if(requestCode==CODE3){

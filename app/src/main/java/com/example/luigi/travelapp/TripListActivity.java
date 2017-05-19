@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import static com.example.luigi.travelapp.costanti.Constants.DAY_REFERENCE;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.EVENTNEW;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
 import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
 import static com.example.luigi.travelapp.costanti.Constants.SEND_TRIP;
 import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
@@ -96,6 +97,7 @@ public class TripListActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DefaulToolbar();
                 Intent intent = new Intent(view.getContext(), DayListActivity.class);
+                intent.putExtra(KEY_TRIP, dataStore.getTrips().get(position).getKey());
                 intent.putExtra(DAY_REFERENCE, dataStore.getTrips().get(position).getDaysReference());
                 startActivity(intent);
             }
@@ -123,7 +125,7 @@ public class TripListActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_delete:
-                        //dataStore.deleteTrip(posizione);
+                        dataStore.deleteTrip(dataStore.getTrips().get(posizione).getKey());
                         DefaulToolbar();
                         return true;
                     case R.id.item_edit:

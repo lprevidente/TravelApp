@@ -11,6 +11,8 @@ import com.example.luigi.travelapp.datamodel.DataStore;
 
 import static com.example.luigi.travelapp.costanti.Constants.DAY_REFERENCE;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_REFERENCE;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
 
 public class DayListActivity extends Activity {
 
@@ -18,6 +20,7 @@ public class DayListActivity extends Activity {
     private DayListAdapter dayListAdapter;
     private ListView listView;
     private String dayReference;
+    private String tripKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,7 @@ public class DayListActivity extends Activity {
         setContentView(R.layout.activity_day_list);
 
         Bundle extras = getIntent().getExtras();
+        tripKey = extras.getString(KEY_TRIP);
         dayReference = extras.getString(DAY_REFERENCE);
 
         dayListAdapter = new DayListAdapter(this);
@@ -51,6 +55,8 @@ public class DayListActivity extends Activity {
         listView.setOnItemClickListener( new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(view.getContext(), EventListActivity.class);
+                intent.putExtra(KEY_TRIP, tripKey);
+                intent.putExtra(KEY_DAY, dataStore.getDays().get(position).getKey());
                 intent.putExtra(EVENT_REFERENCE, dataStore.getDays().get(position).getEventsReference());
                 startActivity(intent);
             }
