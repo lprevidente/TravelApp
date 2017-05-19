@@ -236,8 +236,27 @@ public class DataStore {
         reference.setValue(event);
     }
 
-    public void updateTrip(int tripIndex, Trip trip) {
+    public void updateTrip(Trip trip) {
+        int index = tripIndex(trip.getKey());
+        Trip tmp = trips.get(index);
+        int oldDayNumber = tmp.getDaysNumber();
+        int newDayNumber = trip.getDaysNumber();
 
+        // TODO: DAY CHECK
+        /*if (newDayNumber < oldDayNumber) {
+            for (int i = oldDayNumber; i > newDayNumber; i--) {
+                tmp.getDayList().remove(i);
+            }
+        } else if (newDayNumber > oldDayNumber) {
+            for (int i = oldDayNumber + 1; i <= newDayNumber; i++) {
+                tmp.addDay(new Day(incrementDay(tmp.getStartDate(), i), i));
+            }
+        }*/
+
+        DatabaseReference reference = database.getReference(user.getUid())
+                .child(KEY_TRIP_LIST)
+                .child(trip.getKey());
+        reference.setValue(trip);
     }
 
     public void updateEvent(int tripIndex, int dayIndex, int eventIndex, Event event) {
