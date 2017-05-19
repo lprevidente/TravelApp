@@ -10,7 +10,7 @@ import static com.example.luigi.travelapp.util.DateUtil.incrementDay;
  * Created by Luigi on 08/05/2017.
  */
 
-public class Trip implements Serializable {
+public class Trip {
     private String title;
     private long startTime;
     private long endTime;

@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Created by Luigi on 08/05/2017.
  */
 
-public class Day implements Serializable{
+public class Day {
 
     private String key;
     private int number;

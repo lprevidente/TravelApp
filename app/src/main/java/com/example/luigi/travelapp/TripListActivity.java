@@ -15,18 +15,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
-import com.example.luigi.travelapp.datamodel.Trip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 import static com.example.luigi.travelapp.costanti.Constants.DAY_REFERENCE;
-import static com.example.luigi.travelapp.costanti.Constants.EVENT;
-import static com.example.luigi.travelapp.costanti.Constants.EVENTNEW;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
 import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
-import static com.example.luigi.travelapp.costanti.Constants.SEND_TRIP;
-import static com.example.luigi.travelapp.costanti.Constants.TRIP_INDEX;
 
 public class TripListActivity extends AppCompatActivity {
     private DataStore dataStore;
@@ -38,9 +33,6 @@ public class TripListActivity extends AppCompatActivity {
     private int posizione;
 
     private Intent intent;
-
-    private final int CODE = 1;
-    private final int CODE4=4;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,8 +100,8 @@ public class TripListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 DefaulToolbar();
                 intent = new Intent(TripListActivity.this, CityActivity.class);
-                intent.putExtra(EVENTNEW,"yes");
-                startActivityForResult(intent, CODE);
+                intent.putExtra(KEY_TRIP, -1);
+                startActivityForResult(intent, 0);
             }
         }));
 
@@ -130,10 +122,9 @@ public class TripListActivity extends AppCompatActivity {
                         return true;
                     case R.id.item_edit:
                         DefaulToolbar();
-                        intent= new Intent(TripListActivity.this, CityActivity.class);
-                        intent.putExtra(EVENT, dataStore.getTrips().get(posizione));
-                        intent.putExtra(EVENTNEW, "NO");
-                        startActivityForResult(intent, CODE4);
+                        intent = new Intent(TripListActivity.this, CityActivity.class);
+                        intent.putExtra(KEY_TRIP, posizione);
+                        startActivityForResult(intent, 0);
                 }
                 return false;
             }
@@ -141,20 +132,9 @@ public class TripListActivity extends AppCompatActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                menu.findItem(R.id.item_edit).setVisible(false);
-                menu.findItem(R.id.item_delete).setVisible(false);
-            }
-        }
-        if(requestCode==CODE4){
-            if(resultCode==Activity.RESULT_OK){
-                Trip trip = (Trip)data.getSerializableExtra(EVENT);
-                dataStore.updateTrip(posizione, trip);
-                //adapter.notifyDataSetChanged();
-                menu.findItem(R.id.item_edit).setVisible(false);
-                menu.findItem(R.id.item_delete).setVisible(false);
-            }
+        if (resultCode == Activity.RESULT_OK) {
+            menu.findItem(R.id.item_edit).setVisible(false);
+            menu.findItem(R.id.item_delete).setVisible(false);
         }
     }
 

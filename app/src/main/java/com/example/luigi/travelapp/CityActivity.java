@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Intent;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -22,24 +21,24 @@ import com.example.luigi.travelapp.datamodel.Trip;
 import java.text.ParseException;
 import java.util.Date;
 
-import static android.R.string.yes;
 import static com.example.luigi.travelapp.costanti.Constants.DATE_PICKER_FROM;
 import static com.example.luigi.travelapp.costanti.Constants.DATE_PICKER_TO;
-import static com.example.luigi.travelapp.costanti.Constants.EVENT;
-import static com.example.luigi.travelapp.costanti.Constants.EVENTNEW;
-import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
-import static com.example.luigi.travelapp.costanti.Constants.SEND_TRIP;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
 
 /**
  * Created by Luigi on 08/05/2017.
  */
 
 public class CityActivity extends Activity {
+    private DataStore dataStore = DataStore.getInstance();
+
     private EditText newtripEdit;
     private Button addTripbtn;
     private TextView partenzaTextView;
     private TextView ritornoTextView;
     private int id;
+
+    private int tmpIndex;
 
     private DatePickerDialog.OnDateSetListener from_dateListener, to_dateListener;
 
@@ -47,6 +46,9 @@ public class CityActivity extends Activity {
 
         super.onCreate(savedInstanceStat);
         setContentView(R.layout.activity_city);
+
+        Bundle extras = getIntent().getExtras();
+        tmpIndex = extras.getInt(KEY_TRIP);
 
         newtripEdit = (EditText)findViewById(R.id.autocompleteEditText);
         addTripbtn = (Button)findViewById(R.id.btnAddCity);
@@ -68,12 +70,12 @@ public class CityActivity extends Activity {
         partenzaTextView = (TextView)findViewById(R.id.partenzaTextView);
         ritornoTextView = (TextView)findViewById(R.id.ritornoTextView);
 
-        if (getIntent().getSerializableExtra(EVENTNEW).equals("yes")) {
+        if (tmpIndex == -1) {
             ritornoTextView.setText(DateFormat.getDateInstance().format(Calendar.getInstance().getTime()));
             partenzaTextView.setText(DateFormat.getDateInstance().format(Calendar.getInstance().getTime()));
         }
         else {
-            Trip trip = (Trip) getIntent().getSerializableExtra(EVENT);
+            Trip trip = dataStore.getTrips().get(tmpIndex);
             newtripEdit.setText(trip.getTitle());
             Calendar tmp = Calendar.getInstance();
 
@@ -108,7 +110,13 @@ public class CityActivity extends Activity {
 
                 if (!titleTrip.isEmpty() && checkValidDateRange()) {
                     Trip trip = new Trip(titleTrip, String2Date(partenzaTextView.getText().toString()), String2Date(ritornoTextView.getText().toString()));
-                    dataStore.addTrip(trip);
+                    if (tmpIndex == -1)
+                        dataStore.addTrip(trip);
+                    else {
+                        trip.setKey(dataStore.getTrips().get(tmpIndex).getKey());
+                        trip.setDaysReference(dataStore.getTrips().get(tmpIndex).getDaysReference());
+                        dataStore.updateTrip(trip);
+                    }
                     setResult(Activity.RESULT_OK, getIntent());
                     finish();
                 } else {

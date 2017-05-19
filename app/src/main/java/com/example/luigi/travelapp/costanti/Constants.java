@@ -5,16 +5,8 @@ package com.example.luigi.travelapp.costanti;
  */
 
 public class Constants {
-    // costanti per i nomi dei parametri scambiati con putExtra
-    public static final String TRIP_INDEX = "tripindex";
-    public static final String DAY_INDEX = "dayindex";
-    public static final String EVENT_INDEX = "eventindex";
-    public static final String SEND_TRIP = "sendtrip";
-    public static String EVENT="event";
-    public static String EVENTNEW="";
-
-    public static String DAY_REFERENCE = "dayreference";
-    public static String EVENT_REFERENCE = "eventreference";
+    public static final String DAY_REFERENCE = "dayreference";
+    public static final String EVENT_REFERENCE = "eventreference";
 
     // costanti per i check dei nomi
     public static final String NULLTITLE = "";

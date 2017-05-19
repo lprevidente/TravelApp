@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import com.example.luigi.travelapp.datamodel.Event;
 
-import java.text.DateFormat;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 

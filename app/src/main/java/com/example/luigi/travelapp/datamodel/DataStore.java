@@ -9,6 +9,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY_EVENT_LIST_REFERENCE;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY_LIST;
@@ -142,6 +143,7 @@ public class DataStore {
 
                     events.add(event);
                 }
+                Collections.sort(getEvents());
                 notification.eventsUpdated();
             }
 
@@ -236,8 +238,27 @@ public class DataStore {
         reference.setValue(event);
     }
 
-    public void updateTrip(int tripIndex, Trip trip) {
+    public void updateTrip(Trip trip) {
+        int index = tripIndex(trip.getKey());
+        Trip tmp = trips.get(index);
+        int oldDayNumber = tmp.getDaysNumber();
+        int newDayNumber = trip.getDaysNumber();
 
+        // TODO: DAY CHECK
+        /*if (newDayNumber < oldDayNumber) {
+            for (int i = oldDayNumber; i > newDayNumber; i--) {
+                tmp.getDayList().remove(i);
+            }
+        } else if (newDayNumber > oldDayNumber) {
+            for (int i = oldDayNumber + 1; i <= newDayNumber; i++) {
+                tmp.addDay(new Day(incrementDay(tmp.getStartDate(), i), i));
+            }
+        }*/
+
+        DatabaseReference reference = database.getReference(user.getUid())
+                .child(KEY_TRIP_LIST)
+                .child(trip.getKey());
+        reference.setValue(trip);
     }
 
     public void updateEvent(int tripIndex, int dayIndex, int eventIndex, Event event) {
