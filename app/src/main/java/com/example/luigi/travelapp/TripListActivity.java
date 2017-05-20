@@ -38,6 +38,8 @@ public class TripListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_list);
 
+        dataStore = DataStore.getInstance();
+
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -49,26 +51,11 @@ public class TripListActivity extends AppCompatActivity {
         else {
             Toast.makeText(getApplicationContext(), "Loggato come: " + user.getEmail(), Toast.LENGTH_SHORT).show();
         }
-        adapter = new TripListAdapter(this);
 
+        adapter = new TripListAdapter(this);
         list = (ListView)findViewById(R.id.dayListView);
         list.setAdapter(adapter);
-
-        dataStore = DataStore.getInstance();
-
-        dataStore.beginTripsObs(new DataStore.UpdateListener() {
-            @Override
-            public void tripsUpdated() {
-                adapter.update(dataStore.getTrips());
-            }
-
-            @Override
-            public void eventsUpdated() { }
-
-            @Override
-            public void daysUpdated() { }
-
-        });
+        enableDataStore(user);
 
         toolbar = (Toolbar)findViewById(R.id.toolbar_trip_list);
         toolbar.setTitle(R.string.titleCities);
@@ -85,7 +72,6 @@ public class TripListActivity extends AppCompatActivity {
                 posizione = position;
                 return true;
             }
-
         });
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -155,5 +141,25 @@ public class TripListActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         dataStore.endTripsObs();
+    }
+
+    public void enableDataStore(FirebaseUser user) {
+        if (user == null) {
+
+        } else {
+            dataStore.beginTripsObs(new DataStore.UpdateListener() {
+                @Override
+                public void tripsUpdated() {
+                    adapter.update(dataStore.getTrips());
+                }
+
+                @Override
+                public void eventsUpdated() { }
+
+                @Override
+                public void daysUpdated() { }
+
+            });
+        }
     }
 }
