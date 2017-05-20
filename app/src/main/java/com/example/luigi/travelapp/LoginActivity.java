@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    void createAccount(String name, String pass) {
+    private void createAccount(String name, String pass) {
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(name, pass)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
