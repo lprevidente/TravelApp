@@ -42,10 +42,9 @@ public class DayListActivity extends Activity {
             }
 
             @Override
-            public void eventsUpdated() {
-
-            }
+            public void eventsUpdated() {}
         }, dayReference);
+
 
         listView = (ListView)findViewById(R.id.dayListView);
         listView.setAdapter(dayListAdapter);

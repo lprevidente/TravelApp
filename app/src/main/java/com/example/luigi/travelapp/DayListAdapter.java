@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Day;
+import com.example.luigi.travelapp.datamodel.Event;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +24,7 @@ public class DayListAdapter extends BaseAdapter {
     private Context context;
     private List<Day> days = Collections.emptyList();
     DataStore dataStore = DataStore.getInstance();
+    private List<Event> events = Collections.emptyList();
 
     public DayListAdapter(Context context) {
         this.context = context;
@@ -45,19 +47,20 @@ public class DayListAdapter extends BaseAdapter {
 
         numDaytxt.setText(days.get(position).getNumber()+"°");
 
+
         // Mostro soltanto i primi 3 eventi di quel determinato giorno
         // todo: La lista degli eventi non è collegata con un determinato giorno
         // todo: Quando entro nell'activity non si vedono gli eventi a meno che non faccio un refresh
 /*
         if(!dataStore.getEvents().isEmpty()) {
-            int sizeEventList = dataStore.getEvents().size();
+            int sizeEventList = events.size();
                 if (1<=sizeEventList)
-                    Event1txt.setText(dataStore.getEvents().get(0).getTitle());
-            Log.i("Day_list_adapter", "Valore del dayKey" +dataStore.getEvents().get(1).getKey());
+                    Event1txt.setText(events.get(0).getTitle());
+            Log.i("Day_list_adapter", "Valore del dayKey" +events.get(1).getKey());
                 if (2<=sizeEventList)
-                    Event2txt.setText(dataStore.getEvents().get(1).getTitle());
+                    Event2txt.setText(events.get(1).getTitle());
                 if (3<=sizeEventList)
-                    Event3txt.setText(dataStore.getEvents().get(2).getTitle());
+                    Event3txt.setText(events.get(2).getTitle());
         }*/
         return view;
     }

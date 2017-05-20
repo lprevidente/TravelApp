@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,11 +40,14 @@ public class TripListActivity extends AppCompatActivity {
 
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user==null)
-            intent= new Intent(TripListActivity.this,LoginActivity.class);
-        else
-        Toast.makeText(getApplicationContext(), "Loggato come: "+  user.getEmail(), Toast.LENGTH_SHORT).show();
-
+        if (user == null) {
+            Log.i("TRIP_LIST_ACTIVITY", "VALORE USER "+user);
+            intent = new Intent(TripListActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Loggato come: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+        }
         adapter = new TripListAdapter(this);
 
         list = (ListView)findViewById(R.id.dayListView);

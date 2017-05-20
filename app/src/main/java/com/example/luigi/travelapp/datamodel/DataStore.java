@@ -205,6 +205,7 @@ public class DataStore {
     }
 
     public void addDay(Day day, String dayReference) {
+
         // creo una nuova chiave per la lista degli eventi del giorno
         String eventReference = database.getReference(user.getUid())
                 .child(KEY_EVENT_LIST)
