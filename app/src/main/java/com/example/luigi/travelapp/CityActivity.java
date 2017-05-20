@@ -4,11 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import java.text.DateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import android.os.Bundle;
-import android.support.v7.view.menu.MenuView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -18,8 +14,11 @@ import android.widget.TextView;
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Trip;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import static com.example.luigi.travelapp.costanti.Constants.DATE_PICKER_FROM;
 import static com.example.luigi.travelapp.costanti.Constants.DATE_PICKER_TO;
@@ -112,10 +111,10 @@ public class CityActivity extends Activity {
                     Trip trip = new Trip(titleTrip, String2Date(partenzaTextView.getText().toString()), String2Date(ritornoTextView.getText().toString()));
                     if (tmpIndex == -1)
                         dataStore.addTrip(trip);
-                    else {
+                    else {/*
                         trip.setKey(dataStore.getTrips().get(tmpIndex).getKey());
                         trip.setDaysReference(dataStore.getTrips().get(tmpIndex).getDaysReference());
-                        dataStore.updateTrip(trip);
+                        dataStore.updateTrip(trip);*/
                     }
                     setResult(Activity.RESULT_OK, getIntent());
                     finish();

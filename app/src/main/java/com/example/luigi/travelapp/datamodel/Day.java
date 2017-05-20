@@ -8,7 +8,7 @@ public class Day {
 
     private String key;
     private int number;
-    private String eventsReference;
+    // private String eventsReference;
 
     public Day() { }
 
@@ -22,14 +22,6 @@ public class Day {
 
     public void setNumber(int number) {
         this.number = number;
-    }
-
-    public String getEventsReference() {
-        return eventsReference;
-    }
-
-    public void setEventsReference(String eventsReference) {
-        this.eventsReference = eventsReference;
     }
 
     public String getKey() {

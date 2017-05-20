@@ -9,8 +9,6 @@ import android.widget.ListView;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
 
-import static com.example.luigi.travelapp.costanti.Constants.DAY_REFERENCE;
-import static com.example.luigi.travelapp.costanti.Constants.EVENT_REFERENCE;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
 
@@ -29,7 +27,7 @@ public class DayListActivity extends Activity {
 
         Bundle extras = getIntent().getExtras();
         tripKey = extras.getString(KEY_TRIP);
-        dayReference = extras.getString(DAY_REFERENCE);
+        dayReference = extras.getString(KEY_TRIP);
 
         dayListAdapter = new DayListAdapter(this);
         dataStore.beginDaysObs(new DataStore.UpdateListener() {
@@ -54,7 +52,6 @@ public class DayListActivity extends Activity {
                 Intent intent = new Intent(view.getContext(), EventListActivity.class);
                 intent.putExtra(KEY_TRIP, tripKey);
                 intent.putExtra(KEY_DAY, dataStore.getDays().get(position).getKey());
-                intent.putExtra(EVENT_REFERENCE, dataStore.getDays().get(position).getEventsReference());
                 startActivity(intent);
             }
         });

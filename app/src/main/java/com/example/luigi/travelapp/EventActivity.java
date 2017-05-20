@@ -79,7 +79,6 @@ public class EventActivity extends Activity {
 
         textViewtypeEvent = (TextView) findViewById(R.id.textView_typeEvent);
 
-
         if (tmpIndex == -1) {
             setCurrentTime();
             resImage=R.drawable.ic_action_name_place;
@@ -170,7 +169,7 @@ public class EventActivity extends Activity {
                                     noteEditview.getText().toString(), notify, resImage, stringtypeEvent);
 
                                 if (tmpIndex == -1)
-                                    dataStore.addEvent(event, day.getEventsReference());
+                                    dataStore.addEvent(event, day.getKey());
                                 else {
                                     // codice per l'update
                                     }

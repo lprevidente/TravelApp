@@ -49,9 +49,10 @@ public class EventListActivity extends Activity{
         Bundle extras = getIntent().getExtras();
         tripKey = extras.getString(KEY_TRIP);
         dayKey = extras.getString(KEY_DAY);
-        eventReference = extras.getString(EVENT_REFERENCE);
+        eventReference = extras.getString(KEY_DAY);
 
         eventListAdapter = new EventListAdapter(this);
+
         dataStore.beginEventsObs(new DataStore.UpdateListener() {
             @Override
             public void tripsUpdated() {}
@@ -133,7 +134,7 @@ public class EventListActivity extends Activity{
                 intent.putExtra(KEY_EVENT, -1);
                 intent.putExtra(KEY_TRIP, tripKey);
                 intent.putExtra(KEY_DAY, dayKey);
-                startActivityForResult(intent, 0);
+                startActivity(intent);
             }
         }));
 

@@ -13,7 +13,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY_EVENT_LIST_REFERENCE;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY_LIST;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY_NUMBER;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_IMAGE;
@@ -22,7 +21,6 @@ import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_NOTE;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_NOTIFY;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_TIME;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_TITLE;
-import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP_DAY_LIST_REFERENCE;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP_END_TIME;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP_LIST;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP_START_TIME;
@@ -78,7 +76,6 @@ public class DataStore {
                     trip.setTitle(item.child(KEY_TRIP_TITLE).getValue(String.class));
                     trip.setStartTime(item.child(KEY_TRIP_START_TIME).getValue(Long.class));
                     trip.setEndTime(item.child(KEY_TRIP_END_TIME).getValue(Long.class));
-                    trip.setDaysReference(item.child(KEY_TRIP_DAY_LIST_REFERENCE).getValue(String.class));
 
                     trips.add(trip);
                 }
@@ -94,10 +91,10 @@ public class DataStore {
         reference.addValueEventListener(listenerTrips);
     }
 
-    public void beginDaysObs(final UpdateListener notification, String dayReference) {
+    public void beginDaysObs(final UpdateListener notification, String tripReference) {
         DatabaseReference reference = database.getReference(user.getUid())
                 .child(KEY_DAY_LIST)
-                .child(dayReference);
+                .child(tripReference);
 
         listenerDays = new ValueEventListener() {
             @Override
@@ -108,7 +105,7 @@ public class DataStore {
 
                     day.setKey(item.getKey());
                     day.setNumber(item.child(KEY_DAY_NUMBER).getValue(Integer.class));
-                    day.setEventsReference(item.child(KEY_DAY_EVENT_LIST_REFERENCE).getValue(String.class));
+
 
                     days.add(day);
                 }
@@ -177,69 +174,59 @@ public class DataStore {
 
 
     public void addTrip(Trip trip) {
-        int daysNumber = trip.getDaysNumber();
 
-        // creo una nuova chiave per la lista dei giorni del viaggio
-        String dayReference = database.getReference(user.getUid())
-                .child(KEY_DAY_LIST)
-                .push()
-                .getKey();
-
-        // setto la chiave nel viaggio
-        trip.setDaysReference(dayReference);
-
-        for (int i = 0; i < daysNumber; i++) {
-            addDay(new Day(i + 1), dayReference);
-        }
-
+        // Genero una  nuova chiave per il viaggio
         String tripKey = database.getReference(user.getUid())
                 .child(KEY_TRIP_LIST)
                 .push()
                 .getKey();
 
+        //mi salvo la nuova chiave nel viaggio
         trip.setKey(tripKey);
+
+        // Trasferisco l'intero viaggio
         DatabaseReference reference = database.getReference(user.getUid())
                 .child(KEY_TRIP_LIST)
                 .child(tripKey);
         reference.setValue(trip);
+
+        int daysNumber = trip.getDaysNumber();
+        // genero gli i-giorni
+        for (int i = 0; i < daysNumber; i++) {
+            addDay(new Day(i + 1), tripKey);
+        }
     }
 
-    public void addDay(Day day, String dayReference) {
-
-        // creo una nuova chiave per la lista degli eventi del giorno
-        String eventReference = database.getReference(user.getUid())
-                .child(KEY_EVENT_LIST)
-                .push()
-                .getKey();
-
-        // setto la chiave nel giorno
-        day.setEventsReference(eventReference);
+    public void addDay(Day day, String tripReference) {
 
         String dayKey = database.getReference(user.getUid())
                 .child(KEY_DAY_LIST)
-                .child(dayReference)
+                .child(tripReference)
                 .push()
                 .getKey();
 
         day.setKey(dayKey);
+
         DatabaseReference reference = database.getReference(user.getUid())
                 .child(KEY_DAY_LIST)
-                .child(dayReference)
+                .child(tripReference)
                 .child(dayKey);
         reference.setValue(day);
     }
 
-    public void addEvent(Event event, String eventReference) {
+    public void addEvent(Event event, String dayReference) {
+
         String eventKey = database.getReference(user.getUid())
                 .child(KEY_EVENT_LIST)
-                .child(eventReference)
+                .child(dayReference)
                 .push()
                 .getKey();
 
         event.setKey(eventKey);
+
         DatabaseReference reference = database.getReference(user.getUid())
                 .child(KEY_EVENT_LIST)
-                .child(eventReference)
+                .child(dayReference)
                 .child(eventKey);
         reference.setValue(event);
     }
@@ -276,7 +263,7 @@ public class DataStore {
                 .child(KEY_TRIP_LIST)
                 .child(key);
         reference.removeValue();
-
+/*
         int index = tripIndex(key);
         if (index != -1) {
             String dayRootKey = trips.get(index).getDaysReference();
@@ -284,7 +271,7 @@ public class DataStore {
                     .child(KEY_DAY_LIST)
                     .child(dayRootKey);
             dayRef.removeValue();
-        }
+        } */
     }
 
     // TODO: come cancellare effettivamente gli eventi dal deletetrip?
@@ -316,7 +303,6 @@ public class DataStore {
     public ArrayList<Event> getEvents() {
         return events;
     }
-
 
     public int tripIndex(String key) {
         int i = 0;

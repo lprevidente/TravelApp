@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
-import static com.example.luigi.travelapp.costanti.Constants.DAY_REFERENCE;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
 import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
 
@@ -42,7 +40,6 @@ public class TripListActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user == null) {
-            Log.i("TRIP_LIST_ACTIVITY", "VALORE USER "+user);
             intent = new Intent(TripListActivity.this, LoginActivity.class);
             startActivity(intent);
         }
@@ -93,7 +90,6 @@ public class TripListActivity extends AppCompatActivity {
                 DefaulToolbar();
                 Intent intent = new Intent(view.getContext(), DayListActivity.class);
                 intent.putExtra(KEY_TRIP, dataStore.getTrips().get(position).getKey());
-                intent.putExtra(DAY_REFERENCE, dataStore.getTrips().get(position).getDaysReference());
                 startActivity(intent);
             }
         });
