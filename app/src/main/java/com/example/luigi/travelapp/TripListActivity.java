@@ -40,6 +40,7 @@ public class TripListActivity extends AppCompatActivity {
 
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         if (user == null) {
             Log.i("TRIP_LIST_ACTIVITY", "VALORE USER "+user);
             intent = new Intent(TripListActivity.this, LoginActivity.class);
@@ -134,7 +135,7 @@ public class TripListActivity extends AppCompatActivity {
     }
 
     private void DefaulToolbar(){
-        toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
+        // toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
         toolbar.setTitle(R.string.titleCities);
         toolbar.setNavigationIcon(null);
         menu.findItem(R.id.item_edit).setVisible(false);

@@ -305,7 +305,6 @@ public class DataStore {
         reference.removeValue();
     }
 
-
     public ArrayList<Trip> getTrips() {
         return trips;
     }
@@ -315,7 +314,6 @@ public class DataStore {
     }
 
     public ArrayList<Event> getEvents() {
-        // database.getReference(user.getUid()).child(dayKey);
         return events;
     }
 
