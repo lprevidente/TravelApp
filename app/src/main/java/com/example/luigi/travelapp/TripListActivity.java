@@ -39,10 +39,12 @@ public class TripListActivity extends AppCompatActivity {
 
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user==null)
-            intent= new Intent(TripListActivity.this,LoginActivity.class);
+        if (user==null) {
+            intent = new Intent(TripListActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
         else
-        Toast.makeText(getApplicationContext(), "Loggato come: "+  user.getEmail(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Loggato come: "+  user.getEmail(), Toast.LENGTH_SHORT).show();
 
         adapter = new TripListAdapter(this);
 
@@ -130,7 +132,7 @@ public class TripListActivity extends AppCompatActivity {
     }
 
     private void DefaulToolbar(){
-        toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
+        //toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
         toolbar.setTitle(R.string.titleCities);
         toolbar.setNavigationIcon(null);
         menu.findItem(R.id.item_edit).setVisible(false);

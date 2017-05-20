@@ -147,13 +147,13 @@ public class EventListActivity extends Activity{
 
         //toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
     private void DefaulToolbar(View view){
-        toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
+        //toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
         toolbar.setTitle(R.string.titleEvents);
         toolbar.setNavigationIcon(null);
         menu.findItem(R.id.item_edit).setVisible(false);
         menu.findItem(R.id.item_delete).setVisible(false);
-        if(view!= null)
-        view.setBackground(getDrawable(R.color.colorTransparet));
+        //if(view!= null)
+        //view.setBackground(getDrawable(R.color.colorTransparet));
 
     }
 
@@ -163,8 +163,8 @@ public class EventListActivity extends Activity{
         toolbar.setNavigationIcon(R.drawable.ic_action_name_back);
         menu.findItem(R.id.item_edit).setVisible(true);
         menu.findItem(R.id.item_delete).setVisible(true);
-        if(view!= null)
-        view.setBackground(getDrawable(R.color.colorHilightGrey));
+        //if(view!= null)
+        //view.setBackground(getDrawable(R.color.colorHilightGrey));
 
     }
 
