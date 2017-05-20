@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -174,7 +175,6 @@ public class DataStore {
 
 
     public void addTrip(Trip trip) {
-
         // Genero una  nuova chiave per il viaggio
         String tripKey = database.getReference(user.getUid())
                 .child(KEY_TRIP_LIST)
@@ -198,13 +198,11 @@ public class DataStore {
     }
 
     public void addDay(Day day, String tripReference) {
-
         String dayKey = database.getReference(user.getUid())
                 .child(KEY_DAY_LIST)
                 .child(tripReference)
                 .push()
                 .getKey();
-
         day.setKey(dayKey);
 
         DatabaseReference reference = database.getReference(user.getUid())
@@ -215,13 +213,11 @@ public class DataStore {
     }
 
     public void addEvent(Event event, String dayReference) {
-
         String eventKey = database.getReference(user.getUid())
                 .child(KEY_EVENT_LIST)
                 .child(dayReference)
                 .push()
                 .getKey();
-
         event.setKey(eventKey);
 
         DatabaseReference reference = database.getReference(user.getUid())
@@ -258,23 +254,61 @@ public class DataStore {
     public void updateEvent(int tripIndex, int dayIndex, int eventIndex, Event event) {}
 
 
-    public void deleteTrip(String key) {
+    public void deleteTrip(final String key) {
+        // implement event remover which is triggered when days are erased
+        DatabaseReference dayRef = database.getReference(user.getUid())
+                .child(KEY_DAY_LIST).child(key);
+        dayRef.addChildEventListener(
+                new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        ArrayList<String> dayKeys = new ArrayList<>();
+                        for (DataSnapshot item : dataSnapshot.getChildren()) {
+                            //Log.d("FIREBASELOGITEM", String.valueOf(item));
+                            dayKeys.add(item.getKey());
+                        }
+
+                        for (int i = 0; i < dayKeys.size(); i++) {
+                            DatabaseReference reference = database.getReference(user.getUid())
+                                    .child(KEY_EVENT_LIST)
+                                    .child(dayKeys.get(i));
+                            reference.removeValue();
+                        }
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //handle databaseError
+                    }
+                });
+
+        // delete trip
         DatabaseReference reference = database.getReference(user.getUid())
                 .child(KEY_TRIP_LIST)
                 .child(key);
         reference.removeValue();
-/*
-        int index = tripIndex(key);
-        if (index != -1) {
-            String dayRootKey = trips.get(index).getDaysReference();
-            DatabaseReference dayRef = database.getReference(user.getUid())
-                    .child(KEY_DAY_LIST)
-                    .child(dayRootKey);
-            dayRef.removeValue();
-        } */
-    }
 
-    // TODO: come cancellare effettivamente gli eventi dal deletetrip?
+        // delete days' list
+        reference = database.getReference(user.getUid())
+                .child(KEY_DAY_LIST)
+                .child(key);
+        reference.removeValue();
+    }
 
     public void deleteDay(String tripKey, String dayKey) {
         DatabaseReference reference = database.getReference(user.getUid())
