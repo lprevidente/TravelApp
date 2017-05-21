@@ -22,15 +22,19 @@ import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
 import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
 
 public class TripListActivity extends AppCompatActivity {
+
     private DataStore dataStore;
+
     private ListView list;
     private FloatingActionButton addcity;
     private TripListAdapter adapter;
     private Toolbar toolbar;
     private Menu menu;
-    private int posizione;
 
+    private int posizione;
     private Intent intent;
+
+    private FirebaseAuth mAuth;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +42,12 @@ public class TripListActivity extends AppCompatActivity {
 
         dataStore = DataStore.getInstance();
 
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        list = (ListView)findViewById(R.id.dayListView);
+        adapter = new TripListAdapter(this);
 
         if (user == null) {
             intent = new Intent(TripListActivity.this, LoginActivity.class);
@@ -47,12 +55,21 @@ public class TripListActivity extends AppCompatActivity {
         }
         else {
             Toast.makeText(getApplicationContext(), "Loggato come: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+            dataStore.beginTripsObs(new DataStore.UpdateListener() {
+                @Override
+                public void tripsUpdated() {
+                    adapter.update(dataStore.getTrips());
+                }
+
+                @Override
+                public void eventsUpdated() { }
+
+                @Override
+                public void daysUpdated() { }
+            });
         }
 
-        adapter = new TripListAdapter(this);
-        list = (ListView)findViewById(R.id.dayListView);
         list.setAdapter(adapter);
-        enableDataStore(user);
 
         toolbar = (Toolbar)findViewById(R.id.toolbar_trip_list);
         toolbar.setTitle(R.string.titleCities);
@@ -122,7 +139,6 @@ public class TripListActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(null);
         menu.findItem(R.id.item_edit).setVisible(false);
         menu.findItem(R.id.item_delete).setVisible(false);
-
     }
 
     private void EditToolbar(){
@@ -139,7 +155,7 @@ public class TripListActivity extends AppCompatActivity {
         dataStore.endTripsObs();
     }
 
-    public void enableDataStore(FirebaseUser user) {
+    /*public void enableDataStore(FirebaseUser user) {
         if (user == null) {
 
         } else {
@@ -157,5 +173,5 @@ public class TripListActivity extends AppCompatActivity {
 
             });
         }
-    }
+    }*/
 }

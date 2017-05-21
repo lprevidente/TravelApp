@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,9 +17,11 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText editEmail;
-    EditText editPassword;
-    Button buttonConfirm;
+    private EditText editEmail;
+    private EditText editPassword;
+    private Button buttonConfirm;
+    private ProgressBar progressCircle;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,17 +31,24 @@ public class LoginActivity extends AppCompatActivity {
         editEmail = (EditText)findViewById(R.id.editEmail);
         editPassword = (EditText)findViewById(R.id.editPassword);
         buttonConfirm = (Button)findViewById(R.id.buttonConfirm);
+        progressCircle = (ProgressBar)findViewById(R.id.progressCircle);
+
+        mAuth = FirebaseAuth.getInstance();
 
         buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String name = editEmail.getText().toString();
+                final String email = editEmail.getText().toString();
                 final String pass = editPassword.getText().toString();
 
-                if (!name.isEmpty() && !pass.isEmpty()) {
-                    final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                if (email.isEmpty())
+                    editEmail.setError(getString(R.string.campoObbligatorio));
+                else if (pass.isEmpty())
+                    editPassword.setError(getString(R.string.campoObbligatorio));
+                else {
+                    progressCircle.setVisibility(View.VISIBLE);
 
-                    mAuth.signInWithEmailAndPassword(name, pass)
+                    mAuth.signInWithEmailAndPassword(email, pass)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -49,10 +59,10 @@ public class LoginActivity extends AppCompatActivity {
                                             finish();
                                             Toast.makeText(getApplicationContext(), "AUTENTICATO", Toast.LENGTH_SHORT).show();
                                         } else {
-                                            createAccount(name, pass);
+                                            createAccount(email, pass);
                                         }
                                     } else {
-                                        createAccount(name, pass);
+                                        createAccount(email, pass);
                                     }
                                 }
                             });
@@ -61,9 +71,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void createAccount(String name, String pass) {
+    private void createAccount(String email, String pass) {
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuth.createUserWithEmailAndPassword(name, pass)
+        mAuth.createUserWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

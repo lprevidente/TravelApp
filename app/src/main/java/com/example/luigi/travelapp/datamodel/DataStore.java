@@ -67,6 +67,7 @@ public class DataStore {
     }
 
     public void beginTripsObs(final UpdateListener notification) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = database.getReference(user.getUid()).child(KEY_TRIP_LIST);
 
         listenerTrips = new ValueEventListener() {
