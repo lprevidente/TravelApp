@@ -260,12 +260,10 @@ public class DataStore {
     }
 
     public void deleteTrip(final String key) {
-        ChildEventListener listener;
         // implement event remover which is triggered when days are erased
         DatabaseReference dayRef = database.getReference(user.getUid())
                 .child(KEY_DAY_LIST);
-
-        listener = new ChildEventListener() {
+        dayRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -302,9 +300,7 @@ public class DataStore {
             public void onCancelled(DatabaseError databaseError) {
                 //handle databaseError
             }
-        };
-
-        dayRef.addChildEventListener(listener);
+        });
 
         // delete trip
         DatabaseReference reference = database.getReference(user.getUid())
@@ -317,8 +313,6 @@ public class DataStore {
                 .child(KEY_DAY_LIST)
                 .child(key);
         reference.removeValue();
-
-        dayRef.removeEventListener(listener);
     }
 
     public void deleteDay(String tripKey, String dayKey) {
