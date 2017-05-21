@@ -39,5 +39,8 @@
     <string name="campoObbligatorio">Questo campo è obbligatorio</string>
     <string name="firstLaunchString">Benvenuto in TravelApp!</string>
     <string name="rememberToRegisterString">Ricorda di registrarti!</string>
+    <string name="passwordMismatch">Le password non corrispondono!</string>
+    <string name="erroreLunghezzaPass">La password deve essere di almeno 6 caratteri!</string>
+
 
 </resources>

@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.google.firebase.auth.FirebaseAuth;
@@ -55,7 +54,6 @@ public class TripListActivity extends AppCompatActivity {
             startActivity(intent);
         }
         else {
-            Toast.makeText(getApplicationContext(), "Loggato come: " + user.getEmail(), Toast.LENGTH_SHORT).show();
             dataStore.beginTripsObs(new DataStore.UpdateListener() {
                 @Override
                 public void tripsUpdated() {

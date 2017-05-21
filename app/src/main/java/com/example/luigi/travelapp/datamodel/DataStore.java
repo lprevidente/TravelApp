@@ -40,7 +40,6 @@ public class DataStore {
 
     private static DataStore dataStore = null;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     private ValueEventListener listenerTrips;
     private ValueEventListener listenerDays;
@@ -97,6 +96,7 @@ public class DataStore {
     }
 
     public void beginDaysObs(final UpdateListener notification, String tripReference) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = database.getReference(user.getUid())
                 .child(KEY_DAY_LIST)
                 .child(tripReference);
@@ -126,6 +126,7 @@ public class DataStore {
     }
 
     public void beginEventsObs(final UpdateListener notification, String eventReference) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = database.getReference(user.getUid())
                 .child(KEY_EVENT_LIST)
                 .child(eventReference);
@@ -162,22 +163,26 @@ public class DataStore {
 
 
     public void endTripsObs() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (listenerTrips != null)
             FirebaseDatabase.getInstance().getReference(user.getUid()).child(KEY_TRIP_LIST).removeEventListener(listenerTrips);
     }
 
     public void endDaysObs() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (listenerDays != null)
             FirebaseDatabase.getInstance().getReference(user.getUid()).child(KEY_DAY_LIST).removeEventListener(listenerDays);
     }
 
     public void endEventsObs() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (listenerEvents != null)
             FirebaseDatabase.getInstance().getReference(user.getUid()).child(KEY_EVENT_LIST).removeEventListener(listenerEvents);
     }
 
 
     public void addTrip(Trip trip) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         // Genero una  nuova chiave per il viaggio
         String tripKey = database.getReference(user.getUid())
                 .child(KEY_TRIP_LIST)
@@ -201,6 +206,7 @@ public class DataStore {
     }
 
     public void addDay(Day day, String tripReference) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String dayKey = database.getReference(user.getUid())
                 .child(KEY_DAY_LIST)
                 .child(tripReference)
@@ -216,6 +222,7 @@ public class DataStore {
     }
 
     public void addEvent(Event event, String dayReference) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String eventKey = database.getReference(user.getUid())
                 .child(KEY_EVENT_LIST)
                 .child(dayReference)
@@ -246,6 +253,7 @@ public class DataStore {
             }
         }
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = database.getReference(user.getUid())
                 .child(KEY_TRIP_LIST)
                 .child(trip.getKey());
@@ -253,6 +261,7 @@ public class DataStore {
     }
 
     public void updateEvent(Event event, String dayReference) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = database.getReference(user.getUid())
                 .child(KEY_EVENT_LIST)
                 .child(dayReference)
@@ -262,6 +271,7 @@ public class DataStore {
 
     public void deleteTrip(final String key) {
         // implement event remover which is triggered when days are erased
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference dayRef = database.getReference(user.getUid())
                 .child(KEY_DAY_LIST);
         dayRef.addChildEventListener(new ChildEventListener() {
@@ -317,6 +327,7 @@ public class DataStore {
     }
 
     public void deleteDay(String tripKey, String dayKey) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = database.getReference(user.getUid())
                 .child(KEY_DAY_LIST)
                 .child(tripKey)
@@ -325,6 +336,7 @@ public class DataStore {
     }
 
     public void deleteEvent(String dayKey, String eventKey) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = database.getReference(user.getUid())
                 .child(KEY_EVENT_LIST)
                 .child(dayKey)

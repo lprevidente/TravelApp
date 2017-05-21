@@ -19,12 +19,13 @@ import com.google.firebase.auth.FirebaseUser;
 
 import static com.example.luigi.travelapp.costanti.Constants.FIRSTLAUNCH;
 
-public class LoginActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
 
     private TextView welcomeText;
-    private TextView goToSignUpText;
+    private TextView goToLoginText;
     private EditText editEmail;
     private EditText editPassword;
+    private EditText repeatPassword;
     private Button buttonConfirm;
     private ProgressBar progressCircle;
 
@@ -34,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_sign_up);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -43,20 +44,21 @@ public class LoginActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         boolean firstLaunch = extras.getBoolean(FIRSTLAUNCH);
 
-        editEmail = (EditText)findViewById(R.id.editEmail);
-        editPassword = (EditText)findViewById(R.id.editPassword);
-        buttonConfirm = (Button)findViewById(R.id.buttonConfirm);
-        progressCircle = (ProgressBar)findViewById(R.id.progressCircle);
+        editEmail = (EditText) findViewById(R.id.editEmailS);
+        editPassword = (EditText) findViewById(R.id.editPasswordS);
+        repeatPassword = (EditText) findViewById(R.id.editRepeatPassword);
+        buttonConfirm = (Button) findViewById(R.id.buttonConfirmS);
+        progressCircle = (ProgressBar) findViewById(R.id.progressCircleS);
 
-        welcomeText = (TextView)findViewById(R.id.welcomeText);
+        welcomeText = (TextView) findViewById(R.id.welcomeTextS);
         welcomeText.setText(firstLaunch ? R.string.firstLaunchString : R.string.rememberToRegisterString);
 
-        goToSignUpText = (TextView)findViewById(R.id.textNotRegistered);
-        goToSignUpText.setOnClickListener(new View.OnClickListener() {
+        goToLoginText = (TextView)findViewById(R.id.textAlreadyRegistered);
+        goToLoginText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                intent.putExtra(FIRSTLAUNCH, false);
+                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                intent.putExtra(FIRSTLAUNCH, true);
                 startActivity(intent);
             }
         });
@@ -66,28 +68,37 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String email = editEmail.getText().toString();
                 final String pass = editPassword.getText().toString();
+                final String repeatpass = repeatPassword.getText().toString();
 
                 if (email.isEmpty())
                     editEmail.setError(getString(R.string.campoObbligatorio));
                 else if (pass.isEmpty())
                     editPassword.setError(getString(R.string.campoObbligatorio));
+                else if (pass.length() < 6)
+                    editPassword.setError(getString(R.string.erroreLunghezzaPass));
+                else if (repeatpass.isEmpty())
+                    repeatPassword.setError(getString(R.string.campoObbligatorio));
+                else if (!repeatpass.equals(pass))
+                    repeatPassword.setError(getString(R.string.passwordMismatch));
                 else {
                     progressCircle.setVisibility(View.VISIBLE);
-                    signIn(email, pass);
+                    createAccount(email, pass);
                 }
             }
         });
     }
 
-    private void signIn(String email, String pass) {
+    private void createAccount(String email, String pass) {
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword(email, pass)
+        mAuth.createUserWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            if (mAuth.getCurrentUser() != null) {
-                                Toast.makeText(getApplicationContext(), "Autenticato!", Toast.LENGTH_SHORT).show();
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (user != null) {
+                                user.sendEmailVerification();
+                                Toast.makeText(getApplicationContext(), "Ti è stata mandata una e-mail di conferma!", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(getApplicationContext(), "Qualcosa non è andata a buon fine...", Toast.LENGTH_SHORT).show();
                                 progressCircle.setVisibility(View.INVISIBLE);
@@ -107,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    Intent intent = new Intent(LoginActivity.this, TripListActivity.class);
+                    Intent intent = new Intent(SignUpActivity.this, TripListActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
