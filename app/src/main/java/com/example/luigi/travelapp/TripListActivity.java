@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
+import static com.example.luigi.travelapp.costanti.Constants.FIRSTLAUNCH;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
 import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
 
@@ -32,9 +33,8 @@ public class TripListActivity extends AppCompatActivity {
     private Menu menu;
 
     private int posizione;
-    private Intent intent;
 
-    private FirebaseAuth mAuth;
+    FirebaseAuth mAuth;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,15 +42,16 @@ public class TripListActivity extends AppCompatActivity {
 
         dataStore = DataStore.getInstance();
 
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         list = (ListView)findViewById(R.id.dayListView);
         adapter = new TripListAdapter(this);
 
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
-            intent = new Intent(TripListActivity.this, LoginActivity.class);
+            Intent intent = new Intent(TripListActivity.this, LoginActivity.class);
+            intent.putExtra(FIRSTLAUNCH, true);
             startActivity(intent);
         }
         else {
@@ -101,7 +102,7 @@ public class TripListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DefaulToolbar();
-                intent = new Intent(TripListActivity.this, CityActivity.class);
+                Intent intent = new Intent(TripListActivity.this, CityActivity.class);
                 intent.putExtra(KEY_TRIP, -1);
                 startActivityForResult(intent, 0);
             }
@@ -124,7 +125,7 @@ public class TripListActivity extends AppCompatActivity {
                         return true;
                     case R.id.item_edit:
                         DefaulToolbar();
-                        intent = new Intent(TripListActivity.this, CityActivity.class);
+                        Intent intent = new Intent(TripListActivity.this, CityActivity.class);
                         intent.putExtra(KEY_TRIP, posizione);
                         startActivityForResult(intent, 0);
                 }
@@ -154,24 +155,4 @@ public class TripListActivity extends AppCompatActivity {
         super.onDestroy();
         dataStore.endTripsObs();
     }
-
-    /*public void enableDataStore(FirebaseUser user) {
-        if (user == null) {
-
-        } else {
-            dataStore.beginTripsObs(new DataStore.UpdateListener() {
-                @Override
-                public void tripsUpdated() {
-                    adapter.update(dataStore.getTrips());
-                }
-
-                @Override
-                public void eventsUpdated() { }
-
-                @Override
-                public void daysUpdated() { }
-
-            });
-        }
-    }*/
 }

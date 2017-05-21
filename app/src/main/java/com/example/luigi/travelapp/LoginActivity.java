@@ -8,30 +8,46 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import static com.example.luigi.travelapp.costanti.Constants.FIRSTLAUNCH;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private TextView welcomeText;
     private EditText editEmail;
     private EditText editPassword;
     private Button buttonConfirm;
     private ProgressBar progressCircle;
+    private boolean firstLaunch;
+
     private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        createAuthStateListener();
+
+        Bundle extras = getIntent().getExtras();
+        firstLaunch = extras.getBoolean(FIRSTLAUNCH);
+
         editEmail = (EditText)findViewById(R.id.editEmail);
         editPassword = (EditText)findViewById(R.id.editPassword);
         buttonConfirm = (Button)findViewById(R.id.buttonConfirm);
         progressCircle = (ProgressBar)findViewById(R.id.progressCircle);
+        welcomeText = (TextView)findViewById(R.id.welcomeText);
+
+        welcomeText.setText(firstLaunch ? R.string.firstLaunchString : R.string.rememberToRegisterString);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -54,10 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         if (mAuth.getCurrentUser() != null) {
-                                            Intent intent = new Intent(LoginActivity.this, TripListActivity.class);
-                                            startActivity(intent);
-                                            finish();
-                                            Toast.makeText(getApplicationContext(), "AUTENTICATO", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "Autenticato!", Toast.LENGTH_SHORT).show();
                                         } else {
                                             createAccount(email, pass);
                                         }
@@ -77,9 +90,39 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Intent intent = new Intent(getApplicationContext(), TripListActivity.class);
-                        startActivity(intent);
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        user.sendEmailVerification();
                     }
                 });
+    }
+
+    private void createAuthStateListener() {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                final FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Intent intent = new Intent(LoginActivity.this, TripListActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        };
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 }

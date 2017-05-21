@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Trip;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -22,6 +25,7 @@ import java.util.GregorianCalendar;
 
 import static com.example.luigi.travelapp.costanti.Constants.DATE_PICKER_FROM;
 import static com.example.luigi.travelapp.costanti.Constants.DATE_PICKER_TO;
+import static com.example.luigi.travelapp.costanti.Constants.FIRSTLAUNCH;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
 
 /**
@@ -104,21 +108,28 @@ public class CityActivity extends Activity {
         addTripbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DataStore dataStore = DataStore.getInstance();
-                String titleTrip = newtripEdit.getText().toString();
-
-                if (!titleTrip.isEmpty() && checkValidDateRange()) {
-                    Trip trip = new Trip(titleTrip, String2Date(partenzaTextView.getText().toString()), String2Date(ritornoTextView.getText().toString()));
-                    if (tmpIndex == -1)
-                        dataStore.addTrip(trip);
-                    else {
-                        trip.setKey(dataStore.getTrips().get(tmpIndex).getKey());
-                        dataStore.updateTrip(trip);
-                    }
-                    setResult(Activity.RESULT_OK, getIntent());
-                    finish();
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                FirebaseUser user = mAuth.getCurrentUser();
+                if (user == null) {
+                    Intent intent = new Intent(CityActivity.this, LoginActivity.class);
+                    intent.putExtra(FIRSTLAUNCH, false);
+                    startActivity(intent);
                 } else {
-                   newtripEdit.setError(getString(R.string.TitleTripEmpty));
+                    String titleTrip = newtripEdit.getText().toString();
+
+                    if (!titleTrip.isEmpty() && checkValidDateRange()) {
+                        Trip trip = new Trip(titleTrip, String2Date(partenzaTextView.getText().toString()), String2Date(ritornoTextView.getText().toString()));
+                        if (tmpIndex == -1)
+                            dataStore.addTrip(trip);
+                        else {
+                            trip.setKey(dataStore.getTrips().get(tmpIndex).getKey());
+                            dataStore.updateTrip(trip);
+                        }
+                        setResult(Activity.RESULT_OK, getIntent());
+                        finish();
+                    } else {
+                        newtripEdit.setError(getString(R.string.TitleTripEmpty));
+                    }
                 }
             }
         });

@@ -24,7 +24,7 @@
     <string name="beginEvent">Ora di inizio</string>
     <string name="notifyEvent">Notificami</string>
 
-    <string name="textEmail">email</string>
+    <string name="textEmail">e-mail</string>
     <string name="textPassword">Password</string>
 
 
@@ -37,5 +37,7 @@
     <string name="ItemDone">Done</string>
 
     <string name="campoObbligatorio">Questo campo è obbligatorio</string>
+    <string name="firstLaunchString">Benvenuto in TravelApp!</string>
+    <string name="rememberToRegisterString">Ricorda di registrarti!</string>
 
 </resources>

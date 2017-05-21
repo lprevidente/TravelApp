@@ -14,6 +14,8 @@ public class Constants {
     public static final String DAY_REFERENCE = "dayreference";
     public static final String EVENT_REFERENCE = "eventreference";
 
+    public static final String FIRSTLAUNCH = "firstlaunch";
+
     // costanti per i check dei nomi
     public static final String NULLTITLE = "";
 
