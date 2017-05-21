@@ -14,6 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static com.example.luigi.travelapp.costanti.Constants.KEY;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY_LIST;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY_NUMBER;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_IMAGE;
@@ -35,6 +36,7 @@ public class DataStore {
     private ArrayList<Trip> trips;
     private ArrayList<Day> days;
     private ArrayList<Event> events;
+    private ArrayList<String> supportList;
 
     private static DataStore dataStore = null;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -48,6 +50,7 @@ public class DataStore {
         trips = new ArrayList<>();
         days = new ArrayList<>();
         events = new ArrayList<>();
+        supportList = new ArrayList<>();
     }
 
     public static DataStore getInstance() {
@@ -107,7 +110,6 @@ public class DataStore {
                     day.setKey(item.getKey());
                     day.setNumber(item.child(KEY_DAY_NUMBER).getValue(Integer.class));
 
-
                     days.add(day);
                 }
                 notification.daysUpdated();
@@ -133,6 +135,7 @@ public class DataStore {
                 events.clear();
                 for (DataSnapshot item : dataSnapshot.getChildren()) {
                     Event event = new Event();
+
                     event.setKey(item.getKey());
                     event.setTitle(item.child(KEY_EVENT_TITLE).getValue(String.class));
                     Log.i("DATASTORE", "TITOLO EVENTO"+item.child(KEY_EVENT_TITLE).getValue(String.class));
@@ -257,7 +260,7 @@ public class DataStore {
     public void deleteTrip(final String key) {
         // implement event remover which is triggered when days are erased
         DatabaseReference dayRef = database.getReference(user.getUid())
-                .child(KEY_DAY_LIST).child(key);
+                .child(KEY_DAY_LIST);
         dayRef.addChildEventListener(
                 new ChildEventListener() {
                     @Override
@@ -272,17 +275,18 @@ public class DataStore {
 
                     @Override
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
-                        ArrayList<String> dayKeys = new ArrayList<>();
+                        supportList.clear();
                         for (DataSnapshot item : dataSnapshot.getChildren()) {
-                            //Log.d("FIREBASELOGITEM", String.valueOf(item));
-                            dayKeys.add(item.getKey());
+                            String path = item.getKey();
+                            supportList.add(path);
                         }
 
-                        for (int i = 0; i < dayKeys.size(); i++) {
-                            DatabaseReference reference = database.getReference(user.getUid())
+                        // delete events
+                        for (int i = 0; i < supportList.size(); i++) {
+                            DatabaseReference eventRef = database.getReference(user.getUid())
                                     .child(KEY_EVENT_LIST)
-                                    .child(dayKeys.get(i));
-                            reference.removeValue();
+                                    .child(supportList.get(i));
+                            eventRef.removeValue();
                         }
                     }
 
