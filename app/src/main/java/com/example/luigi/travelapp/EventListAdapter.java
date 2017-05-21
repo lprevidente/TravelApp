@@ -13,6 +13,9 @@ import com.example.luigi.travelapp.datamodel.Event;
 import java.util.Collections;
 import java.util.List;
 
+import static com.example.luigi.travelapp.costanti.Constants.EVENT_TYPES_NUMBER;
+import static com.example.luigi.travelapp.costanti.Constants.integers;
+import static com.example.luigi.travelapp.costanti.Constants.textTypes;
 
 
 /**
@@ -40,8 +43,10 @@ public class EventListAdapter extends BaseAdapter {
         TextView txtTitle = (TextView)view.findViewById(R.id.eventTextView);
         txtTitle.setText(event.getTitle());
 
-        ImageView imageView=(ImageView) view.findViewById(R.id.imageEvent);
-        imageView.setImageResource(event.getImage());
+        ImageView imageView = (ImageView) view.findViewById(R.id.imageEvent);
+        int index = getResourceIndex(event.getType());
+        if (index != -1)
+            imageView.setImageResource(integers[index]);
 
         TextView txtTime = (TextView) view.findViewById(R.id.txtTime);
         txtTime.setText(event.getTimeString());
@@ -63,4 +68,14 @@ public class EventListAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return 0;
     }
+
+    private int getResourceIndex(String type) {
+        int i = 0;
+        while (i < EVENT_TYPES_NUMBER) {
+            if (type.equals(textTypes[i]))
+                return i;
+            i++;
+        }
+        return -1;
+    };
 }

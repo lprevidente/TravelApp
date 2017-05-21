@@ -20,7 +20,7 @@ import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Day;
 import com.example.luigi.travelapp.datamodel.Event;
 import com.example.luigi.travelapp.datamodel.Trip;
-import com.example.luigi.travelapp.datamodel.TypesEvent;
+import com.example.luigi.travelapp.datamodel.EventTypes;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,9 +28,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static com.example.luigi.travelapp.costanti.Constants.EVENT_TYPES_NUMBER;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
+import static com.example.luigi.travelapp.costanti.Constants.integers;
+import static com.example.luigi.travelapp.costanti.Constants.textTypes;
 
 
 /**
@@ -81,9 +84,8 @@ public class EventActivity extends Activity {
 
         if (tmpIndex == -1) {
             setCurrentTime();
-            resImage=R.drawable.ic_action_name_place;
-            stringtypeEvent="Museo";
-
+            resImage = integers[2];
+            stringtypeEvent = textTypes[2].toString();
         }
         else {
             Event event = dataStore.getEvents().get(tmpIndex);
@@ -91,8 +93,15 @@ public class EventActivity extends Activity {
             noteEditview.setText(event.getNote());
             notifyCheckBox.setChecked(event.getNotify());
             TimePickerTextView.setText(event.getTimeString());
-            resImage=event.getImage();
-            stringtypeEvent=event.getTypeEvent();
+            int index = getResourceIndex(event.getType());
+            if (index != -1) {
+                resImage = integers[index];
+                stringtypeEvent = textTypes[index].toString();
+            } else {
+                // non dovrebbe mai entrarci
+                resImage = 0;
+                stringtypeEvent = "Error?";
+            }
         }
 
         typeEvent.setImageResource(resImage);
@@ -114,11 +123,10 @@ public class EventActivity extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 // Qui inserisco il metodo per prendere il testo e l'immagine dell'item
                 // selezionato per poi sostituirli nel ImageButton and nella Text view sotto
-                List<TypesEvent> list = alertDialogAdapter.getList();
-
-                resImage=list.get(which).getImage();
+                List<EventTypes> list = alertDialogAdapter.getList();
+                resImage = list.get(which).getImage();
                 typeEvent.setImageResource(resImage);
-                stringtypeEvent=list.get(which).getText().toString();
+                stringtypeEvent = list.get(which).getText().toString();
                 textViewtypeEvent.setText(stringtypeEvent);
             }
         });
@@ -164,15 +172,16 @@ public class EventActivity extends Activity {
                                 oldcal.add(Calendar.DATE, day.getNumber());
                                 newcal.setTime(setString2DateTime(oldcal.getTime(), TimePickerTextView.getText().toString()));
 
-                                Event event = new Event(newcal.getTime(),
+                                Event event = new Event(stringtypeEvent, newcal.getTime(),
                                     titleEventTextView.getText().toString(),
-                                    noteEditview.getText().toString(), notify, resImage, stringtypeEvent);
+                                    noteEditview.getText().toString(), notify);
 
                                 if (tmpIndex == -1)
                                     dataStore.addEvent(event, day.getKey());
                                 else {
-                                    // codice per l'update
-                                    }
+                                    event.setKey(dataStore.getEvents().get(tmpIndex).getKey());
+                                    dataStore.updateEvent(event, dayKey);
+                                }
                                 finish();
                             }
                             return true;
@@ -234,4 +243,14 @@ public class EventActivity extends Activity {
         int minute = c.get(Calendar.MINUTE);
         TimePickerTextView.setText(String.format("%02d", Integer.parseInt(String.valueOf(hour))) + ":" + String.format("%02d", Integer.parseInt(String.valueOf(minute))));
     }
+
+    private int getResourceIndex(String type) {
+        int i = 0;
+        while (i < EVENT_TYPES_NUMBER) {
+            if (type.equals(textTypes[i]))
+                return i;
+            i++;
+        }
+        return -1;
+    };
 }

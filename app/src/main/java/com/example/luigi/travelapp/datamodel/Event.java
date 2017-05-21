@@ -16,18 +16,19 @@ public class Event implements Comparable<Event> {
     private String title;
     private String note;
     private boolean notify;
-    private int Image;
-    private String typeEvent;
+    private String type;
 
     public Event() { }
 
-    public Event(Date date, String title, String note, boolean notify, int Image, String string) {
+    public Event(String type, Date date, String title, String note, boolean notify) {
         time = date.getTime();
         this.title = title;
         this.note = note;
         this.notify = notify;
-        this.Image=Image;
-        typeEvent=string;
+        this.type = type;
+    }
+    public String getType() {
+        return type;
     }
 
     public String getTitle() {
@@ -40,14 +41,6 @@ public class Event implements Comparable<Event> {
 
     public boolean getNotify() {
         return notify;
-    }
-
-    public int getImage() {
-        return Image;
-    }
-
-    public String getTypeEvent() {
-        return typeEvent;
     }
 
     public String getKey() {
@@ -65,6 +58,11 @@ public class Event implements Comparable<Event> {
     }
 
     //Set methods
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public void setDate(long time) {
         this.time = time;
     }
@@ -79,14 +77,6 @@ public class Event implements Comparable<Event> {
 
     public void setNotify(boolean notify) {
         this.notify = notify;
-    }
-
-    public void setImage(int image) {
-        Image = image;
-    }
-
-    public void setTypeEvent(String typeEvent) {
-        this.typeEvent = typeEvent;
     }
 
     public void setTime(long time) {

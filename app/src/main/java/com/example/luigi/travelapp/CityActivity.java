@@ -111,10 +111,9 @@ public class CityActivity extends Activity {
                     Trip trip = new Trip(titleTrip, String2Date(partenzaTextView.getText().toString()), String2Date(ritornoTextView.getText().toString()));
                     if (tmpIndex == -1)
                         dataStore.addTrip(trip);
-                    else {/*
+                    else {
                         trip.setKey(dataStore.getTrips().get(tmpIndex).getKey());
-                        trip.setDaysReference(dataStore.getTrips().get(tmpIndex).getDaysReference());
-                        dataStore.updateTrip(trip);*/
+                        dataStore.updateTrip(trip);
                     }
                     setResult(Activity.RESULT_OK, getIntent());
                     finish();

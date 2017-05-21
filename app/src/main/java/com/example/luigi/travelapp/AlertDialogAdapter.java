@@ -8,42 +8,40 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.luigi.travelapp.datamodel.TypesEvent;
+import com.example.luigi.travelapp.datamodel.EventTypes;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.luigi.travelapp.costanti.Constants.integers;
+import static com.example.luigi.travelapp.costanti.Constants.textTypes;
 
 /**
  * Created by Luigi on 18/05/2017.
  */
 
 public class AlertDialogAdapter extends BaseAdapter {
-
-    List<TypesEvent> typesEvents= new ArrayList<>();
-    CharSequence[] textTypes = new CharSequence [] {"Volo", "Ristorante", "Museo"};
-
-    Integer[] integers = new Integer[] {R.drawable.ic_action_name_flight,
-            R.drawable.ic_action_name_rest7aurant
-            ,R.drawable.ic_action_name_place};
-
+    private List<EventTypes> typesEvents = new ArrayList<>();
     private Context context;
 
     public AlertDialogAdapter(Context context) {
         this.context = context;
-        for( int i=0; i<3; i++){
-            typesEvents.add(new TypesEvent(integers[i], textTypes[i])) ;
+        for (int i = 0; i < 3; i++){
+            typesEvents.add(new EventTypes(integers[i], textTypes[i])) ;
         }
     }
-    public List<TypesEvent> getList (){
+
+    public List<EventTypes> getList (){
         return typesEvents;
     }
+
     @Override
     public int getCount() {
         return typesEvents.size();
     }
 
     @Override
-    public TypesEvent getItem(int position) {
+    public EventTypes getItem(int position) {
         return typesEvents.get(position);
     }
 
@@ -61,8 +59,7 @@ public class AlertDialogAdapter extends BaseAdapter {
         TextView textView = (TextView) view.findViewById(R.id.textViewDescrTyoeEvent);
         ImageView imageView = (ImageView) view.findViewById(R.id.imageViewTypeEvent);
 
-
-        final TypesEvent tmp = typesEvents.get(position);
+        final EventTypes tmp = typesEvents.get(position);
         textView.setText(tmp.getText());
         imageView.setImageResource(typesEvents.get(position).getImage());
 

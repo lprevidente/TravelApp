@@ -17,12 +17,12 @@ import java.util.Collections;
 import static com.example.luigi.travelapp.costanti.Constants.KEY;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY_LIST;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY_NUMBER;
-import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_IMAGE;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_LIST;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_NOTE;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_NOTIFY;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_TIME;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_TITLE;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_TYPE;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP_END_TIME;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP_LIST;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP_START_TIME;
@@ -137,10 +137,9 @@ public class DataStore {
                     Event event = new Event();
 
                     event.setKey(item.getKey());
+                    event.setType(item.child(KEY_EVENT_TYPE).getValue(String.class));
                     event.setTitle(item.child(KEY_EVENT_TITLE).getValue(String.class));
-                    Log.i("DATASTORE", "TITOLO EVENTO"+item.child(KEY_EVENT_TITLE).getValue(String.class));
                     event.setNote(item.child(KEY_EVENT_NOTE).getValue(String.class));
-                    event.setImage(item.child(KEY_EVENT_IMAGE).getValue(Integer.class));
                     event.setNotify(item.child(KEY_EVENT_NOTIFY).getValue(Boolean.class));
                     event.setTime(item.child(KEY_EVENT_TIME).getValue(Long.class));
 
@@ -194,7 +193,7 @@ public class DataStore {
         reference.setValue(trip);
 
         int daysNumber = trip.getDaysNumber();
-        // genero gli i-giorni
+        // genero i relativi giorni
         for (int i = 0; i < daysNumber; i++) {
             addDay(new Day(i + 1), tripKey);
         }
@@ -237,16 +236,14 @@ public class DataStore {
         int oldDayNumber = tmp.getDaysNumber();
         int newDayNumber = trip.getDaysNumber();
 
-        // TODO: DAY CHECK
-        /*if (newDayNumber < oldDayNumber) {
-            for (int i = oldDayNumber; i > newDayNumber; i--) {
-                tmp.getDayList().remove(i);
-            }
+        if (newDayNumber < oldDayNumber) {
+            // TODO: CONDIZIONE NEL CASO DI GIORNI MINORI DEI PRECEDENTI
         } else if (newDayNumber > oldDayNumber) {
             for (int i = oldDayNumber + 1; i <= newDayNumber; i++) {
-                tmp.addDay(new Day(incrementDay(tmp.getStartDate(), i), i));
+                Day day = new Day(i);
+                addDay(day, trip.getKey());
             }
-        }*/
+        }
 
         DatabaseReference reference = database.getReference(user.getUid())
                 .child(KEY_TRIP_LIST)
@@ -254,52 +251,60 @@ public class DataStore {
         reference.setValue(trip);
     }
 
-    public void updateEvent(int tripIndex, int dayIndex, int eventIndex, Event event) {}
-
+    public void updateEvent(Event event, String dayReference) {
+        DatabaseReference reference = database.getReference(user.getUid())
+                .child(KEY_EVENT_LIST)
+                .child(dayReference)
+                .child(event.getKey());
+        reference.setValue(event);
+    }
 
     public void deleteTrip(final String key) {
+        ChildEventListener listener;
         // implement event remover which is triggered when days are erased
         DatabaseReference dayRef = database.getReference(user.getUid())
                 .child(KEY_DAY_LIST);
-        dayRef.addChildEventListener(
-                new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                    }
+        listener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
 
-                    }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-                        supportList.clear();
-                        for (DataSnapshot item : dataSnapshot.getChildren()) {
-                            String path = item.getKey();
-                            supportList.add(path);
-                        }
+            }
 
-                        // delete events
-                        for (int i = 0; i < supportList.size(); i++) {
-                            DatabaseReference eventRef = database.getReference(user.getUid())
-                                    .child(KEY_EVENT_LIST)
-                                    .child(supportList.get(i));
-                            eventRef.removeValue();
-                        }
-                    }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                supportList.clear();
+                for (DataSnapshot item : dataSnapshot.getChildren()) {
+                    String path = item.getKey();
+                    supportList.add(path);
+                }
 
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                // delete events
+                for (int i = 0; i < supportList.size(); i++) {
+                    DatabaseReference eventRef = database.getReference(user.getUid())
+                            .child(KEY_EVENT_LIST)
+                            .child(supportList.get(i));
+                    eventRef.removeValue();
+                }
+            }
 
-                    }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        //handle databaseError
-                    }
-                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //handle databaseError
+            }
+        };
+
+        dayRef.addChildEventListener(listener);
 
         // delete trip
         DatabaseReference reference = database.getReference(user.getUid())
@@ -312,6 +317,8 @@ public class DataStore {
                 .child(KEY_DAY_LIST)
                 .child(key);
         reference.removeValue();
+
+        dayRef.removeEventListener(listener);
     }
 
     public void deleteDay(String tripKey, String dayKey) {
