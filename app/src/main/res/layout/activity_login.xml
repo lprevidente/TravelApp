@@ -99,8 +99,6 @@
                 android:background="@android:drawable/editbox_background_normal"
                 android:hint="@string/textPassword"
                 android:inputType="textPassword"
-                android:textColor="@android:color/white"
-                android:textColorHighlight="@android:color/white"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
