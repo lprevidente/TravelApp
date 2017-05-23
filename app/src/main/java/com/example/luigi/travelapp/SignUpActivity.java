@@ -1,5 +1,6 @@
 package com.example.luigi.travelapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import static com.example.luigi.travelapp.costanti.Constants.FIRSTLAUNCH;
 
-public class SignUpActivity extends AppCompatActivity {
+public class SignUpActivity extends Activity {
 
     private TextView welcomeText;
     private TextView goToLoginText;

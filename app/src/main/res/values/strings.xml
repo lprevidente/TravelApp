@@ -45,5 +45,4 @@
     <string name="passwordMismatch">Le password non corrispondono!</string>
     <string name="erroreLunghezzaPass">La password deve essere di almeno 6 caratteri!</string>
 
-
 </resources>

@@ -138,7 +138,8 @@ public class TripListActivity extends AppCompatActivity {
                         startActivity(intent1);
                         return true;
                     case R.id.item_info:
-                        // need to add the info of app
+                        Intent intent2 = new Intent(TripListActivity.this, CreditsActivity.class);
+                        startActivity(intent2);
                 }
                 return false;
             }

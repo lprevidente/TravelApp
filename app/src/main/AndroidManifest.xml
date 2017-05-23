@@ -24,7 +24,8 @@
         <activity android:name=".DayListActivity" />
         <activity android:name=".EventActivity" />
         <activity android:name=".EventListActivity" />
-        <activity android:name=".SignUpActivity"></activity>
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".CreditsActivity"></activity>
     </application>
 
 </manifest>
