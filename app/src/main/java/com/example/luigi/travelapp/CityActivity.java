@@ -117,7 +117,7 @@ public class CityActivity extends Activity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                 if (user == null) {
-                    Intent intent = new Intent(CityActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(CityActivity.this, SignUpActivity.class);
                     intent.putExtra(FIRSTLAUNCH, false);
                     startActivity(intent);
                 }
