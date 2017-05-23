@@ -13,6 +13,7 @@ import com.example.luigi.travelapp.datamodel.EventTypes;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.luigi.travelapp.costanti.Constants.EVENT_TYPES_NUMBER;
 import static com.example.luigi.travelapp.costanti.Constants.integers;
 import static com.example.luigi.travelapp.costanti.Constants.textTypes;
 
@@ -26,7 +27,7 @@ public class AlertDialogAdapter extends BaseAdapter {
 
     public AlertDialogAdapter(Context context) {
         this.context = context;
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < EVENT_TYPES_NUMBER; i++){
             typesEvents.add(new EventTypes(integers[i], textTypes[i])) ;
         }
     }

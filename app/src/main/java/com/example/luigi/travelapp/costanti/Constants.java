@@ -1,10 +1,6 @@
 package com.example.luigi.travelapp.costanti;
 
 import com.example.luigi.travelapp.R;
-import com.example.luigi.travelapp.datamodel.EventTypes;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Bernardo on 10/05/2017.
@@ -46,10 +42,23 @@ public class Constants {
     public static final String KEY_EVENT = "keyevent";
 
     // costanti per i tipi dell'evento
-    public static final int EVENT_TYPES_NUMBER = 3;
-    public static final CharSequence[] textTypes = new CharSequence [] {"Volo", "Ristorante", "Museo"};
+    public static final int EVENT_TYPES_NUMBER = 8;
+    public static final CharSequence[] textTypes = new CharSequence [] {"Aereo",
+            "Auto",
+            "Treno",
+            "Museo",
+            "Ristorante",
+            "Coffee Bar",
+            "Mare",
+            "Spa & Relax"
+    };
 
     public static final Integer[] integers = new Integer[] {R.drawable.ic_action_name_flight,
+            R.drawable.ic_action_name_car,
+            R.drawable.ic_action_name_train,
+            R.drawable.ic_action_name_place,
             R.drawable.ic_action_name_rest7aurant,
-            R.drawable.ic_action_name_place};
-}
+            R.drawable.ic_action_name_local_coffe,
+            R.drawable.ic_action_name_beach,
+            R.drawable.ic_action_name_spa};
+ }

@@ -15,7 +15,6 @@ import android.widget.ListView;
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 
 import static com.example.luigi.travelapp.costanti.Constants.FIRSTLAUNCH;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
@@ -34,14 +33,14 @@ public class TripListActivity extends AppCompatActivity {
     private int posizione;
 
     FirebaseAuth mAuth;
+    // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_list);
 
         dataStore = DataStore.getInstance();
-
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         list = (ListView)findViewById(R.id.dayListView);
         adapter = new TripListAdapter(this);

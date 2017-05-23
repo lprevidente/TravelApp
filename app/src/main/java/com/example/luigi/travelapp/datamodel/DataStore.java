@@ -9,12 +9,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static com.example.luigi.travelapp.costanti.Constants.KEY;
+import static android.content.ContentValues.TAG;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY_LIST;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY_NUMBER;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_LIST;
@@ -117,9 +118,7 @@ public class DataStore {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         };
 
         reference.addValueEventListener(listenerDays);
@@ -240,24 +239,56 @@ public class DataStore {
 
     public void updateTrip(Trip trip) {
         int index = tripIndex(trip.getKey());
-        Trip tmp = trips.get(index);
-        int oldDayNumber = tmp.getDaysNumber();
-        int newDayNumber = trip.getDaysNumber();
+        final Trip tmp = trips.get(index);
+        final int oldDayNumber = tmp.getDaysNumber();
+        final int newDayNumber = trip.getDaysNumber();
+
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (newDayNumber < oldDayNumber) {
-            // TODO: CONDIZIONE NEL CASO DI GIORNI MINORI DEI PRECEDENTI
-        } else if (newDayNumber > oldDayNumber) {
+            // i ovveride the old trip with the new trip
+            DatabaseReference reference2 = database.getReference(user.getUid())
+                    .child(KEY_TRIP_LIST)
+                    .child(tmp.getKey());
+            trip.setKey(tmp.getKey());
+            reference2.setValue(trip);
+            // After that i delete the days with a query
+            final DatabaseReference reference =  database.getReference(user.getUid())
+                    .child(KEY_DAY_LIST)
+                    .child(tmp.getKey());
+            Query query = reference.orderByChild("number").startAt(newDayNumber+1);
+
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren() ) {
+                        dataSnapshot1.getRef().removeValue();
+                        Log.i(TAG, dataSnapshot1.getKey());
+                        // Also i delete the events of associated with the old days
+                        DatabaseReference reference= database.getReference(user.getUid())
+                                .child(KEY_EVENT_LIST)
+                                .child(dataSnapshot1.getKey());
+                        reference.removeValue();
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.i(TAG, "onCancelled", databaseError.toException());}
+            });
+
+        }
+
+        else if (newDayNumber >= oldDayNumber) {
             for (int i = oldDayNumber + 1; i <= newDayNumber; i++) {
                 Day day = new Day(i);
                 addDay(day, trip.getKey());
             }
+            DatabaseReference reference = database.getReference(user.getUid())
+                    .child(KEY_TRIP_LIST)
+                    .child(trip.getKey());
+            reference.setValue(trip);
         }
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference = database.getReference(user.getUid())
-                .child(KEY_TRIP_LIST)
-                .child(trip.getKey());
-        reference.setValue(trip);
     }
 
     public void updateEvent(Event event, String dayReference) {
@@ -272,18 +303,15 @@ public class DataStore {
     public void deleteTrip(final String key) {
         // implement event remover which is triggered when days are erased
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         DatabaseReference dayRef = database.getReference(user.getUid())
                 .child(KEY_DAY_LIST);
         dayRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-            }
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {}
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
@@ -303,9 +331,7 @@ public class DataStore {
             }
 
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -324,6 +350,7 @@ public class DataStore {
                 .child(KEY_DAY_LIST)
                 .child(key);
         reference.removeValue();
+
     }
 
     public void deleteDay(String tripKey, String dayKey) {
@@ -344,6 +371,7 @@ public class DataStore {
         reference.removeValue();
     }
 
+
     public ArrayList<Trip> getTrips() {
         return trips;
     }
@@ -355,6 +383,7 @@ public class DataStore {
     public ArrayList<Event> getEvents() {
         return events;
     }
+
 
     public int tripIndex(String key) {
         int i = 0;
