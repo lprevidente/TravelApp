@@ -127,7 +127,15 @@ public class TripListActivity extends AppCompatActivity {
                         DefaulToolbar(mview);
                         Intent intent = new Intent(TripListActivity.this, CityActivity.class);
                         intent.putExtra(KEY_TRIP, posizione);
-                        startActivityForResult(intent, 0);
+                        startActivity(intent);
+                    case  R.id.item_logout:
+                        mAuth.signOut();
+                        Intent intent1 = new Intent(TripListActivity.this, LoginActivity.class);
+                        intent1.putExtra(FIRSTLAUNCH, true);
+                        startActivity(intent1);
+
+                    case R.id.item_info:
+                        // need to add the info of app
                 }
                 return false;
             }
