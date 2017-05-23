@@ -40,7 +40,7 @@ public class DataStore {
     private ArrayList<String> supportList;
 
     private static DataStore dataStore = null;
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private static FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     private ValueEventListener listenerTrips;
     private ValueEventListener listenerDays;
@@ -56,6 +56,9 @@ public class DataStore {
     public static DataStore getInstance() {
         if (dataStore == null){
             dataStore = new DataStore();
+            // Firebase is initialized by a ContentProvider so it is not initialized at the time onCreate() is called
+            // so i need tu pute the persistence Enabled in this way
+            database.setPersistenceEnabled(true);
         }
         return dataStore;
     }

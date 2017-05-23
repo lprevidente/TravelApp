@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -33,8 +34,8 @@ public class TripListActivity extends AppCompatActivity {
     private int posizione;
 
     FirebaseAuth mAuth;
-    // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
+    private View mview=null;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +72,7 @@ public class TripListActivity extends AppCompatActivity {
 
         toolbar = (Toolbar)findViewById(R.id.toolbar_trip_list);
         toolbar.setTitle(R.string.titleCities);
-        toolbar.inflateMenu(R.menu.menu_list_events);
+        toolbar.inflateMenu(R.menu.menu_trip_list);
         menu = toolbar.getMenu();
 
         addcity = (FloatingActionButton)findViewById(R.id.AddCity);
@@ -80,7 +81,8 @@ public class TripListActivity extends AppCompatActivity {
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                EditToolbar();
+                mview=view;
+                EditToolbar(mview);
                 posizione = position;
                 return true;
             }
@@ -88,7 +90,8 @@ public class TripListActivity extends AppCompatActivity {
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DefaulToolbar();
+                mview=view;
+                DefaulToolbar(mview);
                 Intent intent = new Intent(view.getContext(), DayListActivity.class);
                 intent.putExtra(KEY_TRIP, dataStore.getTrips().get(position).getKey());
                 startActivity(intent);
@@ -98,7 +101,7 @@ public class TripListActivity extends AppCompatActivity {
         addcity.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DefaulToolbar();
+                DefaulToolbar(mview);
                 Intent intent = new Intent(TripListActivity.this, CityActivity.class);
                 intent.putExtra(KEY_TRIP, -1);
                 startActivityForResult(intent, 0);
@@ -108,7 +111,7 @@ public class TripListActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DefaulToolbar();
+                DefaulToolbar(mview);
             }
         });
 
@@ -118,10 +121,10 @@ public class TripListActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.item_delete:
                         dataStore.deleteTrip(dataStore.getTrips().get(posizione).getKey());
-                        DefaulToolbar();
+                        DefaulToolbar(mview);
                         return true;
                     case R.id.item_edit:
-                        DefaulToolbar();
+                        DefaulToolbar(mview);
                         Intent intent = new Intent(TripListActivity.this, CityActivity.class);
                         intent.putExtra(KEY_TRIP, posizione);
                         startActivityForResult(intent, 0);
@@ -131,20 +134,28 @@ public class TripListActivity extends AppCompatActivity {
         });
     }
 
-    private void DefaulToolbar(){
-        // toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
+    private void DefaulToolbar(View view){
+        toolbar.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
         toolbar.setTitle(R.string.titleCities);
         toolbar.setNavigationIcon(null);
+        menu.findItem(R.id.item_info).setVisible(true);
+        menu.findItem(R.id.item_logout).setVisible(true);
         menu.findItem(R.id.item_edit).setVisible(false);
         menu.findItem(R.id.item_delete).setVisible(false);
+        if(view!= null)
+            view.setBackground(ResourcesCompat.getDrawable(getResources(), R.color.colorTransparet, null));
     }
 
-    private void EditToolbar(){
+    private void EditToolbar(View view){
         toolbar.setBackgroundColor(Color.GRAY);
         toolbar.setTitle(NULLTITLE);
         toolbar.setNavigationIcon(R.drawable.ic_action_name_back);
+        menu.findItem(R.id.item_info).setVisible(false);
+        menu.findItem(R.id.item_logout).setVisible(false);
         menu.findItem(R.id.item_edit).setVisible(true);
         menu.findItem(R.id.item_delete).setVisible(true);
+        if(view!= null)
+            view.setBackground(ResourcesCompat.getDrawable(getResources(), R.color.colorHilightGrey, null));
     }
 
     @Override

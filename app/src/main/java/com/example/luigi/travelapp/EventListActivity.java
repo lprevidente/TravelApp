@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,8 +15,6 @@ import android.widget.ListView;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
 
-
-import static com.example.luigi.travelapp.costanti.Constants.EVENT_REFERENCE;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
@@ -39,7 +37,7 @@ public class EventListActivity extends Activity{
     String tripKey;
     String dayKey;
 
-    private Intent intent;
+
     private View mview=null;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -146,15 +144,15 @@ public class EventListActivity extends Activity{
         });
     }
 
-        //toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
+
     private void DefaulToolbar(View view){
-        //toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
+        toolbar.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
         toolbar.setTitle(R.string.titleEvents);
         toolbar.setNavigationIcon(null);
         menu.findItem(R.id.item_edit).setVisible(false);
         menu.findItem(R.id.item_delete).setVisible(false);
-        //if(view!= null)
-        //view.setBackground(getDrawable(R.color.colorTransparet));
+        if(view!= null)
+        view.setBackground(ResourcesCompat.getDrawable(getResources(), R.color.colorTransparet, null));
 
     }
 
@@ -164,8 +162,8 @@ public class EventListActivity extends Activity{
         toolbar.setNavigationIcon(R.drawable.ic_action_name_back);
         menu.findItem(R.id.item_edit).setVisible(true);
         menu.findItem(R.id.item_delete).setVisible(true);
-        //if(view!= null)
-        //view.setBackground(getDrawable(R.color.colorHilightGrey));
+        if(view!= null)
+        view.setBackground(ResourcesCompat.getDrawable(getResources(), R.color.colorHilightGrey, null));
 
     }
 

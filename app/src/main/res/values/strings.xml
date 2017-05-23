@@ -27,14 +27,17 @@
     <string name="textEmail">e-mail</string>
     <string name="textPassword">Password</string>
 
-
     <!--Strings of Alert Dialog -->
     <string name="TypeRestaurant">Ristorante</string>
     <string name="TypeFlight">Volo</string>
     <string name="TypeHotel">Hotel</string>
     <string name="TypeMuseum">Museo</string>
 
+    <!--Strings of Various Menu -->
+
     <string name="ItemDone">Done</string>
+    <string name="ItemLogout">LogOut</string>
+    <string name="ItemInfo">Info App</string>
 
     <string name="campoObbligatorio">Questo campo è obbligatorio</string>
     <string name="firstLaunchString">Benvenuto in TravelApp!</string>
