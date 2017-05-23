@@ -6,11 +6,13 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Trip;
@@ -19,10 +21,13 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.concurrent.Semaphore;
 
+import static android.content.ContentValues.TAG;
 import static com.example.luigi.travelapp.costanti.Constants.DATE_PICKER_FROM;
 import static com.example.luigi.travelapp.costanti.Constants.DATE_PICKER_TO;
 import static com.example.luigi.travelapp.costanti.Constants.FIRSTLAUNCH;
@@ -40,6 +45,7 @@ public class CityActivity extends Activity {
     private TextView partenzaTextView;
     private TextView ritornoTextView;
     private int id;
+    private String keytrip=null;
 
     private int tmpIndex;
 
@@ -108,32 +114,48 @@ public class CityActivity extends Activity {
         addTripbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                FirebaseUser user = mAuth.getCurrentUser();
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
                 if (user == null) {
                     Intent intent = new Intent(CityActivity.this, LoginActivity.class);
                     intent.putExtra(FIRSTLAUNCH, false);
                     startActivity(intent);
-                } else {
+                }
+                else {
                     String titleTrip = newtripEdit.getText().toString();
 
                     if (!titleTrip.isEmpty() && checkValidDateRange()) {
-                        Trip trip = new Trip(titleTrip, String2Date(partenzaTextView.getText().toString()), String2Date(ritornoTextView.getText().toString()));
-                        if (tmpIndex == -1)
-                            dataStore.addTrip(trip);
-                        else {
-                            trip.setKey(dataStore.getTrips().get(tmpIndex).getKey());
-                            dataStore.updateTrip(trip);
+
+                        final Trip trip = new Trip(titleTrip, String2Date(partenzaTextView.getText().toString()),
+                                String2Date(ritornoTextView.getText().toString()));
+
+                        ArrayList<Trip> trips = dataStore.getTrips();
+                        boolean ispossible=true;
+
+                        for(int i=0; i<trips.size(); i++) {
+                            if (trips.get(i).getEndTime() > trip.getStartTime())
+                                ispossible = false;
                         }
-                        setResult(Activity.RESULT_OK, getIntent());
-                        finish();
-                    } else {
-                        newtripEdit.setError(getString(R.string.TitleTripEmpty));
+
+
+                            if(ispossible){
+                                if (tmpIndex == -1)
+                                dataStore.addTrip(trip);
+                                else {
+                                trip.setKey(dataStore.getTrips().get(tmpIndex).getKey());
+                                dataStore.updateTrip(trip);
+                            }
+                            setResult(Activity.RESULT_OK, getIntent());
+                            finish();
+                        }
+                        else {Toast.makeText(getApplicationContext(), "Esiste gia un viaggio in questa data", Toast.LENGTH_SHORT).show();}
                     }
+                        else {newtripEdit.setError(getString(R.string.TitleTripEmpty));}
                 }
             }
         });
     }
+
     private class DateDialogFragment extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
