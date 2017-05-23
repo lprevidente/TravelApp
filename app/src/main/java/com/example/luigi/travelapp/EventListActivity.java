@@ -78,10 +78,9 @@ public class EventListActivity extends Activity{
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                EditToolbar(mview);
                 posizione = position;
-                //if(mview!=null)
-                //    mview.setBackground(getDrawable(R.color.colorTransparet));
+                if(mview!=null)
+                    mview.setBackground(ResourcesCompat.getDrawable(getResources(), R.color.colorTransparet, null));
                 mview = view;
                 EditToolbar(mview);
                 posizione = position;

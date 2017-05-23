@@ -81,6 +81,8 @@ public class TripListActivity extends AppCompatActivity {
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                if(mview!=null)
+                    mview.setBackground(ResourcesCompat.getDrawable(getResources(), R.color.colorTransparet, null));
                 mview=view;
                 EditToolbar(mview);
                 posizione = position;
@@ -128,12 +130,13 @@ public class TripListActivity extends AppCompatActivity {
                         Intent intent = new Intent(TripListActivity.this, CityActivity.class);
                         intent.putExtra(KEY_TRIP, posizione);
                         startActivity(intent);
+                        return true;
                     case  R.id.item_logout:
                         mAuth.signOut();
                         Intent intent1 = new Intent(TripListActivity.this, LoginActivity.class);
                         intent1.putExtra(FIRSTLAUNCH, true);
                         startActivity(intent1);
-
+                        return true;
                     case R.id.item_info:
                         // need to add the info of app
                 }
@@ -146,8 +149,10 @@ public class TripListActivity extends AppCompatActivity {
         toolbar.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
         toolbar.setTitle(R.string.titleCities);
         toolbar.setNavigationIcon(null);
+
         menu.findItem(R.id.item_info).setVisible(true);
         menu.findItem(R.id.item_logout).setVisible(true);
+
         menu.findItem(R.id.item_edit).setVisible(false);
         menu.findItem(R.id.item_delete).setVisible(false);
         if(view!= null)
@@ -158,10 +163,13 @@ public class TripListActivity extends AppCompatActivity {
         toolbar.setBackgroundColor(Color.GRAY);
         toolbar.setTitle(NULLTITLE);
         toolbar.setNavigationIcon(R.drawable.ic_action_name_back);
+
         menu.findItem(R.id.item_info).setVisible(false);
         menu.findItem(R.id.item_logout).setVisible(false);
+
         menu.findItem(R.id.item_edit).setVisible(true);
         menu.findItem(R.id.item_delete).setVisible(true);
+
         if(view!= null)
             view.setBackground(ResourcesCompat.getDrawable(getResources(), R.color.colorHilightGrey, null));
     }

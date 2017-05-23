@@ -8,9 +8,9 @@
         android:icon="@drawable/ic_logout"
         app:showAsAction="ifRoom" />
     <item
-        android:title="@string/ItemInfo"
         android:id="@+id/item_info"
         android:icon="@drawable/ic_information_variant"
+        android:title="@string/ItemInfo"
         app:showAsAction="ifRoom" />
 
     <item
