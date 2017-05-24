@@ -1,10 +1,14 @@
 package com.example.luigi.travelapp;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -162,10 +166,8 @@ public class EventActivity extends Activity {
                 switch (item.getItemId()) {
                     case R.id.item_done:
                         if (!titleEventTextView.getText().toString().isEmpty()) {
-
-                            // get the event's day date and set the new hour and minute
+                            
                             Calendar oldcal = Calendar.getInstance();
-                            Calendar newcal = Calendar.getInstance();
 
                             int index = dataStore.tripIndex(tripKey);
                             if (index != -1) {
@@ -174,36 +176,42 @@ public class EventActivity extends Activity {
 
                                 oldcal.setTime(new Date(tmpTrip.getStartTime()));
                                 oldcal.add(Calendar.DATE, day.getNumber());
-                                newcal.setTime(setString2DateTime(oldcal.getTime(), TimePickerTextView.getText().toString()));
 
-                                Event event = new Event(stringtypeEvent, newcal.getTime(),
+                                // memorizzo il time fino al giorno dell'evento
+                                // calcolo l'offset del tempo e sottraggo un offset di 23 ore (in ms) dovuto a non so cosa
+                                Long basetm = oldcal.getTime().getTime();
+                                Long offsettm = setString2DateTime(oldcal.getTime(), TimePickerTextView.getText().toString()).getTime() - 82800000;
+
+                                Event event = new Event(stringtypeEvent, basetm + offsettm,
                                     titleEventTextView.getText().toString(),
                                     noteEditview.getText().toString(), notify);
                                 if(tmpIndex != -1)
-                                event.setKey(dataStore.getEvents().get(tmpIndex).getKey());
+                                    event.setKey(dataStore.getEvents().get(tmpIndex).getKey());
 
-                                boolean ispossible=true;
-                                int i=0;
+                                boolean ispossible = true;
+                                /*int i = 0;
                                 ArrayList<Event> events = dataStore.getEvents();
-                                do{
-                                    if(events.get(i).getTime()<(event.getTime()+IntervalEvent) &&
+                                while (ispossible && i < events.size()){
+                                    if(events.get(i).getTime() < (event.getTime() + IntervalEvent) &&
                                             !events.get(i).getKey().equals(event.getKey()))
-                                        ispossible=false;
+                                        ispossible = false;
                                     i++;
-                                } while(ispossible && i<events.size());
+                                }*/
 
-                                if(ispossible){
+                                if (ispossible) {
                                     if (tmpIndex == -1)
                                         dataStore.addEvent(event, day.getKey());
                                     else {
-                                       // event.setKey(dataStore.getEvents().get(tmpIndex).getKey());
+                                        //event.setKey(dataStore.getEvents().get(tmpIndex).getKey());
                                         dataStore.updateEvent(event, dayKey);
                                     }
-                                    finish();
-                                }else {
-                                    Toast.makeText(getApplicationContext(), "Hai già un evento nei prossimi 10 minuti", Toast.LENGTH_SHORT).show();
-                                }
 
+                                    if (notify)
+                                        notification(event.getTime());
+                                    finish();
+                                } else {
+                                    //Toast.makeText(getApplicationContext(), "Hai già un evento nei prossimi 10 minuti", Toast.LENGTH_SHORT).show();
+                                }
                             }
                             return true;
                         }
@@ -242,10 +250,22 @@ public class EventActivity extends Activity {
             return new TimePickerDialog(getActivity(),this, hour, minute, android.text.format.DateFormat.is24HourFormat(getActivity()));
         }
 
-
         public void onTimeSet(TimePicker view, int hourOfDay, int minute){
             TimePickerTextView.setText(String.format("%02d", Integer.parseInt(String.valueOf(hourOfDay))) + ":" + String.format("%02d", Integer.parseInt(String.valueOf(minute))));
         }
+    }
+
+    public void notification(long timevar) {
+        Intent alarmIntent = new Intent(this, Receiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(timevar));
+
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
     public Date setString2DateTime(Date date, String str) {

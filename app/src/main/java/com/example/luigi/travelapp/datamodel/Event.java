@@ -20,8 +20,8 @@ public class Event implements Comparable<Event> {
 
     public Event() { }
 
-    public Event(String type, Date date, String title, String note, boolean notify) {
-        time = date.getTime();
+    public Event(String type, Long time, String title, String note, boolean notify) {
+        this.time = time;
         this.title = title;
         this.note = note;
         this.notify = notify;
@@ -61,10 +61,6 @@ public class Event implements Comparable<Event> {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public void setDate(long time) {
-        this.time = time;
     }
 
     public void setTitle(String title) {

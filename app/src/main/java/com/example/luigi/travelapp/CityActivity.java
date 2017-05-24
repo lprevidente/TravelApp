@@ -126,36 +126,36 @@ public class CityActivity extends Activity {
 
                     if (!titleTrip.isEmpty() && checkValidDateRange()) {
 
-                        final Trip trip = new Trip(titleTrip, String2Date(partenzaTextView.getText().toString()),
+                        Trip trip = new Trip(titleTrip, String2Date(partenzaTextView.getText().toString()),
                                 String2Date(ritornoTextView.getText().toString()));
 
-                        if(tmpIndex != -1)
+                        if (tmpIndex != -1)
                             trip.setKey(dataStore.getTrips().get(tmpIndex).getKey());
 
                         ArrayList<Trip> trips = dataStore.getTrips();
-                        boolean ispossible=true;
-
-                        int i=0;
-                        do {
-
-                            if ( trip.getEndTime()>trips.get(i).getStartTime()  && !(trips.get(i).getKey().equals(trip.getKey())))
-                            ispossible = false;
-
+                        boolean ispossible = true;
+                        int i = 0;
+                        while (ispossible && i<trips.size()) {
+                            if (trip.getEndTime() > trips.get(i).getStartTime() && !(trips.get(i).getKey().equals(trip.getKey())))
+                                ispossible = false;
                             i++;
-                        } while(ispossible && i<trips.size());
+                        }
 
-                            if(ispossible){
-                                if (tmpIndex == -1)
-                                    dataStore.addTrip(trip);
-
-                                else {dataStore.updateTrip(trip);}
+                        if (ispossible) {
+                            if (tmpIndex == -1)
+                                dataStore.addTrip(trip);
+                            else {
+                                dataStore.updateTrip(trip);
+                            }
 
                             setResult(Activity.RESULT_OK, getIntent());
                             finish();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Esiste gia un viaggio in questa data", Toast.LENGTH_SHORT).show();
                         }
-                        else {Toast.makeText(getApplicationContext(), "Esiste gia un viaggio in questa data", Toast.LENGTH_SHORT).show();}
+                    }  else {
+                        newtripEdit.setError(getString(R.string.TitleTripEmpty));
                     }
-                    else {newtripEdit.setError(getString(R.string.TitleTripEmpty));}
                 }
             }
         });
