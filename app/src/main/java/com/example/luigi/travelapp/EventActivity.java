@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -15,20 +16,23 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Day;
 import com.example.luigi.travelapp.datamodel.Event;
-import com.example.luigi.travelapp.datamodel.Trip;
 import com.example.luigi.travelapp.datamodel.EventTypes;
+import com.example.luigi.travelapp.datamodel.Trip;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_TYPES_NUMBER;
+import static com.example.luigi.travelapp.costanti.Constants.IntervalEvent;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
@@ -175,14 +179,31 @@ public class EventActivity extends Activity {
                                 Event event = new Event(stringtypeEvent, newcal.getTime(),
                                     titleEventTextView.getText().toString(),
                                     noteEditview.getText().toString(), notify);
+                                if(tmpIndex != -1)
+                                event.setKey(dataStore.getEvents().get(tmpIndex).getKey());
 
-                                if (tmpIndex == -1)
-                                    dataStore.addEvent(event, day.getKey());
-                                else {
-                                    event.setKey(dataStore.getEvents().get(tmpIndex).getKey());
-                                    dataStore.updateEvent(event, dayKey);
+                                boolean ispossible=true;
+                                int i=0;
+                                ArrayList<Event> events = dataStore.getEvents();
+                                do{
+                                    if(events.get(i).getTime()<(event.getTime()+IntervalEvent) &&
+                                            !events.get(i).getKey().equals(event.getKey()))
+                                        ispossible=false;
+                                    i++;
+                                } while(ispossible && i<events.size());
+
+                                if(ispossible){
+                                    if (tmpIndex == -1)
+                                        dataStore.addEvent(event, day.getKey());
+                                    else {
+                                       // event.setKey(dataStore.getEvents().get(tmpIndex).getKey());
+                                        dataStore.updateEvent(event, dayKey);
+                                    }
+                                    finish();
+                                }else {
+                                    Toast.makeText(getApplicationContext(), "Hai già un evento nei prossimi 10 minuti", Toast.LENGTH_SHORT).show();
                                 }
-                                finish();
+
                             }
                             return true;
                         }

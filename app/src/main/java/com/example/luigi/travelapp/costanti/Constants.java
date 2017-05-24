@@ -39,6 +39,8 @@ public class Constants {
     public static final String KEY_DAY = "keyday";
     public static final String KEY_EVENT = "keyevent";
 
+    public static final int IntervalEvent= 600000;
+
     // costanti per i tipi dell'evento
     public static final int EVENT_TYPES_NUMBER = 8;
     public static final CharSequence[] textTypes = new CharSequence [] {"Aereo",

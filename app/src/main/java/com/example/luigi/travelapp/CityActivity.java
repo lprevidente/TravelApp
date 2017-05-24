@@ -129,28 +129,33 @@ public class CityActivity extends Activity {
                         final Trip trip = new Trip(titleTrip, String2Date(partenzaTextView.getText().toString()),
                                 String2Date(ritornoTextView.getText().toString()));
 
+                        if(tmpIndex != -1)
+                            trip.setKey(dataStore.getTrips().get(tmpIndex).getKey());
+
                         ArrayList<Trip> trips = dataStore.getTrips();
                         boolean ispossible=true;
 
-                        for(int i=0; i<trips.size(); i++) {
-                            if (trips.get(i).getEndTime() > trip.getStartTime())
-                                ispossible = false;
-                        }
+                        int i=0;
+                        do {
 
+                            if ( trip.getEndTime()>trips.get(i).getStartTime()  && !(trips.get(i).getKey().equals(trip.getKey())))
+                            ispossible = false;
+
+                            i++;
+                        } while(ispossible && i<trips.size());
 
                             if(ispossible){
                                 if (tmpIndex == -1)
-                                dataStore.addTrip(trip);
-                                else {
-                                trip.setKey(dataStore.getTrips().get(tmpIndex).getKey());
-                                dataStore.updateTrip(trip);
-                            }
+                                    dataStore.addTrip(trip);
+
+                                else {dataStore.updateTrip(trip);}
+
                             setResult(Activity.RESULT_OK, getIntent());
                             finish();
                         }
                         else {Toast.makeText(getApplicationContext(), "Esiste gia un viaggio in questa data", Toast.LENGTH_SHORT).show();}
                     }
-                        else {newtripEdit.setError(getString(R.string.TitleTripEmpty));}
+                    else {newtripEdit.setError(getString(R.string.TitleTripEmpty));}
                 }
             }
         });
