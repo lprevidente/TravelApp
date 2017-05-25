@@ -10,9 +10,19 @@ import android.widget.TextView;
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Day;
 import com.example.luigi.travelapp.datamodel.Event;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Collections;
 import java.util.List;
+
+import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_LIST;
+import static com.example.luigi.travelapp.costanti.Constants.Num_Events;
 
 
 /**
@@ -25,6 +35,8 @@ public class DayListAdapter extends BaseAdapter {
     private List<Day> days = Collections.emptyList();
     DataStore dataStore = DataStore.getInstance();
     private List<Event> events = Collections.emptyList();
+
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     public DayListAdapter(Context context) {
         this.context = context;
@@ -41,27 +53,56 @@ public class DayListAdapter extends BaseAdapter {
 
         TextView numDaytxt = (TextView)view.findViewById(R.id.dayTextView);
 
-        TextView Event1txt = (TextView)view.findViewById(R.id.textViewEvent1);
-        TextView Event2txt = (TextView)view.findViewById(R.id.textViewEvent2);
-        TextView Event3txt = (TextView)view.findViewById(R.id.textViewEvent3);
+        final TextView Event1txt = (TextView)view.findViewById(R.id.textViewEvent1);
+        final TextView Event2txt = (TextView)view.findViewById(R.id.textViewEvent2);
+        final TextView Event3txt = (TextView)view.findViewById(R.id.textViewEvent3);
 
         numDaytxt.setText(days.get(position).getNumber()+"°");
 
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(user.getUid())
+                .child(KEY_EVENT_LIST)
+                .child(days.get(position).getKey());
 
         // Mostro soltanto i primi 3 eventi di quel determinato giorno
-        // todo: La lista degli eventi non è collegata con un determinato giorno
-        // todo: Quando entro nell'activity non si vedono gli eventi a meno che non faccio un refresh
-/*
-        if(!dataStore.getEvents().isEmpty()) {
-            int sizeEventList = events.size();
-                if (1<=sizeEventList)
-                    Event1txt.setText(events.get(0).getTitle());
-            Log.i("Day_list_adapter", "Valore del dayKey" +events.get(1).getKey());
-                if (2<=sizeEventList)
-                    Event2txt.setText(events.get(1).getTitle());
-                if (3<=sizeEventList)
-                    Event3txt.setText(events.get(2).getTitle());
-        }*/
+        final String [] titlesEvent = new String[3];
+
+         // final Semaphore semaphore = new Semaphore(0);
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Se il numero degli eventi è maggiore di 3
+                // allora il max lo pongo a 3
+                long i= dataSnapshot.getChildrenCount();
+                if( i>Num_Events)
+                    i=Num_Events;
+
+                int j=0;
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    // prendo gli eventi uno ad uno e ne ricavo il titolo
+                    if(j<i) {
+                        Event post =snapshot.getValue(Event.class);
+                        titlesEvent[j] = post.getTitle();
+                        j++;
+                    }
+                }
+                // dopo il mio ciclo setto i titoli uno a duno
+                Event1txt.setText(titlesEvent[0]);
+                Event2txt.setText(titlesEvent[1]);
+                Event3txt.setText(titlesEvent[2]);
+                //semaphore.release();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+        /*try {
+            semaphore.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } */
+
         return view;
     }
 

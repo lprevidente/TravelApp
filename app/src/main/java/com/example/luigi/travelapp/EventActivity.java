@@ -183,7 +183,8 @@ public class EventActivity extends Activity {
                                 // memorizzo il time fino al giorno dell'evento
                                 // calcolo l'offset del tempo e sottraggo un offset di 23 ore (in ms) dovuto a non so cosa
                                 Long basetm = oldcal.getTime().getTime();
-                                Long offsettm = setString2DateTime(oldcal.getTime(), TimePickerTextView.getText().toString()).getTime() - 82800000;
+                                Long offsettm = setString2DateTime(oldcal.getTime(),
+                                        TimePickerTextView.getText().toString()).getTime() - 82800000;
 
                                 Event event = new Event(stringtypeEvent, basetm + offsettm,
                                     titleEventTextView.getText().toString(),
@@ -254,7 +255,8 @@ public class EventActivity extends Activity {
         }
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute){
-            TimePickerTextView.setText(String.format("%02d", Integer.parseInt(String.valueOf(hourOfDay))) + ":" + String.format("%02d", Integer.parseInt(String.valueOf(minute))));
+            TimePickerTextView.setText(String.format("%02d", Integer.parseInt(String.valueOf(hourOfDay))) + ":"
+                    + String.format("%02d", Integer.parseInt(String.valueOf(minute))));
         }
     }
 
@@ -288,7 +290,8 @@ public class EventActivity extends Activity {
         Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
-        TimePickerTextView.setText(String.format("%02d", Integer.parseInt(String.valueOf(hour))) + ":" + String.format("%02d", Integer.parseInt(String.valueOf(minute))));
+        TimePickerTextView.setText(String.format("%02d", Integer.parseInt(String.valueOf(hour))) + ":"
+                + String.format("%02d", Integer.parseInt(String.valueOf(minute))));
     }
 
     private int getResourceIndex(String type) {
