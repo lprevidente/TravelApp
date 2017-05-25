@@ -10,6 +10,8 @@ public class Constants {
 
     public static final String FIRSTLAUNCH = "firstlaunch";
 
+    public static final String EVENT = "event";
+
     // costanti per i check dei nomi
     public static final String NULLTITLE = "";
 
@@ -17,8 +19,7 @@ public class Constants {
     public static final int DATE_PICKER_TO = 0;
     public static final int DATE_PICKER_FROM = 1;
 
-    // costanti per le chiavi
-    public static final String KEY = "key";
+    // costanti per le chiavI
     public static final String KEY_TRIP_LIST = "trips";
     public static final String KEY_DAY_LIST = "days";
     public static final String KEY_EVENT_LIST = "events";
@@ -54,14 +55,27 @@ public class Constants {
             "Spa & Relax"
     };
 
-    public static final Integer[] integers = new Integer[] {R.drawable.ic_action_name_flight,
+    public static final Integer[] integers = new Integer[] {
+            R.drawable.ic_action_name_flight,
             R.drawable.ic_action_name_car,
             R.drawable.ic_action_name_train,
             R.drawable.ic_action_name_place,
             R.drawable.ic_action_name_rest7aurant,
             R.drawable.ic_action_name_local_coffe,
             R.drawable.ic_action_name_beach,
-            R.drawable.ic_action_name_spa};
+            R.drawable.ic_action_name_spa
+    };
+
+    public static final Integer[] backgrounds = new Integer[] {
+            R.drawable.airplane,
+            R.drawable.road,
+            R.drawable.train,
+            R.drawable.museum,
+            R.drawable.restaurant,
+            R.drawable.coffee,
+            R.drawable.sea,
+            R.drawable.relax
+    };
 
     // costanti per le notifiche
     public static final String TITLE = "title";

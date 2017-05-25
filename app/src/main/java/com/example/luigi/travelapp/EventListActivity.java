@@ -15,6 +15,7 @@ import android.widget.ListView;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
 
+import static com.example.luigi.travelapp.costanti.Constants.EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
@@ -93,6 +94,9 @@ public class EventListActivity extends Activity{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 DefaulToolbar(mview);
+                Intent intent = new Intent(view.getContext(), EventDetailsActivity.class);
+                intent.putExtra(EVENT, position);
+                startActivity(intent);
             }
         });
 
