@@ -185,7 +185,7 @@ public class CityActivity extends FragmentActivity implements GoogleApiClient.On
 
                         ArrayList<Trip> trips = dataStore.getTrips();
                         boolean ispossible = true;
-                        /*int i = 0;
+                        int i = 0;
                         while (ispossible && i<trips.size()) {
                             // todo: modificare meglio le restrizioni
                             /**
@@ -197,7 +197,7 @@ public class CityActivity extends FragmentActivity implements GoogleApiClient.On
                             if (trip.getEndTime() < trips.get(i).getStartTime() && !(trips.get(i).getKey().equals(trip.getKey())))
                                 ispossible = false;
                             i++;
-                        }*/
+                        }
 
                         if (ispossible) {
                             if (tmpIndex == -1)
