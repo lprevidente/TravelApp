@@ -36,10 +36,13 @@ import java.util.Date;
 import java.util.List;
 
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_TYPES_NUMBER;
+import static com.example.luigi.travelapp.costanti.Constants.ICON;
 import static com.example.luigi.travelapp.costanti.Constants.IntervalEvent;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
+import static com.example.luigi.travelapp.costanti.Constants.TEXT;
+import static com.example.luigi.travelapp.costanti.Constants.TITLE;
 import static com.example.luigi.travelapp.costanti.Constants.integers;
 import static com.example.luigi.travelapp.costanti.Constants.textTypes;
 
@@ -140,7 +143,7 @@ public class EventActivity extends Activity {
         });
 
         // Al click del button mostro l'Alert Dialog con i vari tipi di Eventi
-       typeEvent.setOnClickListener(new View.OnClickListener() {
+        typeEvent.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
                builder.show();
@@ -207,7 +210,7 @@ public class EventActivity extends Activity {
                                     }
 
                                     if (notify)
-                                        notification(event.getTime());
+                                        notification(event.getTime(), resImage, event.getTitle(), event.getNote());
                                     finish();
                                 } else {
                                     //Toast.makeText(getApplicationContext(), "Hai già un evento nei prossimi 10 minuti", Toast.LENGTH_SHORT).show();
@@ -255,8 +258,11 @@ public class EventActivity extends Activity {
         }
     }
 
-    public void notification(long timevar) {
+    public void notification(long timevar, int icon, String title, String text) {
         Intent alarmIntent = new Intent(this, Receiver.class);
+        alarmIntent.putExtra(ICON, icon);
+        alarmIntent.putExtra(TITLE, title);
+        alarmIntent.putExtra(TEXT, text);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
 
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);

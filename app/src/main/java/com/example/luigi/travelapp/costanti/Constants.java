@@ -61,4 +61,9 @@ public class Constants {
             R.drawable.ic_action_name_local_coffe,
             R.drawable.ic_action_name_beach,
             R.drawable.ic_action_name_spa};
+
+    // costanti per le notifiche
+    public static final String TITLE = "title";
+    public static final String ICON = "icon";
+    public static final String TEXT = "text";
  }
