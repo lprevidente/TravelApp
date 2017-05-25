@@ -11,7 +11,7 @@
     <string name="AddNewCity">Aggiungi un nuovo viaggio</string>
     <string name="autocomplete_hint">Inserisci una località</string>
     <string name="destination">Dove vorresti andare?</string>
-    <string name="TitleTripEmpty">Inserisci il titolo del Viaggio</string>
+    <string name="TitleTripEmpty">Scegli la tua destinazione</string>
 
     <string name="AddedaNewTrip">È stato aggiunto un nuovo viaggio</string>
 
