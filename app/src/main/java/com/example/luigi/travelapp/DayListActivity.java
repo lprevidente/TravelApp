@@ -30,7 +30,7 @@ public class DayListActivity extends Activity {
         dayReference = extras.getString(KEY_TRIP);
 
         dayListAdapter = new DayListAdapter(this);
-        dataStore.beginDaysObs(new DataStore.UpdateListener() {
+        dataStore.attachDaysListener(new DataStore.UpdateListener() {
             @Override
             public void tripsUpdated() {}
 
@@ -69,6 +69,6 @@ public class DayListActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        dataStore.endDaysObs();
+        dataStore.removeDaysListener();
     }
 }

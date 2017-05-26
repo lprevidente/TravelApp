@@ -211,7 +211,7 @@ public class EventActivity extends Activity {
                                     }
 
                                     if (notify)
-                                        notification(event.getTime(), resImage, event.getTitle(), event.getNote());
+                                        notification(event.getTime(), resImage, event.getTitle() + "(" + event.getTimeString() + ")", event.getNote());
                                     finish();
                                 } else {
                                     //Toast.makeText(getApplicationContext(), "Hai già un evento nei prossimi 10 minuti", Toast.LENGTH_SHORT).show();

@@ -184,6 +184,5 @@
     <orderEntry type="library" exported="" name="animated-vector-drawable-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-nearby-10.2.4" level="project" />
     <orderEntry type="library" exported="" name="play-services-panorama-10.2.4" level="project" />
-    <orderEntry type="library" exported="" name="android-android-25" level="project" />
   </component>
 </module>

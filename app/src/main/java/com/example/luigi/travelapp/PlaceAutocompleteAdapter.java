@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -32,8 +31,7 @@ import java.util.concurrent.TimeUnit;
 
 
 public class PlaceAutocompleteAdapter extends ArrayAdapter<AutocompletePrediction> implements Filterable {
-
-    private static final String TAG = "PlaceAutocompleteAdapter";
+    
     private static final CharacterStyle STYLE_BOLD = new StyleSpan(Typeface.BOLD);
 
     private ArrayList<AutocompletePrediction> mResultList;
@@ -174,8 +172,6 @@ public class PlaceAutocompleteAdapter extends ArrayAdapter<AutocompletePredictio
             // Confirm that the query completed successfully, otherwise return null
             final Status status = autocompletePredictions.getStatus();
             if (!status.isSuccess()) {
-                Toast.makeText(getContext(), "Error contacting API: " + status.toString(),
-                        Toast.LENGTH_SHORT).show();
                 autocompletePredictions.release();
                 return null;
             }

@@ -57,7 +57,7 @@ public class DataStore {
         if (dataStore == null){
             dataStore = new DataStore();
             // Firebase is initialized by a ContentProvider so it is not initialized at the time onCreate() is called
-            // so i need tu pute the persistence Enabled in this way
+            // so i need tu put the persistence Enabled in this way
             database.setPersistenceEnabled(true);
         }
         return dataStore;
@@ -69,7 +69,7 @@ public class DataStore {
         void eventsUpdated();
     }
 
-    public void beginTripsObs(final UpdateListener notification) {
+    public void attachTripsListener(final UpdateListener notification) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = database.getReference(user.getUid()).child(KEY_TRIP_LIST);
 
@@ -99,7 +99,7 @@ public class DataStore {
         reference.addValueEventListener(listenerTrips);
     }
 
-    public void beginDaysObs(final UpdateListener notification, String tripReference) {
+    public void attachDaysListener(final UpdateListener notification, String tripReference) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = database.getReference(user.getUid())
                 .child(KEY_DAY_LIST)
@@ -127,7 +127,7 @@ public class DataStore {
         reference.addValueEventListener(listenerDays);
     }
 
-    public void beginEventsObs(final UpdateListener notification, String eventReference) {
+    public void attachEventsListener(final UpdateListener notification, String eventReference) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = database.getReference(user.getUid())
                 .child(KEY_EVENT_LIST)
@@ -164,19 +164,19 @@ public class DataStore {
     }
 
 
-    public void endTripsObs() {
+    public void removeTripsListener() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (listenerTrips != null)
             FirebaseDatabase.getInstance().getReference(user.getUid()).child(KEY_TRIP_LIST).removeEventListener(listenerTrips);
     }
 
-    public void endDaysObs() {
+    public void removeDaysListener() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (listenerDays != null)
             FirebaseDatabase.getInstance().getReference(user.getUid()).child(KEY_DAY_LIST).removeEventListener(listenerDays);
     }
 
-    public void endEventsObs() {
+    public void removeEventsListener() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (listenerEvents != null)
             FirebaseDatabase.getInstance().getReference(user.getUid()).child(KEY_EVENT_LIST).removeEventListener(listenerEvents);
@@ -249,7 +249,7 @@ public class DataStore {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (newDayNumber < oldDayNumber) {
-            // i ovveride the old trip with the new trip
+            // i override the old trip with the new trip
             DatabaseReference reference2 = database.getReference(user.getUid())
                     .child(KEY_TRIP_LIST)
                     .child(tmp.getKey());
@@ -402,16 +402,6 @@ public class DataStore {
         int i = 0;
         while (i < days.size()) {
             if (days.get(i).getKey().equals(key))
-                return i;
-            i++;
-        }
-        return -1;
-    }
-
-    public int eventIndex(String key) {
-        int i = 0;
-        while (i < events.size()) {
-            if (events.get(i).getKey().equals(key))
                 return i;
             i++;
         }

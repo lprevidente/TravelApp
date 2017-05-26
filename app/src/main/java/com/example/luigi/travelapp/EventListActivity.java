@@ -52,7 +52,7 @@ public class EventListActivity extends Activity{
 
         eventListAdapter = new EventListAdapter(this);
 
-        dataStore.beginEventsObs(new DataStore.UpdateListener() {
+        dataStore.attachEventsListener(new DataStore.UpdateListener() {
             @Override
             public void tripsUpdated() {}
 
@@ -173,6 +173,6 @@ public class EventListActivity extends Activity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        dataStore.endEventsObs();
+        dataStore.removeEventsListener();
     }
 }

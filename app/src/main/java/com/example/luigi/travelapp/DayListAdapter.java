@@ -33,8 +33,6 @@ public class DayListAdapter extends BaseAdapter {
 
     private Context context;
     private List<Day> days = Collections.emptyList();
-    DataStore dataStore = DataStore.getInstance();
-    private List<Event> events = Collections.emptyList();
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -66,42 +64,33 @@ public class DayListAdapter extends BaseAdapter {
         // Mostro soltanto i primi 3 eventi di quel determinato giorno
         final String [] titlesEvent = new String[3];
 
-         // final Semaphore semaphore = new Semaphore(0);
-
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //Se il numero degli eventi è maggiore di 3
-                // allora il max lo pongo a 3
+                //allora il max lo pongo a 3
                 long i= dataSnapshot.getChildrenCount();
-                if( i>Num_Events)
-                    i=Num_Events;
+                if(i > Num_Events)
+                    i = Num_Events;
 
-                int j=0;
+                int j = 0;
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     // prendo gli eventi uno ad uno e ne ricavo il titolo
-                    if(j<i) {
-                        Event post =snapshot.getValue(Event.class);
+                    if(j < i) {
+                        Event post = snapshot.getValue(Event.class);
                         titlesEvent[j] = post.getTitle();
                         j++;
                     }
                 }
-                // dopo il mio ciclo setto i titoli uno a duno
+                // dopo il mio ciclo setto i titoli uno ad uno
                 Event1txt.setText(titlesEvent[0]);
                 Event2txt.setText(titlesEvent[1]);
                 Event3txt.setText(titlesEvent[2]);
-                //semaphore.release();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
-
-        /*try {
-            semaphore.acquire();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } */
 
         return view;
     }
