@@ -42,14 +42,20 @@ public class EventListAdapter extends BaseAdapter {
         final Event event = events.get(position);
         TextView txtTitle = (TextView)view.findViewById(R.id.eventTextView);
         txtTitle.setText(event.getTitle());
+        TextView notes = (TextView)  view.findViewById(R.id.textview_notes);
 
         ImageView imageView = (ImageView) view.findViewById(R.id.imageEvent);
+
         int index = getResourceIndex(event.getType());
         if (index != -1)
             imageView.setImageResource(integers[index]);
 
         TextView txtTime = (TextView) view.findViewById(R.id.txtTime);
         txtTime.setText(event.getTimeString());
+        if(event.getNote().isEmpty())
+            notes.setText(R.string.noNotes);
+        else
+        notes.setText(event.getNote());
 
         return view;
     }
