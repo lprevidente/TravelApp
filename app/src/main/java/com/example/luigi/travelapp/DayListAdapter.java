@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Day;
 import com.example.luigi.travelapp.datamodel.Event;
 import com.google.firebase.auth.FirebaseAuth;
@@ -62,23 +61,23 @@ public class DayListAdapter extends BaseAdapter {
                 .child(days.get(position).getKey());
 
         // Mostro soltanto i primi 3 eventi di quel determinato giorno
-        final String [] titlesEvent = new String[3];
+        final String[] titlesEvent = new String[3];
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //Se il numero degli eventi è maggiore di 3
                 //allora il max lo pongo a 3
-                long i= dataSnapshot.getChildrenCount();
-                if(i > Num_Events)
+                long i = dataSnapshot.getChildrenCount();
+                if (i > Num_Events)
                     i = Num_Events;
 
                 int j = 0;
-                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
                     // prendo gli eventi uno ad uno e ne ricavo il titolo
                     if(j < i) {
                         Event post = snapshot.getValue(Event.class);
-                        titlesEvent[j] = post.getTitle();
+                        titlesEvent[j] = post.getTimeString() + " - " + post.getTitle();
                         j++;
                     }
                 }
@@ -89,7 +88,7 @@ public class DayListAdapter extends BaseAdapter {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) { }
         });
 
         return view;
