@@ -22,10 +22,6 @@ public class EventTypes {
         return text;
     }
 
-    public void setImage(int imageView) {
-        this.image = imageView;
-    }
-
     public void setText(String textView) {
         this.text = textView;
     }

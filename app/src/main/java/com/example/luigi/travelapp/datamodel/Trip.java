@@ -10,7 +10,6 @@ public class Trip {
     private String title;
     private long startTime;
     private long endTime;
-   // private String daysReference;
     private String key;
 
     public Trip() { }
@@ -57,6 +56,5 @@ public class Trip {
     public void setKey(String key) {
         this.key = key;
     }
-
 
 }

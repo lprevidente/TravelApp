@@ -8,7 +8,6 @@ public class Day {
 
     private String key;
     private int number;
-    // private String eventsReference;
 
     public Day() { }
 

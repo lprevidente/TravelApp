@@ -54,7 +54,7 @@ public class TripListActivity extends AppCompatActivity {
             startActivity(intent);
         }
         else {
-            dataStore.beginTripsObs(new DataStore.UpdateListener() {
+            dataStore.attachTripsListener(new DataStore.UpdateListener() {
                 @Override
                 public void tripsUpdated() {
                     adapter.update(dataStore.getTrips());
@@ -178,6 +178,6 @@ public class TripListActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        dataStore.endTripsObs();
+        dataStore.removeTripsListener();
     }
 }

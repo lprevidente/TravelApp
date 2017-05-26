@@ -18,6 +18,7 @@ import static com.example.luigi.travelapp.costanti.Constants.TITLE;
 
 public class Receiver extends BroadcastReceiver {
     private static int mId = 0;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle extras = intent.getExtras();

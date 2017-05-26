@@ -55,7 +55,6 @@ public class CityActivity extends FragmentActivity implements GoogleApiClient.On
 
     private DataStore dataStore = DataStore.getInstance();
 
-
     private Button addTripbtn;
     private TextView partenzaTextView;
     private TextView ritornoTextView;
@@ -93,7 +92,7 @@ public class CityActivity extends FragmentActivity implements GoogleApiClient.On
         addTripbtn = (Button)findViewById(R.id.btnAddCity);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this,1 /*Cliend Id*/, this)
+                .enableAutoManage(this,0 /*Cliend Id*/, this)
                 .addApi(Places.GEO_DATA_API).build();
 
         from_dateListener = new DatePickerDialog.OnDateSetListener(){
