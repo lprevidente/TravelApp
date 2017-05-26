@@ -23,6 +23,7 @@
     <string name="notesOnEvent">Note</string>
     <string name="beginEvent">Ora di inizio</string>
     <string name="notifyEvent">Notificami</string>
+    <string name="noNotes">(nessuna nota)</string>
 
     <string name="textEmail">e-mail</string>
     <string name="textPassword">Password</string>

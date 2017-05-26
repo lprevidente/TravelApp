@@ -4,9 +4,13 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+
 import android.content.Intent;
+
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
@@ -66,7 +70,7 @@ public class CityActivity extends FragmentActivity implements GoogleApiClient.On
     private CharSequence title;
     private boolean selectedItem = false;
 
-    // todo: sostituirlo con le coordinate date dalla posizione del telefono
+   // todo: sostituirlo con le coordinate date dalla posizione del telefono
     LatLng center = new LatLng(41.893056, 12.482778); // geographic coordinates of Rome
     float radius = 2;
     // coordinates of southwest and northeast
