@@ -42,7 +42,7 @@ public class TripListAdapter extends BaseAdapter {
         TextView txtTitle = (TextView)view.findViewById(R.id.Text);
         TextView textViewDate = (TextView) view.findViewById(R.id.textViewDateTrip);
 
-        txtTitle.setTextColor(getRandomColor());
+       // txtTitle.setTextColor(getRandomColor());
 
         final Trip trip = trips.get(position);
         txtTitle.setText(trip.getTitle());

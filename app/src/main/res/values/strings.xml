@@ -37,7 +37,7 @@
     <!--Strings of Various Menu -->
 
     <string name="ItemDone">Done</string>
-    <string name="ItemLogout">LogOut</string>
+    <string name="ItemLogout">Logout</string>
     <string name="ItemInfo">Info App</string>
 
     <string name="campoObbligatorio">Questo campo è obbligatorio</string>
