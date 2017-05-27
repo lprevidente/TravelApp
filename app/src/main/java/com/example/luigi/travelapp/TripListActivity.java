@@ -131,7 +131,7 @@ public class TripListActivity extends AppCompatActivity {
                         intent.putExtra(KEY_TRIP, posizione);
                         startActivity(intent);
                         return true;
-                    case  R.id.item_logout:
+                    case R.id.item_logout:
                         mAuth.signOut();
                         Intent intent1 = new Intent(TripListActivity.this, LoginActivity.class);
                         intent1.putExtra(FIRSTLAUNCH, true);
