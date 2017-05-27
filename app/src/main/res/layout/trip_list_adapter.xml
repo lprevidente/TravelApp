@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="2dp"
         android:layout_weight="1"
         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
         app:layout_constraintRight_toRightOf="parent"
@@ -35,13 +35,12 @@
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/tripNotesText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
-        android:text="(cosa ci mettiamo?)"
         android:textAppearance="@style/TextAppearance.CastMiniController.Subtitle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/Text"

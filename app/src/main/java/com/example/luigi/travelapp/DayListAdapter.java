@@ -33,7 +33,7 @@ public class DayListAdapter extends BaseAdapter {
     private Context context;
     private List<Day> days = Collections.emptyList();
 
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     public DayListAdapter(Context context) {
         this.context = context;
@@ -54,7 +54,7 @@ public class DayListAdapter extends BaseAdapter {
         final TextView Event2txt = (TextView)view.findViewById(R.id.textViewEvent2);
         final TextView Event3txt = (TextView)view.findViewById(R.id.textViewEvent3);
 
-        numDaytxt.setText(days.get(position).getNumber()+"°");
+        numDaytxt.setText(days.get(position).getNumber() + "°");
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(user.getUid())
                 .child(KEY_EVENT_LIST)

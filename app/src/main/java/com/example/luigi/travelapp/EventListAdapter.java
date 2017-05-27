@@ -23,6 +23,7 @@ import static com.example.luigi.travelapp.costanti.Constants.textTypes;
  */
 
 public class EventListAdapter extends BaseAdapter {
+
     private Context context;
     private List<Event> events = Collections.emptyList();
 

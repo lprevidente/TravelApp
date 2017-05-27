@@ -25,7 +25,7 @@ public class EventDetailsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_details);
 
-        DataStore dataStore = DataStore.getInstance().getInstance();
+        DataStore dataStore = DataStore.getInstance();
         Bundle extras = getIntent().getExtras();
         int pos = extras.getInt(EVENT);
 

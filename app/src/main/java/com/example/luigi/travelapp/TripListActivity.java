@@ -19,7 +19,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 import static com.example.luigi.travelapp.costanti.Constants.FIRSTLAUNCH;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
-import static com.example.luigi.travelapp.costanti.Constants.NULLTITLE;
 
 public class TripListActivity extends AppCompatActivity {
 
@@ -162,7 +161,7 @@ public class TripListActivity extends AppCompatActivity {
 
     private void EditToolbar(View view){
         toolbar.setBackgroundColor(Color.GRAY);
-        toolbar.setTitle(NULLTITLE);
+        toolbar.setTitle("");
         toolbar.setNavigationIcon(R.drawable.ic_action_name_back);
 
         menu.findItem(R.id.item_info).setVisible(false);

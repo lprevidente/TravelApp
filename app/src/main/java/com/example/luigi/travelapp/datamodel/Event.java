@@ -57,8 +57,6 @@ public class Event implements Comparable<Event> {
         return time;
     }
 
-    //Set methods
-
     public void setType(String type) {
         this.type = type;
     }
@@ -83,6 +81,9 @@ public class Event implements Comparable<Event> {
         this.key = key;
     }
 
+    /**
+     * La classe implementa comparable in quanto mi serve ordinare gli eventi per data d'inizio
+     */
     @Override
     public int compareTo(@NonNull Event o) {
         Date thisDate = new Date(time);
