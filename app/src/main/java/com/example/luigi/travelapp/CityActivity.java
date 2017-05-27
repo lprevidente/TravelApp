@@ -4,14 +4,13 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-
 import android.content.Intent;
-
-import android.location.Location;
-import android.location.LocationManager;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
-
 import android.support.v4.app.FragmentActivity;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,8 +24,11 @@ import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Trip;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.places.AutocompletePrediction;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -41,6 +43,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import static android.R.attr.id;
+import static com.example.luigi.travelapp.R.id.partenzaTextView;
+import static com.example.luigi.travelapp.R.id.ritornoTextView;
 import static com.example.luigi.travelapp.costanti.Constants.DATE_PICKER_FROM;
 import static com.example.luigi.travelapp.costanti.Constants.DATE_PICKER_TO;
 import static com.example.luigi.travelapp.costanti.Constants.FIRSTLAUNCH;
@@ -50,9 +55,9 @@ import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
  * Created by Luigi on 08/05/2017.
  */
 
-public class CityActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+public class CityActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener {
 
+    private static final String TAG = "City_activity" ;
     private DataStore dataStore = DataStore.getInstance();
 
     private Button addTripbtn;
@@ -68,7 +73,6 @@ public class CityActivity extends FragmentActivity implements GoogleApiClient.On
     private AutoCompleteTextView mAutocompleteView;
 
     private CharSequence title;
-    private boolean selectedItem = false;
 
    // todo: sostituirlo con le coordinate date dalla posizione del telefono
     LatLng center = new LatLng(41.893056, 12.482778); // geographic coordinates of Rome
@@ -92,9 +96,8 @@ public class CityActivity extends FragmentActivity implements GoogleApiClient.On
         addTripbtn = (Button)findViewById(R.id.btnAddCity);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this,0 /*Cliend Id*/, this)
+                .enableAutoManage(this,0 , this)
                 .addApi(Places.GEO_DATA_API).build();
-
         from_dateListener = new DatePickerDialog.OnDateSetListener(){
             public void onDateSet(DatePicker dp, int year, int month, int day) {
                 Calendar cal = new GregorianCalendar(year, month, day);
@@ -112,8 +115,9 @@ public class CityActivity extends FragmentActivity implements GoogleApiClient.On
         partenzaTextView = (TextView)findViewById(R.id.partenzaTextView);
         ritornoTextView = (TextView)findViewById(R.id.ritornoTextView);
 
-        // Retrieve the AutoCompleteTextView that will display Place suggestions.
-        mAutocompleteView = (AutoCompleteTextView) findViewById(R.id.autocomplete_places);
+
+         //Retrieve the AutoCompleteTextView that will display Place suggestions.
+          mAutocompleteView = (AutoCompleteTextView) findViewById(R.id.autocomplete_places);
 
         /**
          * Ho bisogno di questa condizione per sapere se sto creando un nuovo viaggio
@@ -173,7 +177,7 @@ public class CityActivity extends FragmentActivity implements GoogleApiClient.On
                 else {
                     // String titleTrip = mAutocompleteView.getText().toString();
 
-                    if (selectedItem && checkValidDateRange()) {
+                    if ( checkValidDateRange()) {
 
                         Trip trip = new Trip((String) title, String2Date(partenzaTextView.getText().toString()),
                                 String2Date(ritornoTextView.getText().toString()));
@@ -213,24 +217,44 @@ public class CityActivity extends FragmentActivity implements GoogleApiClient.On
                 }
             }
         });
+
     }
 
+    /**
+     * Listener that handles selections from suggestions from the AutoCompleteTextView that
+     * displays Place suggestions.
+     * Gets the place id of the selected item and issues a request to the Places Geo Data API
+     * to retrieve more details about the place.
+     *
+     * @see com.google.android.gms.location.places.GeoDataApi#getPlaceById(com.google.android.gms.common.api.GoogleApiClient,
+     * String...)
+     */
     private AdapterView.OnItemClickListener mAutocompleteClickListener
             = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            /*
+             Retrieve the place ID of the selected item from the Adapter.
+             The adapter stores each Place suggestion in a AutocompletePrediction from which we
+             read the place ID and title.
+              */
+            final AutocompletePrediction item = mAdapter.getItem(position);
+            final String placeId = item.getPlaceId();
+            final CharSequence primaryText = item.getPrimaryText(null);
 
-            final AutocompletePrediction item = mAdapter.getItem(position);;
-             title = item.getPrimaryText(null);
+            Log.i(TAG, "Autocomplete item selected: " + primaryText);
 
-          /*  PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
+            /*
+             Issue a request to the Places Geo Data API to retrieve a Place object with additional
+             details about the place.
+              */
+            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                     .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
 
-*/         // Forzo l'user ha selezionare un elemento della lista
-           selectedItem=true;
-            Toast.makeText(getApplicationContext(), "Clicked: " + title,
+            Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
                     Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "Called getPlaceById to get Place details for " + placeId);
         }
     };
 
@@ -238,8 +262,6 @@ public class CityActivity extends FragmentActivity implements GoogleApiClient.On
      * Callback for results from a Places Geo Data API query that shows the first place result in
      * the details view on screen.
      */
-
-     /*
     private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
             = new ResultCallback<PlaceBuffer>() {
         @Override
@@ -253,10 +275,13 @@ public class CityActivity extends FragmentActivity implements GoogleApiClient.On
             // Get the Place object from the buffer.
             final Place place = places.get(0);
 
+            Log.i(TAG, "Place details received: " + place.getName());
+
             places.release();
         }
     };
-*/
+
+
     /**
      * Called when the Activity could not connect to Google Play services and the auto manager
      * could resolve the error automatically.
@@ -272,11 +297,6 @@ public class CityActivity extends FragmentActivity implements GoogleApiClient.On
                 Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.e("CityActivity", "Latitudine"+location.getLatitude());
-
-    }
 
     private class DateDialogFragment extends DialogFragment {
         @Override

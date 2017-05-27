@@ -9,7 +9,8 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
+        tools:layout_editor_absoluteY="8dp"
+        android:id="@+id/frameLayout">
 
         <ImageView
             android:id="@+id/imageView6"
@@ -110,7 +111,9 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:background="@android:drawable/editbox_background_normal"
+                android:elevation="1dp"
                 android:hint="@string/destination"
+                android:popupBackground="@android:color/background_light"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

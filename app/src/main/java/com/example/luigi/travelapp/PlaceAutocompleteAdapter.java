@@ -9,6 +9,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.text.style.CharacterStyle;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -94,6 +95,8 @@ public class PlaceAutocompleteAdapter extends ArrayAdapter<AutocompletePredictio
         TextView textView2 = (TextView) row.findViewById(android.R.id.text2);
         textView1.setText(item.getPrimaryText(STYLE_BOLD));
         textView2.setText(item.getSecondaryText(STYLE_BOLD));
+        Log.i("Place_autocomplete", "textView1 "+textView1.getText());
+        Log.i("Place_autocomplete", "textView1 "+textView2.getText());
 
         return row;
     }
