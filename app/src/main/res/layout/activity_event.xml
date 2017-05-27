@@ -10,8 +10,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="-27dp"
-        tools:layout_editor_absoluteY="-9dp">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -31,29 +31,19 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/agenda" />
 
-            <ImageButton
-                android:id="@+id/imageButtonDone"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@android:color/transparent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_action_name_done" />
-
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/floatingActionButton"
-                android:layout_width="54dp"
-                android:layout_height="54dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="172dp"
                 android:clickable="true"
                 app:backgroundTint="@android:color/holo_orange_light"
+                app:elevation="1dp"
                 app:fabSize="mini"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_action_name_place_black" />
+                app:srcCompat="@drawable/ic_action_museum" />
 
             <TextView
                 android:id="@+id/textViewTitleEvent"
@@ -93,14 +83,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="0dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="0dp"
                 android:text="@string/TimeofEvent"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/imageViewClock"
-                app:layout_constraintTop_toTopOf="@+id/imageViewClock"
                 app:layout_constraintLeft_toRightOf="@+id/imageViewClock"
-                android:layout_marginLeft="16dp"
+                app:layout_constraintTop_toTopOf="@+id/imageViewClock"
                 app:layout_constraintVertical_bias="0.5" />
 
             <ImageView
@@ -151,6 +141,22 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewClock"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/btnDone"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/BtnDone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/notesText"
                 app:layout_constraintVertical_bias="0.0" />
 
         </android.support.constraint.ConstraintLayout>

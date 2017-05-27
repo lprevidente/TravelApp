@@ -1,6 +1,5 @@
 package com.example.luigi.travelapp;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -12,9 +11,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -47,7 +47,7 @@ import static com.example.luigi.travelapp.costanti.Constants.textTypes;
  * Created by Luigi on 09/05/2017.
  */
 
-public class EventActivity extends Activity {
+public class EventActivity extends AppCompatActivity {
 
     private DataStore dataStore = DataStore.getInstance();
     private EditText titleEventTextView;
@@ -55,7 +55,7 @@ public class EventActivity extends Activity {
     private Switch notifySwitch;
     private static TextView TimePickerTextView;
     private FloatingActionButton btnTypesEvent;
-    private ImageButton btnDone;
+    private Button btnDone;
 
     private ImageView imgEvent;
     private ImageView imgClock;
@@ -85,8 +85,7 @@ public class EventActivity extends Activity {
         notifySwitch = (Switch) findViewById(R.id.switchNotifica);
         btnTypesEvent = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         TimePickerTextView = (TextView) findViewById(R.id.oraTextView);
-        btnDone = (ImageButton) findViewById(R.id.imageButtonDone);
-        btnDone.setImageResource(R.drawable.ic_action_name_done);
+        btnDone = (Button) findViewById(R.id.btnDone);
 
         imgEvent = (ImageView) findViewById(R.id.imageViewEvent);
         imgEvent.setImageResource(R.drawable.agenda);
@@ -105,9 +104,9 @@ public class EventActivity extends Activity {
          *
          */
         if (tmpIndex == -1) {
-            setCurrentTime();
-            resImage = integers[4];
-            typeEvent = textTypes[4];
+           // setCurrentTime();
+            resImage = integers[3];
+            typeEvent = textTypes[3];
         }
         /**
          * In caso contrario, significa che sto modificando un viaggio quindi
@@ -251,9 +250,11 @@ public class EventActivity extends Activity {
         notifySwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (notifySwitch.isChecked())
                     notify=true;
                 else notify=false;
+
             }
         });
 

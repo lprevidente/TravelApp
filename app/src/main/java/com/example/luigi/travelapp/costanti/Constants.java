@@ -52,14 +52,14 @@ public class Constants {
     };
 
     public static final Integer[] integers = new Integer[] {
-            R.drawable.ic_action_name_flight,
-            R.drawable.ic_action_name_car,
-            R.drawable.ic_action_name_train,
-            R.drawable.ic_action_name_place,
-            R.drawable.ic_action_name_rest7aurant,
-            R.drawable.ic_action_name_local_coffe,
-            R.drawable.ic_action_name_beach,
-            R.drawable.ic_action_name_spa
+            R.drawable.ic_action__flight,
+            R.drawable.ic_action_car,
+            R.drawable.ic_action_train,
+            R.drawable.ic_action_museum,
+            R.drawable.ic_action_restaurant,
+            R.drawable.ic_action_coffee_bar,
+            R.drawable.ic_action_beach,
+            R.drawable.ic_action_spa
     };
 
     public static final Integer[] backgrounds = new Integer[] {

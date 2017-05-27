@@ -20,6 +20,7 @@ import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Trip;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
@@ -125,8 +126,16 @@ public class CityActivity extends FragmentActivity implements GoogleApiClient.On
             setDate2TextView(tmp, ritornoTextView);
         }
 
+        /**
+         * Creo un filtro in modo che la ricerca dei posti mi dia solo delle città
+         * e non anche i punti di interessa
+         */
+        AutocompleteFilter filter =  new AutocompleteFilter.Builder()
+                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
+                .build();
+
         // setto l'adapter all'EditText autocompletante
-        mAdapter = new PlaceAutocompleteAdapter(getApplicationContext(), mGoogleApiClient, BOUNDS_GREATER_ROME, null);
+        mAdapter = new PlaceAutocompleteAdapter(getApplicationContext(), mGoogleApiClient, BOUNDS_GREATER_ROME, filter);
         mAutocompleteView.setAdapter(mAdapter);
 
         // Register a listener that receives callbacks when a suggestion has been selected
