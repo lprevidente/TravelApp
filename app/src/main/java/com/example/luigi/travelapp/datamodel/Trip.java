@@ -7,17 +7,20 @@ import java.util.Date;
  */
 
 public class Trip {
+
     private String title;
     private long startTime;
     private long endTime;
     private String key;
+    private String notes;
 
     public Trip() { }
 
-    public Trip(String title, Date startDate, Date endDate) {
+    public Trip(String title, Date startDate, Date endDate, String notes) {
         this.title = title;
         startTime = startDate.getTime();
         endTime = endDate.getTime();
+        this.notes = notes;
     }
 
     public String getTitle() {
@@ -36,10 +39,12 @@ public class Trip {
         return key;
     }
 
+    public String getNotes() {
+        return notes;
+    }
     public int getDaysNumber() {
         return (int)((endTime - startTime) / (1000 * 60 * 60 * 24)) + 1;
     }
-
 
     public void setStartTime(long startTime) {
         this.startTime = startTime;
@@ -55,6 +60,10 @@ public class Trip {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
 }

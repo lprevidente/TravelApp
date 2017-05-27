@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -20,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Day;
@@ -30,14 +28,12 @@ import com.example.luigi.travelapp.datamodel.Trip;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_TYPES_NUMBER;
 import static com.example.luigi.travelapp.costanti.Constants.ICON;
-import static com.example.luigi.travelapp.costanti.Constants.IntervalEvent;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
@@ -118,12 +114,7 @@ public class EventActivity extends Activity {
         typeEvent.setImageResource(resImage);
         textViewtypeEvent.setText(stringtypeEvent);
 
-        /**
-         * Creo un Alert Dialog per avere
-         * più scelte sui vari tipi di eventi
-         * e non ridurmi solo a 3
-         */
-
+         // creo un Alert Dialog per avere più scelte sui vari tipi di eventi
         final AlertDialogAdapter alertDialogAdapter = new AlertDialogAdapter(this);
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -189,33 +180,20 @@ public class EventActivity extends Activity {
                                 Event event = new Event(stringtypeEvent, basetm + offsettm,
                                     titleEventTextView.getText().toString(),
                                     noteEditview.getText().toString(), notify);
-                                if(tmpIndex != -1)
+
+                                if (tmpIndex == -1)
+                                    dataStore.addEvent(event, day.getKey());
+                                else {
                                     event.setKey(dataStore.getEvents().get(tmpIndex).getKey());
-
-                                boolean ispossible = true;
-                                /*int i = 0;
-                                ArrayList<Event> events = dataStore.getEvents();
-                                while (ispossible && i < events.size()){
-                                    if(events.get(i).getTime() < (event.getTime() + IntervalEvent) &&
-                                            !events.get(i).getKey().equals(event.getKey()))
-                                        ispossible = false;
-                                    i++;
-                                }*/
-
-                                if (ispossible) {
-                                    if (tmpIndex == -1)
-                                        dataStore.addEvent(event, day.getKey());
-                                    else {
-                                        //event.setKey(dataStore.getEvents().get(tmpIndex).getKey());
-                                        dataStore.updateEvent(event, dayKey);
-                                    }
-
-                                    if (notify)
-                                        notification(event.getTime(), resImage, event.getTitle() + "(" + event.getTimeString() + ")", event.getNote());
-                                    finish();
-                                } else {
-                                    //Toast.makeText(getApplicationContext(), "Hai già un evento nei prossimi 10 minuti", Toast.LENGTH_SHORT).show();
+                                    dataStore.updateEvent(event, dayKey);
                                 }
+
+                                if (notify)
+                                    notification(event.getTime(),
+                                            resImage,
+                                            event.getTitle() + " (" + event.getTimeString() + ")",
+                                            event.getNote());
+                                finish();
                             }
                             return true;
                         }
@@ -227,15 +205,10 @@ public class EventActivity extends Activity {
             }
         });
 
-        /**
-         * Vedo se l'user ha selezionato o meno la notifica
-         */
         notifyCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (notifyCheckBox.isChecked())
-                    notify=true;
-                else notify=false;
+                notify = notifyCheckBox.isChecked();
             }
         });
 
@@ -245,12 +218,11 @@ public class EventActivity extends Activity {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState){
-            //Use the current time as the default values for the time picker
+            // Uso il tempo corrente per stabilire l'orario iniziale del time picker
             Calendar c = Calendar.getInstance();
             int hour = c.get(Calendar.HOUR_OF_DAY);
             int minute = c.get(Calendar.MINUTE);
 
-            //Create and return a new instance of TimePickerDialog
             return new TimePickerDialog(getActivity(),this, hour, minute, android.text.format.DateFormat.is24HourFormat(getActivity()));
         }
 

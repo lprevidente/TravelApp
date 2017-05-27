@@ -11,7 +11,6 @@ import com.example.luigi.travelapp.datamodel.Event;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_TYPES_NUMBER;
 import static com.example.luigi.travelapp.costanti.Constants.backgrounds;
-import static com.example.luigi.travelapp.costanti.Constants.integers;
 import static com.example.luigi.travelapp.costanti.Constants.textTypes;
 
 public class EventDetailsActivity extends Activity {
@@ -26,7 +25,7 @@ public class EventDetailsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_details);
 
-        DataStore dataStore = DataStore.getInstance().getInstance();
+        DataStore dataStore = DataStore.getInstance();
         Bundle extras = getIntent().getExtras();
         int pos = extras.getInt(EVENT);
 

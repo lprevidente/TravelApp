@@ -27,19 +27,17 @@ import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
 public class EventListActivity extends Activity{
     private DataStore dataStore = DataStore.getInstance();
 
-    private ListView list;
-    private FloatingActionButton addEvent;
     private EventListAdapter eventListAdapter;
     private Toolbar toolbar;
     private Menu menu;
     private int posizione;
 
-    String eventReference;
-    String tripKey;
-    String dayKey;
+    private String eventReference;
+    private String tripKey;
+    private String dayKey;
 
 
-    private View mview=null;
+    private View mview = null;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,13 +63,13 @@ public class EventListActivity extends Activity{
             }
         }, eventReference);
 
-        addEvent = (FloatingActionButton)findViewById(R.id.AddEvent);
+        FloatingActionButton addEvent = (FloatingActionButton)findViewById(R.id.AddEvent);
 
         toolbar = (Toolbar)findViewById(R.id.toolbar_event_list);
         toolbar.inflateMenu(R.menu.menu_list_events);
         menu = toolbar.getMenu();
 
-        list = (ListView)findViewById(R.id.eventListView);
+        ListView list = (ListView)findViewById(R.id.eventListView);
         list.setAdapter(eventListAdapter);
 
         addEvent.setImageResource(R.drawable.ic_action_name_add);
@@ -80,10 +78,10 @@ public class EventListActivity extends Activity{
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 posizione = position;
-                if(mview!=null)
+                if (mview != null)
                     mview.setBackground(ResourcesCompat.getDrawable(getResources(), R.color.colorTransparet, null));
                 mview = view;
-                EditToolbar(mview);
+                editToolbar(mview);
                 posizione = position;
 
                 return true;
@@ -93,7 +91,7 @@ public class EventListActivity extends Activity{
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                DefaulToolbar(mview);
+                defaulToolbar(mview);
                 Intent intent = new Intent(view.getContext(), EventDetailsActivity.class);
                 intent.putExtra(EVENT, position);
                 startActivity(intent);
@@ -112,11 +110,11 @@ public class EventListActivity extends Activity{
                     case R.id.item_delete:
                         dataStore.deleteEvent(eventReference, dataStore.getEvents().get(posizione).getKey());
                         eventListAdapter.notifyDataSetChanged();
-                        DefaulToolbar(mview);
+                        defaulToolbar(mview);
                         return true;
 
                     case R.id.item_edit:
-                        DefaulToolbar(mview);
+                        defaulToolbar(mview);
                         Intent intent = new Intent(EventListActivity.this, EventActivity.class);
                         intent.putExtra(KEY_EVENT, posizione);
                         intent.putExtra(KEY_TRIP, tripKey);
@@ -130,7 +128,7 @@ public class EventListActivity extends Activity{
         addEvent.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DefaulToolbar(mview);
+                defaulToolbar(mview);
                 Intent intent = new Intent(EventListActivity.this, EventActivity.class);
                 intent.putExtra(KEY_EVENT, -1);
                 intent.putExtra(KEY_TRIP, tripKey);
@@ -148,26 +146,24 @@ public class EventListActivity extends Activity{
     }
 
 
-    private void DefaulToolbar(View view){
+    private void defaulToolbar(View view){
         toolbar.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
         toolbar.setTitle(R.string.titleEvents);
         toolbar.setNavigationIcon(null);
         menu.findItem(R.id.item_edit).setVisible(false);
         menu.findItem(R.id.item_delete).setVisible(false);
-        if(view!= null)
-        view.setBackground(ResourcesCompat.getDrawable(getResources(), R.color.colorTransparet, null));
-
+        if(view != null)
+            view.setBackground(ResourcesCompat.getDrawable(getResources(), R.color.colorTransparet, null));
     }
 
-    private void EditToolbar(View view){
+    private void editToolbar(View view){
         toolbar.setBackgroundColor(Color.GRAY);
         toolbar.setTitle("");
         toolbar.setNavigationIcon(R.drawable.ic_action_name_back);
         menu.findItem(R.id.item_edit).setVisible(true);
         menu.findItem(R.id.item_delete).setVisible(true);
-        if(view!= null)
-        view.setBackground(ResourcesCompat.getDrawable(getResources(), R.color.colorHilightGrey, null));
-
+        if(view != null)
+            view.setBackground(ResourcesCompat.getDrawable(getResources(), R.color.colorHilightGrey, null));
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.example.luigi.travelapp;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Luigi on 08/05/2017.
@@ -41,9 +39,7 @@ public class TripListAdapter extends BaseAdapter {
 
         TextView txtTitle = (TextView)view.findViewById(R.id.Text);
         TextView textViewDate = (TextView) view.findViewById(R.id.textViewDateTrip);
-
-       // txtTitle.setTextColor(getRandomColor());
-
+        TextView tripNotes = (TextView)view.findViewById(R.id.tripNotesText);
         final Trip trip = trips.get(position);
         txtTitle.setText(trip.getTitle());
 
@@ -52,11 +48,15 @@ public class TripListAdapter extends BaseAdapter {
         tmp.setTime(new Date(trip.getStartTime()));
         tmp2.setTime(new Date(trip.getEndTime()));
         setDate2TextView(tmp, tmp2,textViewDate);
+        if (trip.getNotes().isEmpty())
+            tripNotes.setText("Nessuna nota");
+        else
+            tripNotes.setText(trip.getNotes());
 
         return view;
     }
 
-    private void setDate2TextView(Calendar calendar1,Calendar calendar2, TextView textView) {
+    private void setDate2TextView(Calendar calendar1, Calendar calendar2, TextView textView) {
         DateFormat dateFormat = DateFormat.getDateInstance();
         textView.setText("Dal "+dateFormat.format(calendar1.getTime())+ " al "+ dateFormat.format(calendar2.getTime()));
     }
@@ -76,8 +76,4 @@ public class TripListAdapter extends BaseAdapter {
         return 0;
     }
 
-    public int getRandomColor() {
-        Random rnd = new Random();
-        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-    }
 }

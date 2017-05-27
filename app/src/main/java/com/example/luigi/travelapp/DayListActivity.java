@@ -16,8 +16,6 @@ public class DayListActivity extends Activity {
 
     private DataStore dataStore = DataStore.getInstance();
     private DayListAdapter dayListAdapter;
-    private ListView listView;
-    private String dayReference;
     private String tripKey;
 
     @Override
@@ -27,7 +25,7 @@ public class DayListActivity extends Activity {
 
         Bundle extras = getIntent().getExtras();
         tripKey = extras.getString(KEY_TRIP);
-        dayReference = extras.getString(KEY_TRIP);
+        String dayReference = extras.getString(KEY_TRIP);
 
         dayListAdapter = new DayListAdapter(this);
         dataStore.attachDaysListener(new DataStore.UpdateListener() {
@@ -43,8 +41,7 @@ public class DayListActivity extends Activity {
             public void eventsUpdated() {}
         }, dayReference);
 
-
-        listView = (ListView)findViewById(R.id.dayListView);
+        ListView listView = (ListView)findViewById(R.id.dayListView);
         listView.setAdapter(dayListAdapter);
 
         listView.setOnItemClickListener( new AdapterView.OnItemClickListener() {
@@ -57,10 +54,6 @@ public class DayListActivity extends Activity {
         });
     }
 
-    /**
-     *  when the user add a new event and go back to this activity
-     *  there is a refresh of the listView
-     */
     protected void onResume(){
         super.onResume();
         dayListAdapter.notifyDataSetChanged();

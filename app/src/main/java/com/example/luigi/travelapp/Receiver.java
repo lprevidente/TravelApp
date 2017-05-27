@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
 
 import static com.example.luigi.travelapp.costanti.Constants.ICON;
 import static com.example.luigi.travelapp.costanti.Constants.TEXT;

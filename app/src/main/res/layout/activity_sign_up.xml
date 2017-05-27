@@ -7,36 +7,49 @@
     tools:context="com.example.luigi.travelapp.SignUpActivity">
 
     <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        tools:layout_editor_absoluteX="16dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/bg1" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg1"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="8dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="0dp">
 
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="32dp"
                 android:scaleType="center"
                 android:src="@drawable/ic_airplane_takeoff_grey600_48dp"
                 android:visibility="visible"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="spread" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/editRepeatPassword"
@@ -45,10 +58,10 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
+                android:background="@android:drawable/editbox_background_normal"
                 android:ems="10"
                 android:hint="Ripeti password"
                 android:inputType="textPassword"
-                android:background="@android:drawable/editbox_background_normal"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -60,6 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
                 android:background="@android:drawable/editbox_background_normal"
                 android:ems="10"
                 android:hint="Indirizzo e-mail"
@@ -67,7 +81,6 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginTop="8dp"
                 app:layout_constraintTop_toBottomOf="@+id/welcomeTextS" />
 
             <EditText
@@ -76,15 +89,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:background="@android:drawable/editbox_background_normal"
                 android:ems="10"
                 android:hint="@string/textPassword"
                 android:inputType="textPassword"
-                android:background="@android:drawable/editbox_background_normal"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginTop="4dp"
-                app:layout_constraintTop_toBottomOf="@+id/editEmailS"
-                app:layout_constraintHorizontal_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@+id/editEmailS" />
 
             <Button
                 android:id="@+id/buttonConfirmS"
@@ -92,11 +105,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="13dp"
                 android:text="Conferma"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editRepeatPassword" />
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/textAlreadyRegistered" />
 
             <ProgressBar
                 android:id="@+id/progressCircleS"
@@ -109,14 +122,15 @@
                 android:visibility="invisible"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonConfirmS" />
+                app:layout_constraintTop_toBottomOf="@+id/buttonConfirmS"
+                app:layout_constraintHorizontal_bias="0.501" />
 
             <TextView
                 android:id="@+id/welcomeTextS"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:textAlignment="center"
                 android:textColor="@color/colorGray"
@@ -130,7 +144,6 @@
                 android:id="@+id/textAlreadyRegistered"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
@@ -139,10 +152,12 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorGray"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/editRepeatPassword" />
 
         </android.support.constraint.ConstraintLayout>
-    </FrameLayout>
+    </ScrollView>
+
 </android.support.constraint.ConstraintLayout>

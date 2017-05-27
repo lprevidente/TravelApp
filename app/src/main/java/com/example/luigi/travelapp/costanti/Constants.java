@@ -9,17 +9,13 @@ import com.example.luigi.travelapp.R;
 public class Constants {
 
     public static final String FIRSTLAUNCH = "firstlaunch";
-
     public static final String EVENT = "event";
-
-    // costanti per i check dei nomi
-    public static final String NULLTITLE = "";
 
     // costanti per i datePicker
     public static final int DATE_PICKER_TO = 0;
     public static final int DATE_PICKER_FROM = 1;
 
-    // costanti per le chiavI
+    // costanti per le chiavi
     public static final String KEY_TRIP_LIST = "trips";
     public static final String KEY_DAY_LIST = "days";
     public static final String KEY_EVENT_LIST = "events";
@@ -27,6 +23,7 @@ public class Constants {
     public static final String KEY_TRIP_TITLE = "title";
     public static final String KEY_TRIP_START_TIME = "startTime";
     public static final String KEY_TRIP_END_TIME = "endTime";
+    public static final String KEY_TRIP_NOTES = "notes";
 
     public static final String KEY_DAY_NUMBER = "number";
 
@@ -35,13 +32,12 @@ public class Constants {
     public static final String KEY_EVENT_NOTE = "note";
     public static final String KEY_EVENT_NOTIFY = "notify";
     public static final String KEY_EVENT_TYPE = "type";
-    public static final int Num_Events =3;
 
     public static final String KEY_TRIP = "keytrip";
     public static final String KEY_DAY = "keyday";
     public static final String KEY_EVENT = "keyevent";
 
-    public static final int IntervalEvent= 600000;
+    public static final int Num_Events = 3;
 
     // costanti per i tipi dell'evento
     public static final int EVENT_TYPES_NUMBER = 8;
