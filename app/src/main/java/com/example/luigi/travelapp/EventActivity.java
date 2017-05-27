@@ -97,22 +97,14 @@ public class EventActivity extends AppCompatActivity {
         imgNotification.setImageResource(R.drawable.ic_action_name_notifactions);
 
 
-        /**
-         * se tmpIndex =-1 ossia è un nuovo viaggio allora
-         * imposto il tempo corrente per il TimePicker
-         * e come tipo evento di default Museo
-         *
-         */
+
+        // se tmpIndex =-1 ossia è un nuovo viaggio allora imposto il tempo corrente per il TimePicker
+        // e come tipo evento di default Museo
         if (tmpIndex == -1) {
-           // setCurrentTime();
+            setCurrentTime();
             resImage = integers[3];
             typeEvent = textTypes[3];
-        }
-        /**
-         * In caso contrario, significa che sto modificando un viaggio quindi
-         * devo settare il vecchio titolo, orario e la notifica
-         */
-        else {
+        } else {
             Event event = dataStore.getEvents().get(tmpIndex);
             titleEventTextView.setText(event.getTitle());
             noteEditview.setText(event.getNote());
@@ -124,8 +116,6 @@ public class EventActivity extends AppCompatActivity {
             if (index != -1) {
                 resImage = integers[index];
                 typeEvent = textTypes[index];
-
-
             } else {
                 // non dovrebbe mai entrarci
                 resImage = 0;
@@ -133,11 +123,6 @@ public class EventActivity extends AppCompatActivity {
         }
         typeEvent = textTypes[4];
         btnTypesEvent.setImageResource(resImage);
-
-        /**
-         * Creo un Alert Dialog per avere
-         * più scelte sui vari tipi di eventi
-         */
 
         final AlertDialogAdapter alertDialogAdapter = new AlertDialogAdapter(this);
 
@@ -174,11 +159,7 @@ public class EventActivity extends AppCompatActivity {
 
         });
 
-        /**
-         * Gestisco i click sull'ImageButton
-         * Done: mi creo un nuovo evento e lo mando a DayListActivity
-         */
-       btnDone.setOnClickListener(new View.OnClickListener() {
+        btnDone.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
 
@@ -201,63 +182,34 @@ public class EventActivity extends AppCompatActivity {
                        Long offsettm = setString2DateTime(oldcal.getTime(),
                                TimePickerTextView.getText().toString()).getTime() - 82800000;
 
-
                        Event event = new Event(typeEvent, basetm + offsettm,
                                titleEventTextView.getText().toString(),
                                noteEditview.getText().toString(), notify);
-                       if(tmpIndex != -1)
+
+                       if (tmpIndex == -1)
+                           dataStore.addEvent(event, day.getKey());
+                       else {
                            event.setKey(dataStore.getEvents().get(tmpIndex).getKey());
-
-                       boolean ispossible = true;
-                                /*int i = 0;
-                                ArrayList<Event> events = dataStore.getEvents();
-                                while (ispossible && i < events.size()){
-                                    if(events.get(i).getTime() < (event.getTime() + IntervalEvent) &&
-                                            !events.get(i).getKey().equals(event.getKey()))
-                                        ispossible = false;
-                                    i++;
-                                }*/
-
-                       if (ispossible) {
-                           if (tmpIndex == -1)
-                               dataStore.addEvent(event, day.getKey());
-                           else {
-                               //event.setKey(dataStore.getEvents().get(tmpIndex).getKey());
-                               dataStore.updateEvent(event, dayKey);
-                           }
-
-                           if (notify)
-                               notification(event.getTime(), resImage, event.getTitle() + "(" + event.getTimeString() + ")", event.getNote());
-                           finish();
-                       } else {
-                           //Toast.makeText(getApplicationContext(), "Hai già un evento nei prossimi 10 minuti", Toast.LENGTH_SHORT).show();
+                           dataStore.updateEvent(event, dayKey);
                        }
-                   }
 
+                       if (notify)
+                           notification(event.getTime(), resImage, event.getTitle() + " (" + event.getTimeString() + ")", event.getNote());
+                       finish();
+                   }
                }
                else {
                    titleEventTextView.setError(getString(R.string.TitleEventEmpty));
                }
-
            }
        });
 
-
-
-        /**
-         * Vedo se l'user ha selezionato o meno la notifica
-         */
         notifySwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (notifySwitch.isChecked())
-                    notify=true;
-                else notify=false;
-
+                notify = notifySwitch.isChecked();
             }
         });
-
     }
 
     public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener{

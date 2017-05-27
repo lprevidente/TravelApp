@@ -38,7 +38,6 @@ public class PlaceAutocompleteAdapter extends ArrayAdapter<AutocompletePredictio
 
     private ArrayList<AutocompletePrediction> mResultList;
 
-
     private GoogleApiClient mGoogleApiClient;
 
     /**
