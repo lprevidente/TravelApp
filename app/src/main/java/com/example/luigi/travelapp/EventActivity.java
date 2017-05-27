@@ -10,17 +10,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.example.luigi.travelapp.datamodel.DataStore;
 import com.example.luigi.travelapp.datamodel.Day;
@@ -30,14 +28,12 @@ import com.example.luigi.travelapp.datamodel.Trip;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_TYPES_NUMBER;
 import static com.example.luigi.travelapp.costanti.Constants.ICON;
-import static com.example.luigi.travelapp.costanti.Constants.IntervalEvent;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
@@ -56,13 +52,17 @@ public class EventActivity extends Activity {
     private DataStore dataStore = DataStore.getInstance();
     private EditText titleEventTextView;
     private EditText noteEditview;
-    private CheckBox notifyCheckBox;
-    private TextView TimePickerTextView;
-    private ImageButton typeEvent;
-    private TextView textViewtypeEvent;
+    private Switch notifySwitch;
+    private static TextView TimePickerTextView;
+    private FloatingActionButton btnTypesEvent;
+    private ImageButton btnDone;
 
-    private String stringtypeEvent;
+    private ImageView imgEvent;
+    private ImageView imgClock;
+    private ImageView imgNotification;
+
     private int resImage;
+    private CharSequence typeEvent;
 
     private boolean notify=false;
 
@@ -79,49 +79,65 @@ public class EventActivity extends Activity {
         dayKey = extras.getString(KEY_DAY);
         tmpIndex = extras.getInt(KEY_EVENT);
 
-        Toolbar toolbarEvent = (Toolbar) findViewById(R.id.toolbarEvent);
-        toolbarEvent.setTitle(R.string.NewEvent);
-        toolbarEvent.inflateMenu(R.menu.menu_event);
 
         titleEventTextView = (EditText) findViewById(R.id.titleEventEdit);
         noteEditview = (EditText) findViewById(R.id.notesText);
-        notifyCheckBox = (CheckBox) findViewById(R.id.checkBoxNotifica);
-
+        notifySwitch = (Switch) findViewById(R.id.switchNotifica);
+        btnTypesEvent = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         TimePickerTextView = (TextView) findViewById(R.id.oraTextView);
+        btnDone = (ImageButton) findViewById(R.id.imageButtonDone);
+        btnDone.setImageResource(R.drawable.ic_action_name_done);
 
-        typeEvent = (ImageButton) findViewById(R.id.imageButton_typeEvent);
+        imgEvent = (ImageView) findViewById(R.id.imageViewEvent);
+        imgEvent.setImageResource(R.drawable.agenda);
 
-        textViewtypeEvent = (TextView) findViewById(R.id.textView_typeEvent);
+        imgClock = (ImageView) findViewById(R.id.imageViewClock);
+        imgClock.setImageResource(R.drawable.ic_action_name_clock);
 
+        imgNotification = (ImageView) findViewById(R.id.imageViewNotification);
+        imgNotification.setImageResource(R.drawable.ic_action_name_notifactions);
+
+
+        /**
+         * se tmpIndex =-1 ossia è un nuovo viaggio allora
+         * imposto il tempo corrente per il TimePicker
+         * e come tipo evento di default Museo
+         *
+         */
         if (tmpIndex == -1) {
             setCurrentTime();
-            resImage = integers[2];
-            stringtypeEvent = textTypes[2].toString();
+            resImage = integers[4];
+            typeEvent = textTypes[4];
         }
+        /**
+         * In caso contrario, significa che sto modificando un viaggio quindi
+         * devo settare il vecchio titolo, orario e la notifica
+         */
         else {
             Event event = dataStore.getEvents().get(tmpIndex);
             titleEventTextView.setText(event.getTitle());
             noteEditview.setText(event.getNote());
-            notifyCheckBox.setChecked(event.getNotify());
+            notifySwitch.setChecked(event.getNotify());
             TimePickerTextView.setText(event.getTimeString());
-            int index = getResourceIndex(event.getType());
+
+            int index = getResourceIndex(event.getType().toString());
+
             if (index != -1) {
                 resImage = integers[index];
-                stringtypeEvent = textTypes[index].toString();
+                typeEvent = textTypes[index];
+
+
             } else {
                 // non dovrebbe mai entrarci
                 resImage = 0;
-                stringtypeEvent = "Error?";
             }
         }
-
-        typeEvent.setImageResource(resImage);
-        textViewtypeEvent.setText(stringtypeEvent);
+        typeEvent = textTypes[4];
+        btnTypesEvent.setImageResource(resImage);
 
         /**
          * Creo un Alert Dialog per avere
          * più scelte sui vari tipi di eventi
-         * e non ridurmi solo a 3
          */
 
         final AlertDialogAdapter alertDialogAdapter = new AlertDialogAdapter(this);
@@ -133,17 +149,17 @@ public class EventActivity extends Activity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Qui inserisco il metodo per prendere il testo e l'immagine dell'item
-                // selezionato per poi sostituirli nel ImageButton and nella Text view sotto
+                // selezionato per poi sostituirli nel Floating Action Button
                 List<EventTypes> list = alertDialogAdapter.getList();
                 resImage = list.get(which).getImage();
-                typeEvent.setImageResource(resImage);
-                stringtypeEvent = list.get(which).getText().toString();
-                textViewtypeEvent.setText(stringtypeEvent);
+                btnTypesEvent.setImageResource(resImage);
+                typeEvent = textTypes[which];
+
             }
         });
 
-        // Al click del button mostro l'Alert Dialog con i vari tipi di Eventi
-        typeEvent.setOnClickListener(new View.OnClickListener() {
+        // Al click del Floating Action Button mostro l'Alert Dialog con i vari tipi di Eventi
+        btnTypesEvent.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
                builder.show();
@@ -160,39 +176,40 @@ public class EventActivity extends Activity {
         });
 
         /**
-         * Gestisco i click sulla toolbar
+         * Gestisco i click sull'ImageButton
          * Done: mi creo un nuovo evento e lo mando a DayListActivity
          */
-        toolbarEvent.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.item_done:
-                        if (!titleEventTextView.getText().toString().isEmpty()) {
-                            
-                            Calendar oldcal = Calendar.getInstance();
+       btnDone.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
 
-                            int index = dataStore.tripIndex(tripKey);
-                            if (index != -1) {
-                                Trip tmpTrip = dataStore.getTrips().get(index);
-                                Day day = dataStore.getDays().get(dataStore.dayIndex(dayKey));
+               if (!titleEventTextView.getText().toString().isEmpty()) {
 
-                                oldcal.setTime(new Date(tmpTrip.getStartTime()));
-                                oldcal.add(Calendar.DATE, day.getNumber());
+                   Calendar oldcal = Calendar.getInstance();
 
-                                // memorizzo il time fino al giorno dell'evento
-                                // calcolo l'offset del tempo e sottraggo un offset di 23 ore (in ms) dovuto a non so cosa
-                                Long basetm = oldcal.getTime().getTime();
-                                Long offsettm = setString2DateTime(oldcal.getTime(),
-                                        TimePickerTextView.getText().toString()).getTime() - 82800000;
+                   int index = dataStore.tripIndex(tripKey);
 
-                                Event event = new Event(stringtypeEvent, basetm + offsettm,
-                                    titleEventTextView.getText().toString(),
-                                    noteEditview.getText().toString(), notify);
-                                if(tmpIndex != -1)
-                                    event.setKey(dataStore.getEvents().get(tmpIndex).getKey());
+                   if (index != -1) {
+                       Trip tmpTrip = dataStore.getTrips().get(index);
+                       Day day = dataStore.getDays().get(dataStore.dayIndex(dayKey));
 
-                                boolean ispossible = true;
+                       oldcal.setTime(new Date(tmpTrip.getStartTime()));
+                       oldcal.add(Calendar.DATE, day.getNumber());
+
+                       // memorizzo il time fino al giorno dell'evento
+                       // calcolo l'offset del tempo e sottraggo un offset di 23 ore (in ms) dovuto a non so cosa
+                       Long basetm = oldcal.getTime().getTime();
+                       Long offsettm = setString2DateTime(oldcal.getTime(),
+                               TimePickerTextView.getText().toString()).getTime() - 82800000;
+
+
+                       Event event = new Event(typeEvent, basetm + offsettm,
+                               titleEventTextView.getText().toString(),
+                               noteEditview.getText().toString(), notify);
+                       if(tmpIndex != -1)
+                           event.setKey(dataStore.getEvents().get(tmpIndex).getKey());
+
+                       boolean ispossible = true;
                                 /*int i = 0;
                                 ArrayList<Event> events = dataStore.getEvents();
                                 while (ispossible && i < events.size()){
@@ -202,38 +219,39 @@ public class EventActivity extends Activity {
                                     i++;
                                 }*/
 
-                                if (ispossible) {
-                                    if (tmpIndex == -1)
-                                        dataStore.addEvent(event, day.getKey());
-                                    else {
-                                        //event.setKey(dataStore.getEvents().get(tmpIndex).getKey());
-                                        dataStore.updateEvent(event, dayKey);
-                                    }
+                       if (ispossible) {
+                           if (tmpIndex == -1)
+                               dataStore.addEvent(event, day.getKey());
+                           else {
+                               //event.setKey(dataStore.getEvents().get(tmpIndex).getKey());
+                               dataStore.updateEvent(event, dayKey);
+                           }
 
-                                    if (notify)
-                                        notification(event.getTime(), resImage, event.getTitle() + "(" + event.getTimeString() + ")", event.getNote());
-                                    finish();
-                                } else {
-                                    //Toast.makeText(getApplicationContext(), "Hai già un evento nei prossimi 10 minuti", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                            return true;
-                        }
-                        else {
-                            titleEventTextView.setError(getString(R.string.TitleEventEmpty));
-                        }
-                }
-                return false;
-            }
-        });
+                           if (notify)
+                               notification(event.getTime(), resImage, event.getTitle() + "(" + event.getTimeString() + ")", event.getNote());
+                           finish();
+                       } else {
+                           //Toast.makeText(getApplicationContext(), "Hai già un evento nei prossimi 10 minuti", Toast.LENGTH_SHORT).show();
+                       }
+                   }
+
+               }
+               else {
+                   titleEventTextView.setError(getString(R.string.TitleEventEmpty));
+               }
+
+           }
+       });
+
+
 
         /**
          * Vedo se l'user ha selezionato o meno la notifica
          */
-        notifyCheckBox.setOnClickListener(new View.OnClickListener() {
+        notifySwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (notifyCheckBox.isChecked())
+                if (notifySwitch.isChecked())
                     notify=true;
                 else notify=false;
             }
@@ -241,7 +259,7 @@ public class EventActivity extends Activity {
 
     }
 
-    private class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
+    public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState){

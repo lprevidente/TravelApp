@@ -46,7 +46,7 @@ public class EventListAdapter extends BaseAdapter {
 
         ImageView imageView = (ImageView) view.findViewById(R.id.imageEvent);
 
-        int index = getResourceIndex(event.getType());
+        int index = getResourceIndex(event.getType().toString());
         if (index != -1)
             imageView.setImageResource(integers[index]);
 

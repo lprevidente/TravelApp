@@ -17,13 +17,14 @@
 
     <!-- Strings of Event Activity-->
     <string name="NewEvent">Nuovo Evento</string>
-    <string name="TitleEvent">Cosa Farai Oggi?</string>
+    <string name="TitleEvent">Dove vuoi andare?</string>
     <string name="TitleEventEmpty">Inserisci il Titolo Evento</string>
     <string name="titleEvent">Scegli dove andare</string>
-    <string name="notesOnEvent">Note</string>
+    <string name="notesOnEvent">Eventuali note</string>
     <string name="beginEvent">Ora di inizio</string>
     <string name="notifyEvent">Notificami</string>
     <string name="noNotes">(nessuna nota)</string>
+    <string name="TimeofEvent">A Che Ora?</string>
 
     <string name="textEmail">e-mail</string>
     <string name="textPassword">Password</string>

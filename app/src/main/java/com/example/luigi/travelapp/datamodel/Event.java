@@ -16,18 +16,18 @@ public class Event implements Comparable<Event> {
     private String title;
     private String note;
     private boolean notify;
-    private String type;
+    private CharSequence type;
 
     public Event() { }
 
-    public Event(String type, Long time, String title, String note, boolean notify) {
+    public Event(CharSequence type, Long time, String title, String note, boolean notify) {
         this.time = time;
         this.title = title;
         this.note = note;
         this.notify = notify;
         this.type = type;
     }
-    public String getType() {
+    public CharSequence getType() {
         return type;
     }
 

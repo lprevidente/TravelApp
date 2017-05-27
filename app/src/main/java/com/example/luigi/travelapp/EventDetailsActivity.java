@@ -11,7 +11,6 @@ import com.example.luigi.travelapp.datamodel.Event;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_TYPES_NUMBER;
 import static com.example.luigi.travelapp.costanti.Constants.backgrounds;
-import static com.example.luigi.travelapp.costanti.Constants.integers;
 import static com.example.luigi.travelapp.costanti.Constants.textTypes;
 
 public class EventDetailsActivity extends Activity {
@@ -31,7 +30,7 @@ public class EventDetailsActivity extends Activity {
         int pos = extras.getInt(EVENT);
 
         Event event = dataStore.getEvents().get(pos);
-        int resNumber = getResourceIndex(event.getType());
+        int resNumber = getResourceIndex(event.getType().toString());
 
         eventBackgroundImageView = (ImageView)findViewById(R.id.eventBackgroundImageView);
 
