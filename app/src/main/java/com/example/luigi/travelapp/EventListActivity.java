@@ -140,7 +140,7 @@ public class EventListActivity extends Activity{
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               DefaulToolbar(mview);
+               defaulToolbar(mview);
             }
         });
     }
