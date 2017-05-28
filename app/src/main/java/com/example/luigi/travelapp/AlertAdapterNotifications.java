@@ -17,12 +17,12 @@ import static com.example.luigi.travelapp.costanti.Constants.timeNotifications;
  * Created by Luigi on 28/05/2017.
  */
 
-public class AlertDAdapterNotifications extends BaseAdapter {
+public class AlertAdapterNotifications extends BaseAdapter {
     private List<String> time = new ArrayList<>();
     private Context context;
 
-    public AlertDAdapterNotifications(Context context) {
-       for(int i=0; i<NUM_TIMES; i++){
+    public AlertAdapterNotifications(Context context) {
+        for (int i = 0; i < NUM_TIMES; i++){
             time.add(timeNotifications[i]);
         }
         this.context = context;

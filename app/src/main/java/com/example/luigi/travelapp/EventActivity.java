@@ -37,8 +37,10 @@ import static com.example.luigi.travelapp.costanti.Constants.ICON;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
+import static com.example.luigi.travelapp.costanti.Constants.NUM_TIMES;
 import static com.example.luigi.travelapp.costanti.Constants.TEXT;
 import static com.example.luigi.travelapp.costanti.Constants.TITLE;
+import static com.example.luigi.travelapp.costanti.Constants.anticipi;
 import static com.example.luigi.travelapp.costanti.Constants.integers;
 import static com.example.luigi.travelapp.costanti.Constants.textTypes;
 import static com.example.luigi.travelapp.costanti.Constants.timeNotifications;
@@ -143,7 +145,7 @@ public class EventActivity extends AppCompatActivity {
             }
         });
 
-        final AlertDAdapterNotifications alert2 = new AlertDAdapterNotifications(this);
+        final AlertAdapterNotifications alert2 = new AlertAdapterNotifications(this);
 
         final AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
         builder2.setTitle("Quanto prima vuoi essere Avvisato?");
@@ -151,8 +153,7 @@ public class EventActivity extends AppCompatActivity {
         builder2.setAdapter(alert2, new DialogInterface.OnClickListener(){
 
             public void onClick(DialogInterface dialog, int which){
-                // Inserire il metodo per settare il contenuto della nuova textView
-                timeNotification.setText("-"+timeNotifications[which]);
+                timeNotification.setText(timeNotifications[which]);
             }
 
         });
@@ -216,7 +217,7 @@ public class EventActivity extends AppCompatActivity {
                        }
 
                        if (notify)
-                           notification(event.getTime(), resImage, event.getTitle() + " (" + event.getTimeString() + ")", event.getNote());
+                           notification(event, resImage);
                        finish();
                    }
                }
@@ -253,7 +254,21 @@ public class EventActivity extends AppCompatActivity {
         }
     }
 
-    public void notification(long timevar, int icon, String title, String text) {
+    public void notification(Event item, int icon) {
+        // cerco qual è l'anticipo della mia notifica
+        int index = getTimeIndex(timeNotification.getText().toString());
+        long anticipo;
+        if (index != -1) {
+            anticipo = anticipi[index];
+        } else {
+            anticipo = 0;
+        }
+
+        long time = item.getTime() - anticipo;
+        String title = item.getTitle() + " (" + item.getTimeString() + ")";
+
+        String text = "Questo evento si verificherà tra " + timeNotifications[index] + "! " + item.getNote();
+
         Intent alarmIntent = new Intent(this, Receiver.class);
         alarmIntent.putExtra(ICON, icon);
         alarmIntent.putExtra(TITLE, title);
@@ -263,7 +278,7 @@ public class EventActivity extends AppCompatActivity {
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date(timevar));
+        calendar.setTime(new Date(time));
 
         manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, pendingIntent);
@@ -291,6 +306,16 @@ public class EventActivity extends AppCompatActivity {
         int i = 0;
         while (i < EVENT_TYPES_NUMBER) {
             if (type.equals(textTypes[i]))
+                return i;
+            i++;
+        }
+        return -1;
+    };
+
+    private int getTimeIndex(String type) {
+        int i = 0;
+        while (i < NUM_TIMES) {
+            if (type.equals(timeNotifications[i]))
                 return i;
             i++;
         }

@@ -73,12 +73,20 @@ public class Constants {
             R.drawable.sea,
             R.drawable.relax
     };
-    public static final int NUM_TIMES =4;
+
+    public static final int NUM_TIMES = 4;
     public static final String[] timeNotifications = new String[] {
             "10 minuti",
             "30 minuti",
             "1 ora",
             "1 giorno"
+    };
+
+    public static final long[] anticipi = new long[] {
+            600000L,
+            1800000L,
+            3600000L,
+            86400000L
     };
 
     // costanti per le notifiche
