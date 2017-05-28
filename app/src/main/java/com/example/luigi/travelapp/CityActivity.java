@@ -186,10 +186,10 @@ public class CityActivity extends FragmentActivity implements GoogleApiClient.On
                         setResult(Activity.RESULT_OK, getIntent());
                         finish();
                     } else {
-                        if(title.equals(null))
+                        if(title == null)
                         mAutocompleteView.setError(getString(R.string.TitleTripEmpty));
                         else Toast.makeText(getApplicationContext(), "La data di partenza deve essere minore" +
-                                "di quella di arrivo", Toast.LENGTH_LONG).show();
+                                " di quella di arrivo", Toast.LENGTH_LONG).show();
                     }
                 }
             }
