@@ -115,6 +115,7 @@ public class CityActivity extends FragmentActivity implements GoogleApiClient.On
         else {
             Trip trip = dataStore.getTrips().get(tmpIndex);
             mAutocompleteView.setText(trip.getTitle());
+            title=trip.getTitle();
             noteText.setText(trip.getNotes());
 
             Calendar tmp = Calendar.getInstance();
@@ -185,7 +186,10 @@ public class CityActivity extends FragmentActivity implements GoogleApiClient.On
                         setResult(Activity.RESULT_OK, getIntent());
                         finish();
                     } else {
+                        if(title.equals(null))
                         mAutocompleteView.setError(getString(R.string.TitleTripEmpty));
+                        else Toast.makeText(getApplicationContext(), "La data di partenza deve essere minore" +
+                                "di quella di arrivo", Toast.LENGTH_LONG).show();
                     }
                 }
             }
