@@ -72,6 +72,7 @@ public class LoginActivity extends Activity {
         googleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressCircle.setVisibility(View.VISIBLE);
                 signInWithGoogle();
             }
         });
