@@ -20,7 +20,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_LIST;
@@ -59,18 +62,17 @@ public class DayListAdapter extends BaseAdapter {
         final TextView dateinWeek = (TextView) view.findViewById(R.id.dayInWeek);
 
         final TextView Event1txt= (TextView)view.findViewById(R.id.titleEvent1);
-        final TextView Event1date = ((TextView)view.findViewById(R.id.timeEvent1)) ;
+        final TextView Event1date = (TextView)view.findViewById(R.id.timeEvent1);
 
         final TextView Event2txt = (TextView)view.findViewById(R.id.titleEvent2);
         final TextView Event2date= (TextView)view.findViewById(R.id.timeEvent2);
 
-        final TextView Event3txt =(TextView)view.findViewById(R.id.titleEvent3);
+        final TextView Event3txt = (TextView)view.findViewById(R.id.titleEvent3);
         final TextView Event3date = (TextView)view.findViewById(R.id.timeEvent3);
 
-
         final LinearLayout layout1 = (LinearLayout) view.findViewById(R.id.LayoutEvent1);
-        final LinearLayout layout2 =(LinearLayout) view.findViewById(R.id.LayoutEvent2);
-        final LinearLayout layout3 =(LinearLayout) view.findViewById(R.id.LayoutEvent3);
+        final LinearLayout layout2 = (LinearLayout) view.findViewById(R.id.LayoutEvent2);
+        final LinearLayout layout3 = (LinearLayout) view.findViewById(R.id.LayoutEvent3);
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(user.getUid())
                 .child(KEY_EVENT_LIST)
@@ -100,29 +102,29 @@ public class DayListAdapter extends BaseAdapter {
                         j++;
                     }
                 }
-                /**
-                 * dopo il mio ciclo setto i titoli e le date uno ad uno
-                 * nel caso non ci sono setto lo sfondo trasparente
-                 *
-                 */
 
-                if(titlesEvent[0]==null && timesEvent[0]==null)
+                // dopo il ciclo setto i titoli e le date una ad una;
+                // nel caso non ci siano setto lo sfondo trasparente
+                if (titlesEvent[0] == null && timesEvent[0] == null)
                     layout1.setBackground(ResourcesCompat.getDrawable(finalView.getResources(), R.color.colorTransparet, null));
-                else{
-                Event1txt.setText(titlesEvent[0]);
-                Event1date.setText(timesEvent[0]);}
+                else {
+                    Event1txt.setText(titlesEvent[0]);
+                    Event1date.setText(timesEvent[0]);
+                }
 
-                if(titlesEvent[1]==null && timesEvent[1]==null)
+                if (titlesEvent[1] == null && timesEvent[1] == null)
                     layout2.setBackground(ResourcesCompat.getDrawable(finalView.getResources(), R.color.colorTransparet, null));
                 else {
-                Event2txt.setText(titlesEvent[1]);
-                Event2date.setText(timesEvent[1]);}
+                    Event2txt.setText(titlesEvent[1]);
+                    Event2date.setText(timesEvent[1]);
+                }
 
-                if(titlesEvent[2]==null && timesEvent[2]==null)
+                if (titlesEvent[2] == null && timesEvent[2] == null)
                     layout3.setBackground(ResourcesCompat.getDrawable(finalView.getResources(), R.color.colorTransparet, null));
-                else{
-                Event3txt.setText(titlesEvent[2]);
-                Event3date.setText(timesEvent[2]);}
+                else {
+                    Event3txt.setText(titlesEvent[2]);
+                    Event3date.setText(timesEvent[2]);
+                }
             }
 
             @Override
@@ -136,13 +138,11 @@ public class DayListAdapter extends BaseAdapter {
         reference2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Trip trip = dataSnapshot.getValue(Trip.class);
 
-                    Trip trip = dataSnapshot.getValue(Trip.class);
-
-                numDaytxt.setText(Integer.toString(trip.getTripStartDayString()+days.get(position).getNumber()));
-                dateDay.setText(trip.getTripMonthYearString());
-                dateinWeek.setText(trip.getTripdayWeekString());
-
+                numDaytxt.setText(getCalendarDayNumber(trip, position));
+                dateDay.setText(getCalendarMonthString(trip, position));
+                dateinWeek.setText(getCalendarDayName(trip, position));
             }
 
             @Override
@@ -152,6 +152,33 @@ public class DayListAdapter extends BaseAdapter {
         });
 
         return view;
+    }
+
+    private String getCalendarDayNumber(Trip trip, int position) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(trip.getStartTime()));
+        calendar.add(Calendar.DATE, position);
+        SimpleDateFormat localDateFormat = new SimpleDateFormat("dd");
+        String str = localDateFormat.format(calendar.getTime());
+        return str;
+    }
+
+    private String getCalendarMonthString(Trip trip, int position) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(trip.getStartTime()));
+        calendar.add(Calendar.DATE, position);
+        SimpleDateFormat localDateFormat = new SimpleDateFormat("MMM yyyy");
+        String str = localDateFormat.format(calendar.getTime());
+        return str;
+    }
+
+    private String getCalendarDayName(Trip trip, int position) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(trip.getStartTime()));
+        calendar.add(Calendar.DATE, position);
+        SimpleDateFormat localDateFormat = new SimpleDateFormat("E");
+        String str = localDateFormat.format(calendar.getTime());
+        return str;
     }
 
     @Override

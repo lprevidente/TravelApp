@@ -70,24 +70,4 @@ public class Trip {
         this.notes = notes;
     }
 
-    public int getTripStartDayString() {
-        SimpleDateFormat localDateFormat = new SimpleDateFormat("dd");
-        String str = localDateFormat.format(new Date(startTime));
-        return Integer.parseInt(str);
-    }
-
-    public String getTripMonthYearString() {
-        SimpleDateFormat localDateFormat = new SimpleDateFormat("MMM yyyy");
-        String str = localDateFormat.format(new Date(startTime));
-        return str;
-    }
-
-    public String getTripdayWeekString() {
-        SimpleDateFormat localDateFormat = new SimpleDateFormat("E");
-        String str = localDateFormat.format(new Date(startTime));
-        return str;
-    }
-
-
-
 }
