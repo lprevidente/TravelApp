@@ -1,6 +1,7 @@
 package com.example.luigi.travelapp;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,13 +75,35 @@ public class DayListAdapter extends BaseAdapter {
         final LinearLayout layout2 = (LinearLayout) view.findViewById(R.id.LayoutEvent2);
         final LinearLayout layout3 = (LinearLayout) view.findViewById(R.id.LayoutEvent3);
 
+        final LinearLayout[] layouts = new LinearLayout[Num_Events];
+        layouts[0] = layout1;
+        layouts[1] = layout2;
+        layouts[2] = layout3;
+
+        final TextView [] titles = new TextView[Num_Events];
+
+        titles[0] = Event1txt;
+        titles[1] = Event2txt;
+        titles[2] = Event3txt;
+
+        final TextView [] times =  new TextView[Num_Events];
+
+        times[0] = Event1date;
+        times[1] = Event2date;
+        times[2] = Event3date;
+
+        final Drawable [] colors = new Drawable[Num_Events];
+        colors[0] = ResourcesCompat.getDrawable(view.getResources(), R.color.cast_intro_overlay_button_background_color, null);
+        colors[1] = ResourcesCompat.getDrawable(view.getResources(), R.color.colorFucsia, null);
+        colors[2] = ResourcesCompat.getDrawable(view.getResources(), R.color.colorOrange, null);
+
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(user.getUid())
                 .child(KEY_EVENT_LIST)
                 .child(days.get(position).getKey());
 
         // Mostro soltanto i primi 3 eventi di quel determinato giorno
-        final String[] titlesEvent = new String[3];
-        final String[] timesEvent = new String[3];
+        final String[] titlesEvent = new String[Num_Events];
+        final String[] timesEvent = new String[Num_Events];
 
         final View finalView = view;
         reference.addValueEventListener(new ValueEventListener() {
@@ -103,8 +126,23 @@ public class DayListAdapter extends BaseAdapter {
                     }
                 }
 
+
                 // dopo il ciclo setto i titoli e le date una ad una;
                 // nel caso non ci siano setto lo sfondo trasparente
+
+                for(j=0; j<Num_Events; j++) {
+                    if (titlesEvent[j] == null && timesEvent[j] == null) {
+                        layouts[j].setBackground(ResourcesCompat.getDrawable(finalView.getResources(), R.color.colorTransparet, null));
+                        titles[j].getLayoutParams().height = 0;
+                        times[j].getLayoutParams().height = 0;
+
+                    } else {
+                        layouts[j].setBackground(colors[j]);
+                        titles[j].setText(titlesEvent[j]);
+                        times[j].setText(timesEvent[j]);
+                    }
+                }
+                /*
                 if (titlesEvent[0] == null && timesEvent[0] == null) {
                     layout1.setBackground(ResourcesCompat.getDrawable(finalView.getResources(), R.color.colorTransparet, null));
                     Event1txt.getLayoutParams().height = 0;
@@ -136,7 +174,7 @@ public class DayListAdapter extends BaseAdapter {
                     layout3.setBackground(ResourcesCompat.getDrawable(finalView.getResources(), R.color.colorOrange, null));
                     Event3txt.setText(titlesEvent[2]);
                     Event3date.setText(timesEvent[2]);
-                }
+                }*/
             }
 
             @Override
