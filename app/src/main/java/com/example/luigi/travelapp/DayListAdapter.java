@@ -55,25 +55,34 @@ public class DayListAdapter extends BaseAdapter {
     }
 
     public View getView(final int position, View view, ViewGroup parent) {
-        if (view == null)
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View mview=null;
+        if (view == null) {
+            mview= new View(context);
+        } else {
+            mview = (View) view;
+        }
+        mview = inflater.inflate(R.layout.day_list_adapter, null);
+      /*  if (view == null)
             view = LayoutInflater.from(context).inflate(R.layout.day_list_adapter, parent, false);
+*/
+        final TextView numDaytxt = (TextView)mview.findViewById(R.id.dayTextView);
+        final TextView dateDay = (TextView) mview.findViewById(R.id.dateDay);
+        final TextView dateinWeek = (TextView) mview.findViewById(R.id.dayInWeek);
 
-        final TextView numDaytxt = (TextView)view.findViewById(R.id.dayTextView);
-        final TextView dateDay = (TextView) view.findViewById(R.id.dateDay);
-        final TextView dateinWeek = (TextView) view.findViewById(R.id.dayInWeek);
+        final TextView Event1txt= (TextView)mview.findViewById(R.id.titleEvent1);
+        final TextView Event1date = (TextView)mview.findViewById(R.id.timeEvent1);
 
-        final TextView Event1txt= (TextView)view.findViewById(R.id.titleEvent1);
-        final TextView Event1date = (TextView)view.findViewById(R.id.timeEvent1);
+        final TextView Event2txt = (TextView)mview.findViewById(R.id.titleEvent2);
+        final TextView Event2date= (TextView)mview.findViewById(R.id.timeEvent2);
 
-        final TextView Event2txt = (TextView)view.findViewById(R.id.titleEvent2);
-        final TextView Event2date= (TextView)view.findViewById(R.id.timeEvent2);
+        final TextView Event3txt = (TextView)mview.findViewById(R.id.titleEvent3);
+        final TextView Event3date = (TextView)mview.findViewById(R.id.timeEvent3);
 
-        final TextView Event3txt = (TextView)view.findViewById(R.id.titleEvent3);
-        final TextView Event3date = (TextView)view.findViewById(R.id.timeEvent3);
-
-        final LinearLayout layout1 = (LinearLayout) view.findViewById(R.id.LayoutEvent1);
-        final LinearLayout layout2 = (LinearLayout) view.findViewById(R.id.LayoutEvent2);
-        final LinearLayout layout3 = (LinearLayout) view.findViewById(R.id.LayoutEvent3);
+        final LinearLayout layout1 = (LinearLayout) mview.findViewById(R.id.LayoutEvent1);
+        final LinearLayout layout2 = (LinearLayout) mview.findViewById(R.id.LayoutEvent2);
+        final LinearLayout layout3 = (LinearLayout) mview.findViewById(R.id.LayoutEvent3);
 
         final LinearLayout[] layouts = new LinearLayout[Num_Events];
         layouts[0] = layout1;
@@ -93,9 +102,9 @@ public class DayListAdapter extends BaseAdapter {
         times[2] = Event3date;
 
         final Drawable [] colors = new Drawable[Num_Events];
-        colors[0] = ResourcesCompat.getDrawable(view.getResources(), R.color.cast_intro_overlay_button_background_color, null);
-        colors[1] = ResourcesCompat.getDrawable(view.getResources(), R.color.colorFucsia, null);
-        colors[2] = ResourcesCompat.getDrawable(view.getResources(), R.color.colorOrange, null);
+        colors[0] = ResourcesCompat.getDrawable(mview.getResources(), R.color.cast_intro_overlay_button_background_color, null);
+        colors[1] = ResourcesCompat.getDrawable(mview.getResources(), R.color.colorFucsia, null);
+        colors[2] = ResourcesCompat.getDrawable(mview.getResources(), R.color.colorOrange, null);
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(user.getUid())
                 .child(KEY_EVENT_LIST)
@@ -105,7 +114,7 @@ public class DayListAdapter extends BaseAdapter {
         final String[] titlesEvent = new String[Num_Events];
         final String[] timesEvent = new String[Num_Events];
 
-        final View finalView = view;
+        final View finalView = mview;
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -201,7 +210,7 @@ public class DayListAdapter extends BaseAdapter {
             }
         });
 
-        return view;
+        return mview;
     }
 
     private String getCalendarDayNumber(Trip trip, int position) {
