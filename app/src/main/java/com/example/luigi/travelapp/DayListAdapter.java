@@ -1,14 +1,17 @@
 package com.example.luigi.travelapp;
 
 import android.content.Context;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.luigi.travelapp.datamodel.Day;
 import com.example.luigi.travelapp.datamodel.Event;
+import com.example.luigi.travelapp.datamodel.Trip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT_LIST;
+import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP_LIST;
 import static com.example.luigi.travelapp.costanti.Constants.Num_Events;
 
 
@@ -32,11 +36,13 @@ public class DayListAdapter extends BaseAdapter {
 
     private Context context;
     private List<Day> days = Collections.emptyList();
+    private String tripKey;
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-    public DayListAdapter(Context context) {
+    public DayListAdapter(Context context, String tripKey) {
         this.context = context;
+        this.tripKey=tripKey;
     }
 
     public void update(List<Day> newList) {
@@ -44,17 +50,27 @@ public class DayListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public View getView(int position, View view, ViewGroup parent) {
+    public View getView(final int position, View view, ViewGroup parent) {
         if (view == null)
             view = LayoutInflater.from(context).inflate(R.layout.day_list_adapter, parent, false);
 
-        TextView numDaytxt = (TextView)view.findViewById(R.id.dayTextView);
+        final TextView numDaytxt = (TextView)view.findViewById(R.id.dayTextView);
+        final TextView dateDay = (TextView) view.findViewById(R.id.dateDay);
+        final TextView dateinWeek = (TextView) view.findViewById(R.id.dayInWeek);
 
-        final TextView Event1txt = (TextView)view.findViewById(R.id.textViewEvent1);
-        final TextView Event2txt = (TextView)view.findViewById(R.id.textViewEvent2);
-        final TextView Event3txt = (TextView)view.findViewById(R.id.textViewEvent3);
+        final TextView Event1txt= (TextView)view.findViewById(R.id.titleEvent1);
+        final TextView Event1date = ((TextView)view.findViewById(R.id.timeEvent1)) ;
 
-        numDaytxt.setText(days.get(position).getNumber() + "°");
+        final TextView Event2txt = (TextView)view.findViewById(R.id.titleEvent2);
+        final TextView Event2date= (TextView)view.findViewById(R.id.timeEvent2);
+
+        final TextView Event3txt =(TextView)view.findViewById(R.id.titleEvent3);
+        final TextView Event3date = (TextView)view.findViewById(R.id.timeEvent3);
+
+
+        final LinearLayout layout1 = (LinearLayout) view.findViewById(R.id.LayoutEvent1);
+        final LinearLayout layout2 =(LinearLayout) view.findViewById(R.id.LayoutEvent2);
+        final LinearLayout layout3 =(LinearLayout) view.findViewById(R.id.LayoutEvent3);
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(user.getUid())
                 .child(KEY_EVENT_LIST)
@@ -62,7 +78,9 @@ public class DayListAdapter extends BaseAdapter {
 
         // Mostro soltanto i primi 3 eventi di quel determinato giorno
         final String[] titlesEvent = new String[3];
+        final String[] timesEvent = new String[3];
 
+        final View finalView = view;
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -77,18 +95,60 @@ public class DayListAdapter extends BaseAdapter {
                     // prendo gli eventi uno ad uno e ne ricavo il titolo
                     if(j < i) {
                         Event post = snapshot.getValue(Event.class);
-                        titlesEvent[j] = post.getTimeString() + " - " + post.getTitle();
+                        titlesEvent[j] = post.getTitle();
+                        timesEvent[j] = post.getTimeString();
                         j++;
                     }
                 }
-                // dopo il mio ciclo setto i titoli uno ad uno
+                /**
+                 * dopo il mio ciclo setto i titoli e le date uno ad uno
+                 * nel caso non ci sono setto lo sfondo trasparente
+                 *
+                 */
+
+                if(titlesEvent[0]==null && timesEvent[0]==null)
+                    layout1.setBackground(ResourcesCompat.getDrawable(finalView.getResources(), R.color.colorTransparet, null));
+                else{
                 Event1txt.setText(titlesEvent[0]);
+                Event1date.setText(timesEvent[0]);}
+
+                if(titlesEvent[1]==null && timesEvent[1]==null)
+                    layout2.setBackground(ResourcesCompat.getDrawable(finalView.getResources(), R.color.colorTransparet, null));
+                else {
                 Event2txt.setText(titlesEvent[1]);
+                Event2date.setText(timesEvent[1]);}
+
+                if(titlesEvent[2]==null && timesEvent[2]==null)
+                    layout3.setBackground(ResourcesCompat.getDrawable(finalView.getResources(), R.color.colorTransparet, null));
+                else{
                 Event3txt.setText(titlesEvent[2]);
+                Event3date.setText(timesEvent[2]);}
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) { }
+        });
+
+        DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference(user.getUid())
+                .child(KEY_TRIP_LIST)
+                .child(tripKey);
+
+        reference2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    Trip trip = dataSnapshot.getValue(Trip.class);
+
+                numDaytxt.setText(Integer.toString(trip.getTripStartDayString()+days.get(position).getNumber()));
+                dateDay.setText(trip.getTripMonthYearString());
+                dateinWeek.setText(trip.getTripdayWeekString());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
         });
 
         return view;

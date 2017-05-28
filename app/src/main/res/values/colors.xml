@@ -2,9 +2,11 @@
 <resources>
     <color name="colorPrimary">#3f51b5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#ff4081</color>
+    <color name="colorAccent">#f7578e</color>
     <color name="colorGray">#757575</color>
     <color name="colorHilightGrey">#b4e0e0e0</color>
     <color name="colorTransparet">#00000000</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorOrange">#b3f67a0e</color>
+    <color name="colorFucsia">#caf16092</color>
 </resources>

@@ -27,7 +27,7 @@ public class DayListActivity extends Activity {
         tripKey = extras.getString(KEY_TRIP);
         String dayReference = extras.getString(KEY_TRIP);
 
-        dayListAdapter = new DayListAdapter(this);
+        dayListAdapter = new DayListAdapter(this, tripKey);
         dataStore.attachDaysListener(new DataStore.UpdateListener() {
             @Override
             public void tripsUpdated() {}

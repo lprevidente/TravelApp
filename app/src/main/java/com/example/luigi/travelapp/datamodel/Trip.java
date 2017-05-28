@@ -1,5 +1,6 @@
 package com.example.luigi.travelapp.datamodel;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -14,7 +15,8 @@ public class Trip {
     private String key;
     private String notes;
 
-    public Trip() { }
+    public Trip() {
+    }
 
     public Trip(String title, Date startDate, Date endDate, String notes) {
         this.title = title;
@@ -42,9 +44,11 @@ public class Trip {
     public String getNotes() {
         return notes;
     }
+
     public int getDaysNumber() {
-        return (int)((endTime - startTime) / (1000 * 60 * 60 * 24)) + 1;
+        return (int) ((endTime - startTime) / (1000 * 60 * 60 * 24)) + 1;
     }
+
 
     public void setStartTime(long startTime) {
         this.startTime = startTime;
@@ -65,5 +69,25 @@ public class Trip {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
+    public int getTripStartDayString() {
+        SimpleDateFormat localDateFormat = new SimpleDateFormat("dd");
+        String str = localDateFormat.format(new Date(startTime));
+        return Integer.parseInt(str);
+    }
+
+    public String getTripMonthYearString() {
+        SimpleDateFormat localDateFormat = new SimpleDateFormat("MMM yyyy");
+        String str = localDateFormat.format(new Date(startTime));
+        return str;
+    }
+
+    public String getTripdayWeekString() {
+        SimpleDateFormat localDateFormat = new SimpleDateFormat("E");
+        String str = localDateFormat.format(new Date(startTime));
+        return str;
+    }
+
+
 
 }
