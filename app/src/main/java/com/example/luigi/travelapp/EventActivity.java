@@ -41,6 +41,7 @@ import static com.example.luigi.travelapp.costanti.Constants.TEXT;
 import static com.example.luigi.travelapp.costanti.Constants.TITLE;
 import static com.example.luigi.travelapp.costanti.Constants.integers;
 import static com.example.luigi.travelapp.costanti.Constants.textTypes;
+import static com.example.luigi.travelapp.costanti.Constants.timeNotifications;
 
 
 /**
@@ -56,7 +57,7 @@ public class EventActivity extends AppCompatActivity {
     private static TextView TimePickerTextView;
     private FloatingActionButton btnTypesEvent;
     private Button btnDone;
-
+    private TextView timeNotification;
     private ImageView imgEvent;
     private ImageView imgClock;
     private ImageView imgNotification;
@@ -86,6 +87,7 @@ public class EventActivity extends AppCompatActivity {
         btnTypesEvent = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         TimePickerTextView = (TextView) findViewById(R.id.oraTextView);
         btnDone = (Button) findViewById(R.id.btnDone);
+        timeNotification = (TextView) findViewById(R.id.textViewTimeNotifications);
 
         imgEvent = (ImageView) findViewById(R.id.imageViewEvent);
         imgEvent.setImageResource(R.drawable.agenda);
@@ -95,7 +97,6 @@ public class EventActivity extends AppCompatActivity {
 
         imgNotification = (ImageView) findViewById(R.id.imageViewNotification);
         imgNotification.setImageResource(R.drawable.ic_action_name_notifactions);
-
 
 
         // se tmpIndex =-1 ossia è un nuovo viaggio allora imposto il tempo corrente per il TimePicker
@@ -121,7 +122,7 @@ public class EventActivity extends AppCompatActivity {
                 resImage = 0;
             }
         }
-        typeEvent = textTypes[4];
+
         btnTypesEvent.setImageResource(resImage);
 
         final AlertDialogAdapter alertDialogAdapter = new AlertDialogAdapter(this);
@@ -139,6 +140,27 @@ public class EventActivity extends AppCompatActivity {
                 btnTypesEvent.setImageResource(resImage);
                 typeEvent = textTypes[which];
 
+            }
+        });
+
+        final AlertDAdapterNotifications alert2 = new AlertDAdapterNotifications(this);
+
+        final AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+        builder2.setTitle("Quanto prima vuoi essere Avvisato?");
+
+        builder2.setAdapter(alert2, new DialogInterface.OnClickListener(){
+
+            public void onClick(DialogInterface dialog, int which){
+                // Inserire il metodo per settare il contenuto della nuova textView
+                timeNotification.setText("-"+timeNotifications[which]);
+            }
+
+        });
+
+        timeNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    builder2.show();
             }
         });
 

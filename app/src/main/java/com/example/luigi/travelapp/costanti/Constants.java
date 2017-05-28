@@ -41,7 +41,8 @@ public class Constants {
 
     // costanti per i tipi dell'evento
     public static final int EVENT_TYPES_NUMBER = 8;
-    public static final CharSequence[] textTypes = new CharSequence [] {"Aereo",
+    public static final CharSequence[] textTypes = new CharSequence [] {
+            "Aereo",
             "Auto",
             "Treno",
             "Museo",
@@ -71,6 +72,13 @@ public class Constants {
             R.drawable.coffee,
             R.drawable.sea,
             R.drawable.relax
+    };
+    public static final int NUM_TIMES =4;
+    public static final String[] timeNotifications = new String[] {
+            "10 minuti",
+            "30 minuti",
+            "1 ora",
+            "1 giorno"
     };
 
     // costanti per le notifiche

@@ -10,7 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteX="-16dp"
         tools:layout_editor_absoluteY="0dp">
 
         <android.support.constraint.ConstraintLayout
@@ -98,20 +98,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="0dp"
-                android:layout_marginRight="8dp"
                 android:layout_marginTop="0dp"
                 app:layout_constraintBottom_toBottomOf="@+id/switchNotifica"
-                app:layout_constraintRight_toLeftOf="@+id/switchNotifica"
                 app:layout_constraintTop_toTopOf="@+id/switchNotifica"
-                app:layout_constraintVertical_bias="0.5"
-                app:srcCompat="@drawable/ic_action_name_notifactions" />
+                app:layout_constraintVertical_bias="0.4"
+                app:srcCompat="@drawable/ic_action_name_notifactions"
+                app:layout_constraintRight_toLeftOf="@+id/textViewTimeNotifications"
+                android:layout_marginRight="8dp" />
 
             <Switch
                 android:id="@+id/switchNotifica"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="16dp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/oraTextView"
+                android:layout_marginRight="24dp"
                 app:layout_constraintRight_toRightOf="parent" />
 
             <ImageView
@@ -123,6 +123,19 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/titleEventEdit"
                 app:srcCompat="@drawable/ic_action_name_clock" />
+
+            <TextView
+                android:id="@+id/textViewTimeNotifications"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:text="-10 min"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintBottom_toBottomOf="@+id/switchNotifica"
+                app:layout_constraintRight_toLeftOf="@+id/switchNotifica"
+                app:layout_constraintTop_toTopOf="@+id/switchNotifica" />
 
             <EditText
                 android:id="@+id/notesText"
