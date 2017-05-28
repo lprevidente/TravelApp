@@ -34,6 +34,7 @@ import java.util.List;
 
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_TYPES_NUMBER;
 import static com.example.luigi.travelapp.costanti.Constants.ICON;
+import static com.example.luigi.travelapp.costanti.Constants.ID;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
@@ -73,6 +74,8 @@ public class EventActivity extends AppCompatActivity {
     private String tripKey;
     private int tmpIndex;
 
+    private static int id = 0;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
@@ -90,6 +93,7 @@ public class EventActivity extends AppCompatActivity {
         TimePickerTextView = (TextView) findViewById(R.id.oraTextView);
         btnDone = (Button) findViewById(R.id.btnDone);
         timeNotification = (TextView) findViewById(R.id.textViewTimeNotifications);
+        timeNotification.setText(timeNotifications[0]);
 
         imgEvent = (ImageView) findViewById(R.id.imageViewEvent);
         imgEvent.setImageResource(R.drawable.agenda);
@@ -141,14 +145,13 @@ public class EventActivity extends AppCompatActivity {
                 resImage = list.get(which).getImage();
                 btnTypesEvent.setImageResource(resImage);
                 typeEvent = textTypes[which];
-
             }
         });
 
         final AlertAdapterNotifications alert2 = new AlertAdapterNotifications(this);
 
         final AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
-        builder2.setTitle("Quanto prima vuoi essere Avvisato?");
+        builder2.setTitle("Quanto prima vuoi essere avvisato?");
 
         builder2.setAdapter(alert2, new DialogInterface.OnClickListener(){
 
@@ -216,8 +219,10 @@ public class EventActivity extends AppCompatActivity {
                            dataStore.updateEvent(event, dayKey);
                        }
 
-                       if (notify)
-                           notification(event, resImage);
+                       if (notify) {
+                           notification(event, resImage, id);
+                           id++;
+                       }
                        finish();
                    }
                }
@@ -254,7 +259,7 @@ public class EventActivity extends AppCompatActivity {
         }
     }
 
-    public void notification(Event item, int icon) {
+    public void notification(Event item, int icon, int id) {
         // cerco qual è l'anticipo della mia notifica
         int index = getTimeIndex(timeNotification.getText().toString());
         long anticipo;
@@ -273,6 +278,7 @@ public class EventActivity extends AppCompatActivity {
         alarmIntent.putExtra(ICON, icon);
         alarmIntent.putExtra(TITLE, title);
         alarmIntent.putExtra(TEXT, text);
+        alarmIntent.putExtra(ID, id);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
 
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
