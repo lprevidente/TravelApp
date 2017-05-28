@@ -105,24 +105,33 @@ public class DayListAdapter extends BaseAdapter {
 
                 // dopo il ciclo setto i titoli e le date una ad una;
                 // nel caso non ci siano setto lo sfondo trasparente
-                if (titlesEvent[0] == null && timesEvent[0] == null)
+                if (titlesEvent[0] == null && timesEvent[0] == null) {
                     layout1.setBackground(ResourcesCompat.getDrawable(finalView.getResources(), R.color.colorTransparet, null));
+                    Event1txt.getLayoutParams().height = 0;
+                    Event1date.getLayoutParams().height = 0;
+                }
                 else {
                     layout1.setBackground(ResourcesCompat.getDrawable(finalView.getResources(), R.color.cast_intro_overlay_button_background_color, null));
                     Event1txt.setText(titlesEvent[0]);
                     Event1date.setText(timesEvent[0]);
                 }
 
-                if (titlesEvent[1] == null && timesEvent[1] == null)
+                if (titlesEvent[1] == null && timesEvent[1] == null) {
                     layout2.setBackground(ResourcesCompat.getDrawable(finalView.getResources(), R.color.colorTransparet, null));
+                    Event2txt.getLayoutParams().height = 0;
+                    Event2date.getLayoutParams().height = 0;
+                }
                 else {
                     layout2.setBackground(ResourcesCompat.getDrawable(finalView.getResources(), R.color.colorFucsia, null));
                     Event2txt.setText(titlesEvent[1]);
                     Event2date.setText(timesEvent[1]);
                 }
 
-                if (titlesEvent[2] == null && timesEvent[2] == null)
+                if (titlesEvent[2] == null && timesEvent[2] == null) {
                     layout3.setBackground(ResourcesCompat.getDrawable(finalView.getResources(), R.color.colorTransparet, null));
+                    Event3txt.getLayoutParams().height = 0;
+                    Event3date.getLayoutParams().height = 0;
+                }
                 else {
                     layout3.setBackground(ResourcesCompat.getDrawable(finalView.getResources(), R.color.colorOrange, null));
                     Event3txt.setText(titlesEvent[2]);
