@@ -83,15 +83,14 @@ public class Constants {
     };
 
     public static final long[] anticipi = new long[] {
-            600000L,
-            1800000L,
-            3600000L,
-            86400000L
+            600000,
+            1800000,
+            3600000,
+            86400000
     };
 
     // costanti per le notifiche
     public static final String TITLE = "title";
     public static final String ICON = "icon";
     public static final String TEXT = "text";
-    public static final String ID = "id";
  }

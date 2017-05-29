@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +35,6 @@ import java.util.List;
 
 import static com.example.luigi.travelapp.costanti.Constants.EVENT_TYPES_NUMBER;
 import static com.example.luigi.travelapp.costanti.Constants.ICON;
-import static com.example.luigi.travelapp.costanti.Constants.ID;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_DAY;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_EVENT;
 import static com.example.luigi.travelapp.costanti.Constants.KEY_TRIP;
@@ -73,8 +73,6 @@ public class EventActivity extends AppCompatActivity {
     private String dayKey;
     private String tripKey;
     private int tmpIndex;
-
-    private static int id = 0;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -220,8 +218,7 @@ public class EventActivity extends AppCompatActivity {
                        }
 
                        if (notify) {
-                           notification(event, resImage, id);
-                           id++;
+                           notification(event, resImage);
                        }
                        finish();
                    }
@@ -259,15 +256,18 @@ public class EventActivity extends AppCompatActivity {
         }
     }
 
-    public void notification(Event item, int icon, int id) {
+    public void notification(Event item, int icon) {
         // cerco qual è l'anticipo della mia notifica
         int index = getTimeIndex(timeNotification.getText().toString());
+        Log.d("NOTIFICHE", "INDICE: " + Integer.toString(index));
         long anticipo;
         if (index != -1) {
             anticipo = anticipi[index];
         } else {
             anticipo = 0;
         }
+
+        Log.d("NOTIFICHE", "anticipo: " + Long.toString(anticipo));
 
         long time = item.getTime() - anticipo;
         String title = item.getTitle() + " (" + item.getTimeString() + ")";
@@ -278,7 +278,6 @@ public class EventActivity extends AppCompatActivity {
         alarmIntent.putExtra(ICON, icon);
         alarmIntent.putExtra(TITLE, title);
         alarmIntent.putExtra(TEXT, text);
-        alarmIntent.putExtra(ID, id);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
 
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
